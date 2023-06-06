@@ -73,7 +73,7 @@ public class NoteSpawner : MonoBehaviour
         newNote.color = colors[noteIndex];
         newNote.key = keyCodes[noteIndex];
         newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex], 5, 0);
-        newNote.removePosition = new Vector3(fingerButtonXAxis[noteIndex], -6, 0);
+        newNote.removePosition = new Vector3(fingerButtonXAxis[noteIndex], -4, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;
         newNote.go = goConductor;

@@ -24,20 +24,22 @@ public class Conductor : MonoBehaviour
     // bpm of song
     float bpm = 100f;
     // keep all note-positions-in-beats for the song
+    // beat position starts at 0
     float[] notes = { 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f };
     // the index of the next note to spawn
     int nextIndex = 0;
-    public float beatsShownInAdvance = 1f;
+    public float beatsShownInAdvance = 3f;
     public float secondsShownInAdvance;
     public bool songPlaying = false;
     // delay of the start of playing the music in beats
-    public int delayOfSong = 5;
+    // DELAY MUST BE GREATER THAN BEATSSHOWNINADVANCE
+    public int delayOfSong = 4;
 
     [SerializeField] GameObject noteSpawner;
 
     // NOTE SPECIFIC STUFF
     float spawnHeight = 5f;
-    float removeHeight = -6f;
+    float removeHeight = -4f;
 
 
     void Start()
@@ -49,26 +51,26 @@ public class Conductor : MonoBehaviour
 
         secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
         //Debug.Log(secondsShownInAdvance);
+        StartAudio();
     }
 
     void Update()
     {
-        if (!songPlaying)
-        {
-            // wait delayOfSong beats for the song to start
-            if (timer >= delayOfSong * secondsPerBeat)
-            {
-                StartAudio();
-            }
-            else
-            {
-                timer += Time.deltaTime;
-            }
-        } 
-
+        //if (!songPlaying)
+        //{
+        //    // wait delayOfSong beats for the song to start
+        //    if (timer >= delayOfSong * secondsPerBeat)
+        //    {
+        //        StartAudio();
+        //    }
+        //    else
+        //    {
+        //        timer += Time.deltaTime;
+        //    }
+        //} 
 
         // determine seconds since song started
-        songPosition = songPlaying ? (float)(AudioSettings.dspTime - dspSongTime) : 0;
+        songPosition = (float)(AudioSettings.dspTime - dspSongTime);
 
         // determine beats since song started
         songPositionInBeats = songPosition / secondsPerBeat;
@@ -87,6 +89,7 @@ public class Conductor : MonoBehaviour
             // Init the fields of the music note
             nextIndex++;
         }
+
     }
 
     void StartAudio()

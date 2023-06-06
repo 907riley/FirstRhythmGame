@@ -39,11 +39,11 @@ public class Note : MonoBehaviour
         // when this is 0, then we have reached the note and its the remove point
         if (beatOfThisNote <= songPositionInBeats + beatsShownInAdvance)
         {
-            Debug.Log("Lerp t: " + (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats - conductor.timer)) / beatsShownInAdvance);
+            Debug.Log("Lerp t: " + (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
             transform.position = Vector3.Lerp(
                 spawnPosition,
                 removePosition,
-                (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats - conductor.timer)) / beatsShownInAdvance
+                (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance
                 );
         } else
         {
