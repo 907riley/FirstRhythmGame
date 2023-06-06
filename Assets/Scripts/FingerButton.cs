@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class FingerButton : MonoBehaviour
 {
-    public float colorChangeAmount = .3f;
+    public float colorChangeAmount = .2f;
     public Color color { set; get; }
     public KeyCode key { set; get; }
 
     public void onKeyDown()
     {
-        Debug.Log("Before " + color);
-        color = new Color(color[0], color[1] - colorChangeAmount, color[2], color[3]);
+        color = new Color(color[0] - colorChangeAmount, color[1] - colorChangeAmount, color[2] - colorChangeAmount, color[3]);
         GetComponent<SpriteRenderer>().color = color;
-        Debug.Log("After " + color);
     }
 
     public void onKeyUp()
     {
-        color = new Color(color[0], color[1] + colorChangeAmount, color[2], color[3]);
+        color = new Color(color[0] + colorChangeAmount, color[1] + colorChangeAmount, color[2] + colorChangeAmount, color[3]);
         GetComponent<SpriteRenderer>().color = color;
     }
 
