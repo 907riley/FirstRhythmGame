@@ -242,12 +242,12 @@ MonoBehaviour:
   songPosition: 0
   songPositionInBeats: 0
   dspSongTime: 0
-  timer: 0
+  offSet: 0
   musicSource: {fileID: 536335658}
   beatsShownInAdvance: 3
   secondsShownInAdvance: 0
   songPlaying: 0
-  delayOfSong: 5
+  delayOfSong: 4
   noteSpawner: {fileID: 1410186816}
 --- !u!4 &536335657
 Transform:
@@ -274,7 +274,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6306498bbea9342a58ad61d5f7128830, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a0eb77e4143e7d34e92fad1e65ba1b65, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

@@ -15,7 +15,7 @@ public class Conductor : MonoBehaviour
     // Seconds passed since song started
     public float dspSongTime = 0;
     // Offset to the first beat of the song in seconds
-    public float timer = 0f;
+    public float offSet = 0f;
     public AudioSource musicSource;
 
 
@@ -25,7 +25,8 @@ public class Conductor : MonoBehaviour
     float bpm = 100f;
     // keep all note-positions-in-beats for the song
     // beat position starts at 0
-    float[] notes = { 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f };
+    float[] notes = { 5f, 6f, 7f, 8f, 9f, 10f , 11f, 12f, 12.5f, 13f};
+    //float[] notes;
     // the index of the next note to spawn
     int nextIndex = 0;
     public float beatsShownInAdvance = 3f;
@@ -33,7 +34,7 @@ public class Conductor : MonoBehaviour
     public bool songPlaying = false;
     // delay of the start of playing the music in beats
     // DELAY MUST BE GREATER THAN BEATSSHOWNINADVANCE
-    public int delayOfSong = 4;
+    public int delayOfSong = 5;
 
     [SerializeField] GameObject noteSpawner;
 
@@ -44,6 +45,12 @@ public class Conductor : MonoBehaviour
 
     void Start()
     {
+        //notes = new float[200];
+        //// make a list of a lot of beats for testing
+        //for (int i = 0; i < 200; ++i)
+        //{
+        //    notes[i] = delayOfSong + i;
+        //}
         musicSource = GetComponent<AudioSource>();
 
         // calculate the number of seconds in each beat
@@ -99,6 +106,6 @@ public class Conductor : MonoBehaviour
 
         musicSource.Play();
         songPlaying = true;
-        timer = 0;
+        //timer = 0;
     }
 }
