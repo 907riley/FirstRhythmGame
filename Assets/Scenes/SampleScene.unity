@@ -572,6 +572,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8afe4713f47225a4bb3add167be9c576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  greenButton: {fileID: 1183867428}
+  redButton: {fileID: 1284446136}
+  yellowButton: {fileID: 243072624}
+  blueButton: {fileID: 1145409146}
 --- !u!4 &1579239094
 Transform:
   m_ObjectHideFlags: 0
