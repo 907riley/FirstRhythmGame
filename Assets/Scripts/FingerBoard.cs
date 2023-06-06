@@ -33,7 +33,7 @@ public class FingerBoard : MonoBehaviour
     [SerializeField] GameObject note;
     // circle asset
     [SerializeField] Sprite fingerButtonSprite;
-    //[SerializeField] GameObject fingerButton;
+    [SerializeField] GameObject noteSpawner;
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +57,7 @@ public class FingerBoard : MonoBehaviour
             fingerButtonTransform.transform.parent = transform;
             fingerButtonSelf.color = colors[i];
             fingerButtonSelf.key = keyCodes[i];
+            fingerButtonSelf.noteSpawner = noteSpawner;
         }
     }
 
@@ -67,12 +68,12 @@ public class FingerBoard : MonoBehaviour
         {
             if (Input.GetKeyDown(keyCodes[i]))
             {
-                fingerButtons[i].GetComponent<FingerButton>().onKeyDown(); ;
+                fingerButtons[i].GetComponent<FingerButton>().OnKeyDown(); ;
             }
 
             if (Input.GetKeyUp(keyCodes[i]))
             {
-                fingerButtons[i].GetComponent<FingerButton>().onKeyUp(); ;
+                fingerButtons[i].GetComponent<FingerButton>().OnKeyUp(); ;
             }
         }
     }
