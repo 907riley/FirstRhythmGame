@@ -35,6 +35,8 @@ public class FingerBoard : MonoBehaviour
     [SerializeField] Sprite fingerButtonSprite;
     [SerializeField] GameObject noteSpawner;
 
+    [SerializeField] GameObject conductor;
+
     // Start is called before the first frame update
     void Start()
     {

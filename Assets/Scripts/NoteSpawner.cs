@@ -8,6 +8,8 @@ public class NoteSpawner : MonoBehaviour
     [SerializeField] float bpm = 174;
     [SerializeField] float speed = 4;
     [SerializeField] float spawnRate = 5f;
+    [SerializeField] GameObject conductor;
+
     private float timer = 0f;
     public float[] fingerButtonXAxis = { -4.5f, -1.5f, 1.5f, 4.5f };
     public int noteCounter = 0;
@@ -40,24 +42,24 @@ public class NoteSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnRate = bpm / 60 / speed;
-        SpawnNote();
+        //spawnRate = bpm / 60 / speed;
+        //SpawnNote();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (spawnRate <= timer)
-        {
-            SpawnNote();
-            timer = 0;
-        } else
-        {
-            timer += Time.deltaTime;
-        }
-    }
+    //void Update()
+    //{
+    //    if (spawnRate <= timer)
+    //    {
+    //        SpawnNote();
+    //        timer = 0;
+    //    } else
+    //    {
+    //        timer += Time.deltaTime;
+    //    }
+    //}
 
-    void SpawnNote()
+    public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote, GameObject goConductor)
     {
         int noteIndex = Random.Range(0, fingerButtonXAxis.Length);
 
@@ -70,6 +72,11 @@ public class NoteSpawner : MonoBehaviour
         Note newNote = go.GetComponent<Note>();
         newNote.color = colors[noteIndex];
         newNote.key = keyCodes[noteIndex];
+        newNote.spawnPosition = spawnPosition;
+        newNote.removePosition = removePosition;
+        newNote.beatsShownInAdvance = beatsShownInAdvance;
+        newNote.beatOfThisNote = beatsOfThisNote;
+        newNote.go = goConductor;
 
         ++noteCounter;
     }

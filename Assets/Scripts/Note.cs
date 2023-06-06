@@ -7,22 +7,52 @@ public class Note : MonoBehaviour
     public KeyCode key { set; get; }
     public Color color { set; get; }
     public float speed { set; get; }
-    public float deadZoneYAxis = -6f;
+    public float deadZoneYAxis = -11f;
 
+    public Vector3 spawnPosition;
+    public Vector3 removePosition;
+    public float beatsShownInAdvance;
+    public float beatOfThisNote;
+    public float songPositionInBeats;
+
+    public GameObject go;
+    public Conductor conductor;
     // Start is called before the first frame update
     void Start()
     {
-        speed = 3;
+        conductor = go.GetComponent<Conductor>();
+        //speed = 3;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += speed * Time.deltaTime * Vector3.down;
+        songPositionInBeats = conductor.songPositionInBeats;
+        
 
-        if (transform.position.y < deadZoneYAxis)
+        // interpolate so that it is perfectly in sync
+        // beatsShownInAdvance is like speed I think
+        // so the big part is (beatOfThisNote - songPositionInBeats)
+        // when that is positive (beatOfThisNote > sonPositionInBeats)
+        //      then we are still approaching the time to play it
+        // when this is 0, then we have reached the note and its the remove point
+        if (beatOfThisNote <= songPositionInBeats + beatsShownInAdvance)
         {
-            Destroy(gameObject);
+            Debug.Log("Lerp t: " + (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
+            transform.position = Vector3.Lerp(
+                transform.position,
+                new Vector3(transform.position.x, deadZoneYAxis, 0),
+                (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance
+                );
+        } else
+        {
+            Debug.Log("Done Lerping");
         }
+
+        //if (transform.position == removePosition)
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 }
