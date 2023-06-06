@@ -63,7 +63,7 @@ public class NoteSpawner : MonoBehaviour
     {
         int noteIndex = Random.Range(0, fingerButtonXAxis.Length);
 
-        GameObject go = Instantiate(Note, new Vector3(fingerButtonXAxis[noteIndex], transform.position.y, 0), transform.rotation);
+        GameObject go = Instantiate(Note, new Vector3(fingerButtonXAxis[noteIndex], spawnPosition.y, 0), transform.rotation);
         // set the parent to be the NoteSpawner so we can find the notes easier
         go.transform.parent = transform;
         go.name = noteNames[noteIndex] + "_" + noteCounter;
@@ -72,8 +72,8 @@ public class NoteSpawner : MonoBehaviour
         Note newNote = go.GetComponent<Note>();
         newNote.color = colors[noteIndex];
         newNote.key = keyCodes[noteIndex];
-        newNote.spawnPosition = spawnPosition;
-        newNote.removePosition = removePosition;
+        newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex], 5, 0);
+        newNote.removePosition = new Vector3(fingerButtonXAxis[noteIndex], -6, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;
         newNote.go = goConductor;

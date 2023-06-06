@@ -242,12 +242,12 @@ MonoBehaviour:
   songPosition: 0
   songPositionInBeats: 0
   dspSongTime: 0
-  firstBeatOffset: 0
-  musicSource: {fileID: 536335658}
   timer: 0
+  musicSource: {fileID: 536335658}
   beatsShownInAdvance: 3
   secondsShownInAdvance: 0
   songPlaying: 0
+  delayOfSong: 5
   noteSpawner: {fileID: 1410186816}
 --- !u!4 &536335657
 Transform:
