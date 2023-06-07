@@ -49,8 +49,8 @@ public class Conductor : MonoBehaviour
     {
         
         noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
-        Debug.Log((spawnHeight - fingerBoardHeight) + " " + (spawnHeight - removeHeight));
-        Debug.Log((spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight));
+        //Debug.Log((spawnHeight - fingerBoardHeight) + " " + (spawnHeight - removeHeight));
+        //Debug.Log((spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight));
         musicSource = GetComponent<AudioSource>();
 
         // calculate the number of seconds in each beat

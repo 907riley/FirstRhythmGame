@@ -60,23 +60,9 @@ public class FingerBoard : MonoBehaviour
             fingerButtonSelf.color = colors[i];
             fingerButtonSelf.key = keyCodes[i];
             fingerButtonSelf.noteSpawner = noteSpawner;
+            fingerButtonSelf.conductor = conductor;
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        for (int i = 0; i < numberOfFingerButtons; ++i)
-        {
-            if (Input.GetKeyDown(keyCodes[i]))
-            {
-                fingerButtons[i].GetComponent<FingerButton>().OnKeyDown(); ;
-            }
 
-            if (Input.GetKeyUp(keyCodes[i]))
-            {
-                fingerButtons[i].GetComponent<FingerButton>().OnKeyUp(); ;
-            }
-        }
-    }
 }

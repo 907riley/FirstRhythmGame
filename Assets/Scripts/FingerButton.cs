@@ -8,7 +8,24 @@ public class FingerButton : MonoBehaviour
     public Color color { set; get; }
     public KeyCode key { set; get; }
 
+    public float noteHitRange = 0.15f;
+
     public GameObject noteSpawner;
+    public GameObject conductor;
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(key))
+        {
+            OnKeyDown();
+        }
+
+        if (Input.GetKeyUp(key))
+        {
+            OnKeyUp();
+        }
+    }
 
     public void OnKeyDown()
     {
@@ -36,11 +53,18 @@ public class FingerButton : MonoBehaviour
             Note note = child.GetComponent<Note>();
             if (note.key == key)
             {
-                if (Vector3.Distance(transform.position, child.position) < 0.25)
+                //Debug.Log("Current Beat OnClick: " + conductor.GetComponent<Conductor>().songPositionInBeats);
+                //Debug.Log("Note Beat: " + note.name + " " + note.beatOfThisNote);
+                //if (Vector3.Distance(transform.position, child.position) < 0.25)
+                //{
+                //    Destroy(child.gameObject);
+                //    return true;
+                //} 
+                if (Mathf.Abs(conductor.GetComponent<Conductor>().songPositionInBeats - note.beatOfThisNote) <= noteHitRange)
                 {
                     Destroy(child.gameObject);
                     return true;
-                } 
+                }
             }
         }
         return false;
