@@ -263,7 +263,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &536335658
 AudioSource:
@@ -361,6 +361,55 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1389240688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1389240689}
+  - component: {fileID: 1389240690}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1389240689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389240688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.10329206, y: -0.2294147, z: 0.14993438}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1389240690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389240688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29e2519e9ad6f04d9b6f4e1c485035a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notesSpawned: 0
+  notesHit: 0
+  notesMissed: 0
+  currentStreak: 0
+  missClicks: 0
 --- !u!1 &1410186816
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,10 +455,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Note: {fileID: 7266056980269364445, guid: 94f803f58f5557b47aa50563f7b5fbf6, type: 3}
-  bpm: 174
-  speed: 2
-  spawnRate: 5
-  conductor: {fileID: 0}
+  conductorGo: {fileID: 536335655}
+  gameManagerGo: {fileID: 1389240688}
   fingerButtonXAxis:
   - -4.5
   - -1.5
@@ -449,6 +496,7 @@ MonoBehaviour:
   fingerButtonSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   noteSpawner: {fileID: 1410186816}
   conductor: {fileID: 536335655}
+  gameManager: {fileID: 1389240688}
 --- !u!4 &1579239094
 Transform:
   m_ObjectHideFlags: 0

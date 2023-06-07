@@ -11,7 +11,18 @@ public class FingerButton : MonoBehaviour
     public float noteHitRange = 0.15f;
 
     public GameObject noteSpawner;
-    public GameObject conductor;
+
+    public GameObject conductorGo;
+    private Conductor conductor;
+
+    public GameObject gameManagerGo;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        conductor = conductorGo.GetComponent<Conductor>();
+        gameManager = gameManagerGo.GetComponent<GameManager>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -35,6 +46,10 @@ public class FingerButton : MonoBehaviour
         if (!DetectRange())
         {
             Debug.Log("YOU MISSED");
+            gameManager.OnMissClick();
+        } else
+        {
+            gameManager.OnNoteHit();
         }
     }
 
@@ -60,7 +75,7 @@ public class FingerButton : MonoBehaviour
                 //    Destroy(child.gameObject);
                 //    return true;
                 //} 
-                if (Mathf.Abs(conductor.GetComponent<Conductor>().songPositionInBeats - note.beatOfThisNote) <= noteHitRange)
+                if (Mathf.Abs(conductor.songPositionInBeats - note.beatOfThisNote) <= noteHitRange)
                 {
                     Destroy(child.gameObject);
                     return true;

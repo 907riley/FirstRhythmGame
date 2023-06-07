@@ -22,7 +22,7 @@ public class Conductor : MonoBehaviour
     // SONG SPECIFIC STUFF
 
     // bpm of song
-    float bpm = 100f;
+    //float bpm = 100f;
     // keep all note-positions-in-beats for the song
     // beat position starts at 0
     float[] notes = { 5f, 6f, 7f, 8f, 9f, 10f , 11f, 12f, 12.5f, 13f};
@@ -89,8 +89,7 @@ public class Conductor : MonoBehaviour
                 new Vector3(1, spawnHeight, 1),
                 new Vector3(1, removeHeight, 1),
                 beatsShownInAdvance,
-                notes[nextIndex],
-                transform.gameObject
+                notes[nextIndex]
                 );
 
             // Init the fields of the music note

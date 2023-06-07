@@ -5,12 +5,11 @@ using UnityEngine;
 public class NoteSpawner : MonoBehaviour
 {
     [SerializeField] GameObject Note;
-    [SerializeField] float bpm = 174;
-    [SerializeField] float speed = 4;
-    [SerializeField] float spawnRate = 5f;
-    [SerializeField] GameObject conductor;
+    [SerializeField] GameObject conductorGo;
 
-    private float timer = 0f;
+    [SerializeField] GameObject gameManagerGo;
+    private GameManager gameManager;
+
     public float[] fingerButtonXAxis = { -4.5f, -1.5f, 1.5f, 4.5f };
     public int noteCounter = 0;
 
@@ -44,6 +43,7 @@ public class NoteSpawner : MonoBehaviour
     {
         //spawnRate = bpm / 60 / speed;
         //SpawnNote();
+        gameManager = gameManagerGo.GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -59,7 +59,7 @@ public class NoteSpawner : MonoBehaviour
     //    }
     //}
 
-    public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote, GameObject goConductor)
+    public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote)
     {
         int noteIndex = Random.Range(0, fingerButtonXAxis.Length);
 
@@ -76,8 +76,11 @@ public class NoteSpawner : MonoBehaviour
         newNote.removePosition = new Vector3(fingerButtonXAxis[noteIndex], removePosition.y, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;
-        newNote.go = goConductor;
+        newNote.conductorGo = conductorGo;
+        newNote.gameManagerGo = gameManagerGo;
 
+        gameManager.OnNoteSpawned();
         ++noteCounter;
+        
     }
 }

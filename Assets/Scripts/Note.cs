@@ -15,12 +15,16 @@ public class Note : MonoBehaviour
     public float beatOfThisNote;
     public float songPositionInBeats;
 
-    public GameObject go;
-    public Conductor conductor;
+    public GameObject conductorGo;
+    private Conductor conductor;
+
+    public GameObject gameManagerGo;
+    private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
-        conductor = go.GetComponent<Conductor>();
+        conductor = conductorGo.GetComponent<Conductor>();
+        gameManager = gameManagerGo.GetComponent<GameManager>();
         //speed = 3;
 
     }
@@ -48,6 +52,7 @@ public class Note : MonoBehaviour
             if (Vector3.Distance(removePosition, transform.position) < 0.1)
             {
                 Debug.Log("Missed: " + name);
+                gameManager.OnMissedNote();
                 Destroy(gameObject);
             }
         } 

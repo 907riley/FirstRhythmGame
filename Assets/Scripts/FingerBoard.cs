@@ -7,6 +7,7 @@ public class FingerBoard : MonoBehaviour
     private GameObject[] fingerButtons;
     private int numberOfFingerButtons = 4;
 
+
     private Vector3[] positions = {
         new Vector3(-4.5f, -4, 0),
         new Vector3(-1.5f, -4, 0),
@@ -36,6 +37,7 @@ public class FingerBoard : MonoBehaviour
     [SerializeField] GameObject noteSpawner;
 
     [SerializeField] GameObject conductor;
+    [SerializeField] GameObject gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +62,8 @@ public class FingerBoard : MonoBehaviour
             fingerButtonSelf.color = colors[i];
             fingerButtonSelf.key = keyCodes[i];
             fingerButtonSelf.noteSpawner = noteSpawner;
-            fingerButtonSelf.conductor = conductor;
+            fingerButtonSelf.conductorGo = conductor;
+            fingerButtonSelf.gameManagerGo = gameManager;
         }
     }
 
