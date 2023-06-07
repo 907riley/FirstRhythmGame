@@ -45,10 +45,12 @@ public class Note : MonoBehaviour
                 removePosition,
                 (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent
                 );
-        } else
-        {
-            //Debug.Log("Done Lerping");
-        }
+            if (Vector3.Distance(removePosition, transform.position) < 0.1)
+            {
+                Debug.Log("Missed: " + name);
+                Destroy(gameObject);
+            }
+        } 
 
         //if (transform.position == removePosition)
         //{
