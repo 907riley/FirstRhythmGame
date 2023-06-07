@@ -40,17 +40,17 @@ public class Conductor : MonoBehaviour
 
     // NOTE SPECIFIC STUFF
     float spawnHeight = 5f;
-    float removeHeight = -4f;
+    float fingerBoardHeight = -4f;
+    float removeHeight = -6f;
+    public float noteFallLerpPercent = 0f;
 
 
     void Start()
     {
-        //notes = new float[200];
-        //// make a list of a lot of beats for testing
-        //for (int i = 0; i < 200; ++i)
-        //{
-        //    notes[i] = delayOfSong + i;
-        //}
+        
+        noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
+        Debug.Log((spawnHeight - fingerBoardHeight) + " " + (spawnHeight - removeHeight));
+        Debug.Log((spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight));
         musicSource = GetComponent<AudioSource>();
 
         // calculate the number of seconds in each beat

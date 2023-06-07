@@ -247,8 +247,9 @@ MonoBehaviour:
   beatsShownInAdvance: 3
   secondsShownInAdvance: 0
   songPlaying: 0
-  delayOfSong: 4
+  delayOfSong: 5
   noteSpawner: {fileID: 1410186816}
+  noteFallLerpPercent: 0
 --- !u!4 &536335657
 Transform:
   m_ObjectHideFlags: 0
