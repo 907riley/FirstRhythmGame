@@ -8,7 +8,7 @@ public class FingerBoard : MonoBehaviour
     private int numberOfFingerButtons = 4;
 
 
-    private Vector3[] positions = {
+    public Vector3[] positions = {
         new Vector3(-4.5f, -4, 0),
         new Vector3(-1.5f, -4, 0),
         new Vector3(1.5f, -4, 0),

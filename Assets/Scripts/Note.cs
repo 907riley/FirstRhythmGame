@@ -58,6 +58,7 @@ public class Note : MonoBehaviour
                 (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent
                 );
 
+            // Scaling the notes for depth
             float percentOfTravel = ((beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
             transform.localScale = new Vector3(percentOfTravel, percentOfTravel * .75f, percentOfTravel);
 

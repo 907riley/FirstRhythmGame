@@ -81,7 +81,7 @@ public class NoteSpawner : MonoBehaviour
         Note newNote = go.GetComponent<Note>();
         newNote.color = colors[noteIndex];
         newNote.key = keyCodes[noteIndex];
-        newNote.spawnPosition = new Vector3(transform.position.x, spawnPosition.y, 0);
+        newNote.spawnPosition = new Vector3(transform.position.x, transform.position.y, 0);
         newNote.removePosition = new Vector3(removeNoteXAxis[noteIndex], removePosition.y, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;
