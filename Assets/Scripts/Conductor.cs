@@ -38,16 +38,25 @@ public class Conductor : MonoBehaviour
 
     [SerializeField] GameObject noteSpawner;
 
+    [SerializeField] GameObject gameManagerGo;
+    private GameManager gameManager;
+
     // NOTE SPECIFIC STUFF
-    float spawnHeight = 5f;
-    float fingerBoardHeight = -4f;
-    float removeHeight = -6f;
-    public float noteFallLerpPercent = 0f;
+    float spawnHeight;
+    float fingerBoardHeight;
+    float removeHeight;
+    public float noteFallLerpPercent;
 
 
     void Start()
     {
-        
+        gameManager = gameManagerGo.GetComponent<GameManager>();
+        spawnHeight = gameManager.spawnHeight;
+        fingerBoardHeight = gameManager.fingerBoardHeight;
+        removeHeight = gameManager.removeHeight;
+
+        // important for knowing when the note needs to pass the fingerbutton
+        // since we want to continue LERPing the note pass the fingerboard
         noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
         //Debug.Log((spawnHeight - fingerBoardHeight) + " " + (spawnHeight - removeHeight));
         //Debug.Log((spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight));

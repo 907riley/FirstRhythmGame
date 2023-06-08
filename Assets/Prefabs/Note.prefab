@@ -97,3 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3913080aee0c8654fbc57200bfc40f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deadZoneYAxis: -11
+  spawnPosition: {x: 0, y: 0, z: 0}
+  removePosition: {x: 0, y: 0, z: 0}
+  beatsShownInAdvance: 0
+  beatOfThisNote: 0
+  songPositionInBeats: 0
+  conductorGo: {fileID: 0}
+  gameManagerGo: {fileID: 0}

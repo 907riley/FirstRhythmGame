@@ -5,42 +5,33 @@ using UnityEngine;
 public class FingerBoard : MonoBehaviour
 {
     private GameObject[] fingerButtons;
-    private int numberOfFingerButtons = 4;
+    private int numberOfFingerButtons;
+    public Vector3[] positions;
+    private Color[] colors;
+    private KeyCode[] keyCodes;
 
-
-    public Vector3[] positions = {
-        new Vector3(-4.5f, -4, 0),
-        new Vector3(-1.5f, -4, 0),
-        new Vector3(1.5f, -4, 0),
-        new Vector3(4.5f, -4, 0)
-    };
-
-    private Color[] colors = { 
-        new Color(0.2074137f, 0.745283f, 0.3176185f, 1),
-        new Color(0.7830189f, 0.1514329f, 0.1514329f, 1),
-        new Color(0.8553239f, 0.8584906f, 0.2065237f, 1),
-        new Color(0.1213955f, 0.2862892f, 0.8301887f, 1),
-    };
-
-    private KeyCode[] keyCodes =
-    {
-        KeyCode.D,
-        KeyCode.F,
-        KeyCode.J,
-        KeyCode.K
-    };
-
-    // falling note prefab
-    [SerializeField] GameObject note;
     // circle asset
     [SerializeField] Sprite fingerButtonSprite;
-    [SerializeField] GameObject noteSpawner;
 
-    [SerializeField] GameObject conductor;
-    [SerializeField] GameObject gameManager;
+    [SerializeField] GameObject noteSpawnerGo;
+    [SerializeField] GameObject conductorGo;
+    [SerializeField] GameObject gameManagerGo;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
+    {
+        gameManager = gameManagerGo.GetComponent<GameManager>();
+
+        numberOfFingerButtons = gameManager.numberOfFingerButtons;
+        positions = gameManager.positions;
+        colors = gameManager.colors;
+        keyCodes = gameManager.keyCodes;
+
+        CreateFingerButtons();
+    }
+
+    void CreateFingerButtons()
     {
         fingerButtons = new GameObject[numberOfFingerButtons];
         // init the buttons
@@ -54,6 +45,7 @@ public class FingerBoard : MonoBehaviour
             Transform fingerButtonTransform = fingerButtons[i].GetComponent<Transform>();
             FingerButton fingerButtonSelf = fingerButtons[i].GetComponent<FingerButton>();
 
+            fingerButtonSpriteRenderer.sortingOrder = 1;
             fingerButtonSpriteRenderer.color = colors[i];
             fingerButtonSpriteRenderer.sprite = fingerButtonSprite;
             fingerButtonTransform.position = positions[i];
@@ -61,11 +53,11 @@ public class FingerBoard : MonoBehaviour
             fingerButtonTransform.transform.parent = transform;
             fingerButtonSelf.color = colors[i];
             fingerButtonSelf.key = keyCodes[i];
-            fingerButtonSelf.noteSpawner = noteSpawner;
-            fingerButtonSelf.conductorGo = conductor;
-            fingerButtonSelf.gameManagerGo = gameManager;
+            fingerButtonSelf.noteSpawner = noteSpawnerGo;
+            fingerButtonSelf.conductorGo = conductorGo;
+            fingerButtonSelf.gameManagerGo = gameManagerGo;
+            fingerButtonSelf.circleSprite = fingerButtonSprite;
         }
     }
-
 
 }

@@ -10,46 +10,32 @@ public class NoteSpawner : MonoBehaviour
     [SerializeField] GameObject gameManagerGo;
     private GameManager gameManager;
 
-    public float[] fingerButtonXAxis = { -4.5f, -1.5f, 1.5f, 4.5f };
     public float[] removeNoteXAxis;
     public int noteCounter = 0;
     public float noteVerticalTravelDistance = 0;
 
-    private Color[] colors = {
-        new Color(0.2074137f, 0.745283f, 0.3176185f, 1),
-        new Color(0.7830189f, 0.1514329f, 0.1514329f, 1),
-        new Color(0.8553239f, 0.8584906f, 0.2065237f, 1),
-        new Color(0.1213955f, 0.2862892f, 0.8301887f, 1),
-    };
-
-    private KeyCode[] keyCodes =
-    {
-        KeyCode.D,
-        KeyCode.F,
-        KeyCode.J,
-        KeyCode.K
-    };
+    public float[] fingerButtonXAxis;
+    private Vector3[] positions;
+    private Color[] colors;
+    private KeyCode[] keyCodes;
+    private string[] noteNames;
 
 
-    private string[] noteNames =
-    {
-        "GREEN",
-        "RED",
-        "YELLOW",
-        "BLUE"
-    };
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        //spawnRate = bpm / 60 / speed;
-        //SpawnNote();
+
         gameManager = gameManagerGo.GetComponent<GameManager>();
+
+        fingerButtonXAxis = gameManager.fingerButtonXAxis;
+        colors = gameManager.colors;
+        keyCodes = gameManager.keyCodes;
+        noteNames = gameManager.noteNames;
+        positions = gameManager.positions;
+
         // init to same size of number of buttons
-        removeNoteXAxis = new float[fingerButtonXAxis.Length];
+        removeNoteXAxis = new float[positions.Length];
         // TODO: make this real
-        noteVerticalTravelDistance = transform.position.y + 1;
+        noteVerticalTravelDistance = Mathf.Abs(transform.position.y - positions[0].y) + 2;
 
         // for moving notes at an angle for depth
         CalculateRemoveXPositions();
@@ -70,7 +56,7 @@ public class NoteSpawner : MonoBehaviour
 
     public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote)
     {
-        int noteIndex = Random.Range(0, fingerButtonXAxis.Length);
+        int noteIndex = Random.Range(0, positions.Length);
 
         GameObject go = Instantiate(Note, new Vector3(transform.position.x, spawnPosition.y, 0), transform.rotation);
         // set the parent to be the NoteSpawner so we can find the notes easier
@@ -95,14 +81,14 @@ public class NoteSpawner : MonoBehaviour
 
     private void CalculateRemoveXPositions()
     {
-        for (int i = 0; i < fingerButtonXAxis.Length; ++i)
+        for (int i = 0; i < positions.Length; ++i)
         {
             // Uses radians
-            float topAngle = Mathf.Atan(Mathf.Abs(fingerButtonXAxis[i]) / transform.position.y);
+            float topAngle = Mathf.Atan(Mathf.Abs(positions[i].x) / Mathf.Abs(transform.position.y - positions[i].y));
             float removeX = noteVerticalTravelDistance * Mathf.Tan(topAngle);
             
             // Moving left to right set negative since at middle
-            if (i < fingerButtonXAxis.Length / 2)
+            if (i < positions.Length / 2)
             {
                 removeNoteXAxis[i] = -removeX;
             } else

@@ -8,7 +8,9 @@ public class FingerButton : MonoBehaviour
     public Color color { set; get; }
     public KeyCode key { set; get; }
 
-    public float noteHitRange = 0.15f;
+    public float noteHitRange;
+
+    public GameObject outerFingerButton;
 
     public GameObject noteSpawner;
 
@@ -18,10 +20,19 @@ public class FingerButton : MonoBehaviour
     public GameObject gameManagerGo;
     private GameManager gameManager;
 
+    public Sprite circleSprite;
+
+    private Color outerColor;
+
     private void Start()
     {
+        outerColor = new Color(0, 0, 0, 1);
         conductor = conductorGo.GetComponent<Conductor>();
         gameManager = gameManagerGo.GetComponent<GameManager>();
+
+        noteHitRange = gameManager.noteHitRange;
+
+        CreateOuterButton();
     }
 
     // Update is called once per frame
@@ -38,10 +49,25 @@ public class FingerButton : MonoBehaviour
         }
     }
 
+    void CreateOuterButton()
+    {
+        outerFingerButton = new GameObject(transform.name + " outer");
+        outerFingerButton.AddComponent<SpriteRenderer>();
+        SpriteRenderer outerSpriteRenderer = outerFingerButton.GetComponent<SpriteRenderer>();
+        Transform outerTransform = outerFingerButton.GetComponent<Transform>();
+
+        outerSpriteRenderer.color = outerColor;
+        outerSpriteRenderer.sprite = circleSprite;
+
+        outerTransform.position = transform.position;
+        outerTransform.localScale = new Vector3(transform.localScale.x * 1.25f, transform.localScale.y * 1.25f, 1);
+        outerTransform.parent = transform;
+    }
+
     public void OnKeyDown()
     {
-        color = new Color(color[0] - colorChangeAmount, color[1] - colorChangeAmount, color[2] - colorChangeAmount, color[3]);
-        GetComponent<SpriteRenderer>().color = color;
+        outerFingerButton.GetComponent<SpriteRenderer>().color = color;
+        GetComponent<SpriteRenderer>().color = outerColor;
 
         if (!DetectRange())
         {
@@ -55,7 +81,7 @@ public class FingerButton : MonoBehaviour
 
     public void OnKeyUp()
     {
-        color = new Color(color[0] + colorChangeAmount, color[1] + colorChangeAmount, color[2] + colorChangeAmount, color[3]);
+        outerFingerButton.GetComponent<SpriteRenderer>().color = outerColor;
         GetComponent<SpriteRenderer>().color = color;
     }
 

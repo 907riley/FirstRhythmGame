@@ -7,7 +7,8 @@ public class Note : MonoBehaviour
     public KeyCode key { set; get; }
     public Color color { set; get; }
     public float speed { set; get; }
-    public float deadZoneYAxis = -11f;
+
+    public float deadZoneYAxis;
 
     public Vector3 spawnPosition;
     public Vector3 removePosition;
@@ -31,10 +32,9 @@ public class Note : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = color;
 
-        // start scale small
         transform.localScale = new Vector3(0f, 0f, 0f);
-        //speed = 3;
 
+        deadZoneYAxis = gameManager.deadZoneYAxis;
     }
 
     // Update is called once per frame

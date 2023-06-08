@@ -426,6 +426,7 @@ MonoBehaviour:
   songPlaying: 0
   delayOfSong: 5
   noteSpawner: {fileID: 1410186816}
+  gameManagerGo: {fileID: 1389240688}
   noteFallLerpPercent: 0
 --- !u!4 &536335657
 Transform:
@@ -915,7 +916,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1389240688}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.10329206, y: -0.2294147, z: 0.14993438}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -934,12 +935,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29e2519e9ad6f04d9b6f4e1c485035a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberOfFingerButtons: 4
+  positions:
+  - {x: -4.5, y: -4, z: 0}
+  - {x: -1.5, y: -4, z: 0}
+  - {x: 1.5, y: -4, z: 0}
+  - {x: 4.5, y: -4, z: 0}
+  fingerButtonXAxis:
+  - -4.5
+  - -1.5
+  - 1.5
+  - 4.5
+  colors:
+  - {r: 0.2074137, g: 0.745283, b: 0.3176185, a: 1}
+  - {r: 0.7830189, g: 0.1514329, b: 0.1514329, a: 1}
+  - {r: 0.8553239, g: 0.8584906, b: 0.2065237, a: 1}
+  - {r: 0.1213955, g: 0.2862892, b: 0.8301887, a: 1}
+  keyCodes: 64000000660000006a0000006b000000
+  noteHitRange: 0.15
+  fingerBoardHeight: -4
+  spawnHeight: 3
+  removeHeight: -6
+  deadZoneYAxis: -11
+  noteNames:
+  - GREEN
+  - RED
+  - YELLOW
+  - BLUE
   notesSpawned: 0
   notesHit: 0
   notesMissed: 0
   currentStreak: 0
   missClicks: 0
   streakText: {fileID: 904182338}
+  noteSpawnerGo: {fileID: 1410186816}
+  fingerBoardGo: {fileID: 1579239092}
+  fretBoardDrawerGo: {fileID: 754847799}
 --- !u!1 &1410186816
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,14 +1018,14 @@ MonoBehaviour:
   Note: {fileID: 7266056980269364445, guid: 94f803f58f5557b47aa50563f7b5fbf6, type: 3}
   conductorGo: {fileID: 536335655}
   gameManagerGo: {fileID: 1389240688}
+  removeNoteXAxis: []
+  noteCounter: 0
+  noteVerticalTravelDistance: 0
   fingerButtonXAxis:
   - -4.5
   - -1.5
   - 1.5
   - 4.5
-  removeNoteXAxis: []
-  noteCounter: 0
-  noteVerticalTravelDistance: 0
 --- !u!1 &1579239092
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,11 +1060,10 @@ MonoBehaviour:
   - {x: -1.5, y: -4, z: 0}
   - {x: 1.5, y: -4, z: 0}
   - {x: 4.5, y: -4, z: 0}
-  note: {fileID: 7266056980269364445, guid: 94f803f58f5557b47aa50563f7b5fbf6, type: 3}
   fingerButtonSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  noteSpawner: {fileID: 1410186816}
-  conductor: {fileID: 536335655}
-  gameManager: {fileID: 1389240688}
+  noteSpawnerGo: {fileID: 1410186816}
+  conductorGo: {fileID: 536335655}
+  gameManagerGo: {fileID: 1389240688}
 --- !u!4 &1579239094
 Transform:
   m_ObjectHideFlags: 0
