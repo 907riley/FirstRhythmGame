@@ -97,7 +97,7 @@ public class NoteSpawner : MonoBehaviour
     {
         for (int i = 0; i < fingerButtonXAxis.Length; ++i)
         {
-            // I like degrees
+            // Uses radians
             float topAngle = Mathf.Atan(Mathf.Abs(fingerButtonXAxis[i]) / transform.position.y);
             float removeX = noteVerticalTravelDistance * Mathf.Tan(topAngle);
             

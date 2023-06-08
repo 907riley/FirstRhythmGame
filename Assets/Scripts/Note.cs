@@ -20,11 +20,19 @@ public class Note : MonoBehaviour
 
     public GameObject gameManagerGo;
     private GameManager gameManager;
+
+    private SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
         conductor = conductorGo.GetComponent<Conductor>();
         gameManager = gameManagerGo.GetComponent<GameManager>();
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = color;
+
+        // start scale small
+        transform.localScale = new Vector3(0f, 0f, 0f);
         //speed = 3;
 
     }
@@ -49,6 +57,11 @@ public class Note : MonoBehaviour
                 removePosition,
                 (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent
                 );
+
+            float percentOfTravel = ((beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
+            transform.localScale = new Vector3(percentOfTravel, percentOfTravel * .75f, percentOfTravel);
+
+            // Remove notes if within 0.1 of remove distance
             if (Vector3.Distance(removePosition, transform.position) < 0.1)
             {
                 Debug.Log("Missed: " + name);
