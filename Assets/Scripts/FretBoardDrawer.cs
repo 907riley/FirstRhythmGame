@@ -20,6 +20,7 @@ public class FretBoardDrawer : MonoBehaviour
     private float spawnWidthPercent;
     private float spawnHeight;
 
+    private Mesh fretMesh;
 
     // Start is called before the first frame update
     void Start()
@@ -41,13 +42,14 @@ public class FretBoardDrawer : MonoBehaviour
         //    Debug.Log(locall);
 
         //}
-
+        DrawFretBackground();
         for (int i = 0; i < inbetweenFingerBoard.Length; ++i)
         {
             DrawLine(topInbetweenLocations[i], inbetweenFingerBoard[i], new Color(0.6f, 0.7f, 0.2f, 1));
         }
 
         DrawLine(topInbetweenLocations[0], topInbetweenLocations[^1], new Color(0, 0, 0, 1));
+        
     }
 
     void FindTopInbetweenLocation()
@@ -58,12 +60,6 @@ public class FretBoardDrawer : MonoBehaviour
         {
             topInbetweenLocations[i] = new Vector3(inbetweenFingerBoard[i].x * spawnWidthPercent, spawnHeight, 0);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void FindInbetweenLocations()
@@ -131,5 +127,29 @@ public class FretBoardDrawer : MonoBehaviour
         //lineRenderer.widthCurve = 
         lineRenderer.SetPosition(0, startPosition);
         lineRenderer.SetPosition(1, endPosition);
+    }
+
+    void DrawFretBackground()
+    {
+        fretMesh = new Mesh();
+
+        Vector3[] vertices = new Vector3[4]
+        { 
+            topInbetweenLocations[0],
+            topInbetweenLocations[^1],
+            inbetweenFingerBoard[^1],
+            inbetweenFingerBoard[0]
+        };
+        int[] triangles = new int[6]{ 0, 1, 2, 0, 2, 3 };
+        Vector3[] normals = new Vector3[4]
+        {
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward
+        };
+        fretMesh.vertices = vertices;
+        fretMesh.triangles = triangles;
+        fretMesh.normals = normals;
     }
 }
