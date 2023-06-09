@@ -5,6 +5,7 @@ using UnityEngine;
 public class FretBoardDrawer : MonoBehaviour
 {
     [SerializeField] Material lineMaterial;
+    [SerializeField] Material fretBoardMaterial;
     [SerializeField] GameObject fingerBoardGo;
     private FingerBoard fingerBoard;
 
@@ -21,6 +22,8 @@ public class FretBoardDrawer : MonoBehaviour
     private float spawnHeight;
 
     private Mesh fretMesh;
+    private MeshFilter fretMeshFilter;
+    private MeshRenderer meshRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -131,7 +134,11 @@ public class FretBoardDrawer : MonoBehaviour
 
     void DrawFretBackground()
     {
+        GameObject fretBackground = new GameObject();
         fretMesh = new Mesh();
+        fretMeshFilter = fretBackground.AddComponent<MeshFilter>();
+        meshRenderer = fretBackground.AddComponent<MeshRenderer>();
+        meshRenderer.material = fretBoardMaterial;
 
         Vector3[] vertices = new Vector3[4]
         { 
@@ -151,5 +158,7 @@ public class FretBoardDrawer : MonoBehaviour
         fretMesh.vertices = vertices;
         fretMesh.triangles = triangles;
         fretMesh.normals = normals;
+
+        fretMeshFilter.mesh = fretMesh;
     }
 }

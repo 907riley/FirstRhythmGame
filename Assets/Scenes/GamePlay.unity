@@ -637,6 +637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineMaterial: {fileID: 2100000, guid: ea31c650f03f2c746afdbbe7ca098f42, type: 2}
+  fretBoardMaterial: {fileID: 2100000, guid: 0e93ef7d1dee8214fbec350a19293737, type: 2}
   fingerBoardGo: {fileID: 1579239092}
   gameManagerGo: {fileID: 1389240688}
 --- !u!4 &754847801
