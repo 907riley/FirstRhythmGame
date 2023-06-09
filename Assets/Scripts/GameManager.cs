@@ -31,17 +31,19 @@ public class GameManager : MonoBehaviour
     };
     
     // error allowed on note hits (beat diff)
-    public float noteHitRange = 0.2f;
+    public float noteHitRange = 0.5f;
 
     // height of fingerboard
     public float fingerBoardHeight = -4f;
 
     // ----- NOTE SPAWN/REMOVE INFO -----
-    public float spawnHeight = 4f;
+    public float spawnHeight = 3f;
     public float removeHeight = -6f;
     public float deadZoneYAxis;
     // percent of the size of the fretboard width for the spawn
-    public float spawnWidthPercent = 0.1f;
+    public float spawnWidthPercent = 0.25f;
+
+    public Vector3 noteSpawnScale = new Vector3(0.5f, 0.375f, 1);
 
     public string[] noteNames = 
     {

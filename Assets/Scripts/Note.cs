@@ -16,6 +16,8 @@ public class Note : MonoBehaviour
     public float beatOfThisNote;
     public float songPositionInBeats;
 
+    private Vector3 noteSpawnScale;
+
     public GameObject conductorGo;
     private Conductor conductor;
 
@@ -35,7 +37,9 @@ public class Note : MonoBehaviour
         spriteRenderer.color = color;
         spriteRenderer.sortingOrder = 1;
 
-        transform.localScale = new Vector3(0f, 0f, 0f);
+        noteSpawnScale = gameManager.noteSpawnScale;
+
+        transform.localScale = noteSpawnScale;
 
         deadZoneYAxis = gameManager.deadZoneYAxis;
         //CreateOuterButton();
@@ -64,7 +68,11 @@ public class Note : MonoBehaviour
 
             // Scaling the notes for depth
             float percentOfTravel = ((beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
-            transform.localScale = new Vector3(percentOfTravel, percentOfTravel * .75f, percentOfTravel);
+            transform.localScale = new Vector3
+                (
+                noteSpawnScale.x + (percentOfTravel * noteSpawnScale.x),
+                noteSpawnScale.y + (percentOfTravel * noteSpawnScale.y),
+                noteSpawnScale.z);
 
             //outerNote.GetComponent<Transform>().localScale = new Vector3(percentOfTravel + 0.5f, percentOfTravel * .75f + 0.5f, percentOfTravel);
 
