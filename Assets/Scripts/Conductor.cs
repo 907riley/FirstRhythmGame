@@ -39,7 +39,7 @@ public class Conductor : MonoBehaviour
     //float[] notes;
     // the index of the next note to spawn
     int nextIndex = 0;
-    public float beatsShownInAdvance = 3f;
+    public float beatsShownInAdvance = 2f;
     public float secondsShownInAdvance;
     public bool songPlaying = false;
     // delay of the start of playing the music in beats
@@ -135,7 +135,7 @@ public class Conductor : MonoBehaviour
     // don't have to clutter the rest of the file
     void SetupBeatsToPlay()
     {
-        notes = new NoteInformation[34];
+        notes = new NoteInformation[49];
 
         int noteCounter = 0;
 
@@ -161,7 +161,7 @@ public class Conductor : MonoBehaviour
         notes[noteCounter++] = new NoteInformation(17f, 1);
         notes[noteCounter++] = new NoteInformation(18f, 1);
         notes[noteCounter++] = new NoteInformation(19f, 1);
-        notes[noteCounter++] = new NoteInformation(20f, 1);
+        notes[noteCounter++] = new NoteInformation(20f, 1); // 16
 
         // alternating GREENS and YELLOWS
         notes[noteCounter++] = new NoteInformation(21f, 0);
@@ -184,10 +184,32 @@ public class Conductor : MonoBehaviour
         notes[noteCounter++] = new NoteInformation(27f, 1);
         notes[noteCounter++] = new NoteInformation(27.5f, 3);
         notes[noteCounter++] = new NoteInformation(28f, 1);
-        notes[noteCounter++] = new NoteInformation(28.5f, 3);
+        notes[noteCounter++] = new NoteInformation(28.5f, 3); // 32
 
         notes[noteCounter++] = new NoteInformation(29f, 1);
         notes[noteCounter++] = new NoteInformation(29.5f, 3);
 
+        // alternating GREENS and YELLOWS
+        notes[noteCounter++] = new NoteInformation(30f, 0);
+        notes[noteCounter++] = new NoteInformation(30.5f, 2);
+
+        notes[noteCounter++] = new NoteInformation(31f, 0);
+        notes[noteCounter++] = new NoteInformation(31.5f, 2);
+        notes[noteCounter++] = new NoteInformation(32f, 0);
+        notes[noteCounter++] = new NoteInformation(32.5f, 2);
+
+        notes[noteCounter++] = new NoteInformation(33f, 0);
+
+        // alternating REDS and BLUES
+        notes[noteCounter++] = new NoteInformation(33.5f, 3);
+        notes[noteCounter++] = new NoteInformation(34f, 1);
+        notes[noteCounter++] = new NoteInformation(34.5f, 3);
+
+        notes[noteCounter++] = new NoteInformation(35f, 1);
+        notes[noteCounter++] = new NoteInformation(35.5f, 3);
+        notes[noteCounter++] = new NoteInformation(36f, 1);
+        notes[noteCounter++] = new NoteInformation(36.5f, 3); // 48
+
+        notes[noteCounter++] = new NoteInformation(37f, 1);
     }
 }

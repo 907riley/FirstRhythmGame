@@ -128,6 +128,7 @@ public class FretBoardDrawer : MonoBehaviour
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
         //lineRenderer.widthCurve = 
+        lineRenderer.sortingOrder = 1;
         lineRenderer.SetPosition(0, startPosition);
         lineRenderer.SetPosition(1, endPosition);
     }
@@ -155,6 +156,7 @@ public class FretBoardDrawer : MonoBehaviour
             -Vector3.forward,
             -Vector3.forward
         };
+        fretBackground.GetComponent<Transform>().parent = transform;
         fretMesh.vertices = vertices;
         fretMesh.triangles = triangles;
         fretMesh.normals = normals;

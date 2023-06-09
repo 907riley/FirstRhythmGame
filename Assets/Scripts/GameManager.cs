@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     };
     
     // error allowed on note hits (beat diff)
-    public float noteHitRange = 0.15f;
+    public float noteHitRange = 0.2f;
 
     // height of fingerboard
     public float fingerBoardHeight = -4f;
