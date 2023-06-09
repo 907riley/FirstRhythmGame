@@ -21,6 +21,8 @@ public class NoteSpawner : MonoBehaviour
     private string[] noteNames;
     private float spawnWidthPercent;
 
+    public List<GameObject>[] currentNotes;
+
 
     void Start()
     {
@@ -33,6 +35,7 @@ public class NoteSpawner : MonoBehaviour
         noteNames = gameManager.noteNames;
         positions = gameManager.positions;
         spawnWidthPercent = gameManager.spawnWidthPercent;
+        //InitCurrentNoteLists();
 
         // init to same size of number of buttons
         removeNoteXAxis = new float[positions.Length];
@@ -55,6 +58,15 @@ public class NoteSpawner : MonoBehaviour
     //        timer += Time.deltaTime;
     //    }
     //}
+    //private void InitCurrentNoteLists()
+    //{
+    //    currentNotes = new List<GameObject>[noteNames.Length];
+
+    //    for (int i = 0; i  < noteNames.Length; ++i)
+    //    {
+    //        currentNotes[i] = new List<GameObject>();
+    //    }
+    //}
 
     public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote, int noteIndex)
     {
@@ -74,6 +86,9 @@ public class NoteSpawner : MonoBehaviour
         newNote.beatOfThisNote = beatsOfThisNote;
         newNote.conductorGo = conductorGo;
         newNote.gameManagerGo = gameManagerGo;
+
+        // add note object to the currentNotesList
+        //currentNotes[noteIndex].Add(go);
 
         gameManager.OnNoteSpawned();
         ++noteCounter;
@@ -98,4 +113,5 @@ public class NoteSpawner : MonoBehaviour
             }
         }
     }
+
 }

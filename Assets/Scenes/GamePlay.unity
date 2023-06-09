@@ -421,7 +421,7 @@ MonoBehaviour:
   dspSongTime: 0
   offSet: 0
   musicSource: {fileID: 536335658}
-  beatsShownInAdvance: 3
+  beatsShownInAdvance: 4
   secondsShownInAdvance: 0
   songPlaying: 0
   delayOfSong: 5

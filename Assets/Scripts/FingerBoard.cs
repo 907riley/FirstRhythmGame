@@ -53,7 +53,7 @@ public class FingerBoard : MonoBehaviour
             fingerButtonTransform.transform.parent = transform;
             fingerButtonSelf.color = colors[i];
             fingerButtonSelf.key = keyCodes[i];
-            fingerButtonSelf.noteSpawner = noteSpawnerGo;
+            fingerButtonSelf.noteSpawnerGo = noteSpawnerGo;
             fingerButtonSelf.conductorGo = conductorGo;
             fingerButtonSelf.gameManagerGo = gameManagerGo;
             fingerButtonSelf.circleSprite = fingerButtonSprite;

@@ -12,7 +12,8 @@ public class FingerButton : MonoBehaviour
 
     public GameObject outerFingerButton;
 
-    public GameObject noteSpawner;
+    public GameObject noteSpawnerGo;
+    private NoteSpawner noteSpawner;
 
     public GameObject conductorGo;
     private Conductor conductor;
@@ -28,6 +29,7 @@ public class FingerButton : MonoBehaviour
     {
         conductor = conductorGo.GetComponent<Conductor>();
         gameManager = gameManagerGo.GetComponent<GameManager>();
+        noteSpawner = noteSpawnerGo.GetComponent<NoteSpawner>();
 
         outerColor = gameManager.outerNoteColor;
         noteHitRange = gameManager.noteHitRange;
@@ -89,7 +91,7 @@ public class FingerButton : MonoBehaviour
     {
         //Note[] notes = noteSpawner.GetComponentInChildren<Note>();
         // check to see if collided with a note of the right color
-        foreach (Transform child in noteSpawner.transform)
+        foreach (Transform child in noteSpawnerGo.transform)
         {
             Note note = child.GetComponent<Note>();
             if (note.key == key)
