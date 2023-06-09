@@ -36,8 +36,12 @@ public class FretBoardDrawer : MonoBehaviour
         spawnWidthPercent = gameManager.spawnWidthPercent;
         spawnHeight = gameManager.spawnHeight;
 
+        // the points where the fretboard vertical lines should intersect the fingerboard
         FindInbetweenLocations();
+        // the points where the fretboard verticals should start at the top of the fretboard
         FindTopInbetweenLocation();
+        // the points where the fretboard vertical lines should end off screen
+        CalculateRemoveXPositions();
 
         //Debug print out the inbetweens
         //foreach (Vector3 locall in inbetweenFingerBoard)
@@ -89,7 +93,6 @@ public class FretBoardDrawer : MonoBehaviour
             fingerBoard.positions[^1].y,
             fingerBoard.positions[^1].z
             );
-        CalculateRemoveXPositions();
     }
 
     private void CalculateRemoveXPositions()
@@ -97,17 +100,17 @@ public class FretBoardDrawer : MonoBehaviour
         for (int i = 0; i < inbetweenFingerBoard.Length; ++i)
         {
             // Uses radians
-            float topAngle = Mathf.Atan(Mathf.Abs(inbetweenFingerBoard[i].x) / Mathf.Abs(transform.position.y - inbetweenFingerBoard[i].y));
+            float topAngle = Mathf.Atan(Mathf.Abs(inbetweenFingerBoard[i].x - topInbetweenLocations[i].x) / Mathf.Abs(transform.position.y - inbetweenFingerBoard[i].y));
             float removeX = noteVerticalTravelDistance * Mathf.Tan(topAngle);
 
             // Moving left to right set negative since at middle
             if (i < inbetweenFingerBoard.Length / 2)
             {
-                inbetweenFingerBoard[i].x = -removeX;
+                inbetweenFingerBoard[i].x = -removeX + topInbetweenLocations[i].x;
             }
             else
             {
-                inbetweenFingerBoard[i].x = removeX;
+                inbetweenFingerBoard[i].x = removeX + topInbetweenLocations[i].x;
             }
             inbetweenFingerBoard[i].y -= 2;
         }

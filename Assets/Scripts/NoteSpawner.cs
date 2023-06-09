@@ -100,16 +100,16 @@ public class NoteSpawner : MonoBehaviour
         for (int i = 0; i < positions.Length; ++i)
         {
             // Uses radians
-            float topAngle = Mathf.Atan(Mathf.Abs(positions[i].x) / Mathf.Abs(transform.position.y - positions[i].y));
+            float topAngle = Mathf.Atan(Mathf.Abs(positions[i].x - positions[i].x * spawnWidthPercent) / Mathf.Abs(transform.position.y - positions[i].y));
             float removeX = noteVerticalTravelDistance * Mathf.Tan(topAngle);
             
             // Moving left to right set negative since at middle
             if (i < positions.Length / 2)
             {
-                removeNoteXAxis[i] = -removeX;
+                removeNoteXAxis[i] = -removeX + positions[i].x * spawnWidthPercent;
             } else
             {
-                removeNoteXAxis[i] = removeX;
+                removeNoteXAxis[i] = removeX + positions[i].x * spawnWidthPercent;
             }
         }
     }
