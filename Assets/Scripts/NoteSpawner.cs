@@ -19,6 +19,7 @@ public class NoteSpawner : MonoBehaviour
     private Color[] colors;
     private KeyCode[] keyCodes;
     private string[] noteNames;
+    private float spawnWidthPercent;
 
 
     void Start()
@@ -31,6 +32,7 @@ public class NoteSpawner : MonoBehaviour
         keyCodes = gameManager.keyCodes;
         noteNames = gameManager.noteNames;
         positions = gameManager.positions;
+        spawnWidthPercent = gameManager.spawnWidthPercent;
 
         // init to same size of number of buttons
         removeNoteXAxis = new float[positions.Length];
@@ -54,11 +56,10 @@ public class NoteSpawner : MonoBehaviour
     //    }
     //}
 
-    public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote)
+    public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote, int noteIndex)
     {
-        int noteIndex = Random.Range(0, positions.Length);
 
-        GameObject go = Instantiate(Note, new Vector3(transform.position.x, spawnPosition.y, 0), transform.rotation);
+        GameObject go = Instantiate(Note, new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, spawnPosition.y, 0), transform.rotation);
         // set the parent to be the NoteSpawner so we can find the notes easier
         go.transform.parent = transform;
         go.name = noteNames[noteIndex] + "_" + noteCounter;
@@ -67,7 +68,7 @@ public class NoteSpawner : MonoBehaviour
         Note newNote = go.GetComponent<Note>();
         newNote.color = colors[noteIndex];
         newNote.key = keyCodes[noteIndex];
-        newNote.spawnPosition = new Vector3(transform.position.x, transform.position.y, 0);
+        newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, transform.position.y, 0);
         newNote.removePosition = new Vector3(removeNoteXAxis[noteIndex], removePosition.y, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;

@@ -39,16 +39,35 @@ public class GameManager : MonoBehaviour
     // ----- NOTE SPAWN/REMOVE INFO -----
     public float spawnHeight = 4f;
     public float removeHeight = -6f;
-    public float deadZoneYAxis = -11f;
+    public float deadZoneYAxis;
+    // percent of the size of the fretboard width for the spawn
+    public float spawnWidthPercent = 0.1f;
 
-
-    public string[] noteNames =
+    public string[] noteNames = 
     {
         "GREEN",
         "RED",
         "YELLOW",
         "BLUE"
     };
+
+    //public enum NoteNames
+    //{
+    //    GREEN = 0,
+    //    RED = 1,
+    //    YELLOW = 2,
+    //    BLUE = 3
+    //};
+
+    //public NoteNames[] notes =
+    //{
+    //    NoteNames.GREEN,
+    //    NoteNames.RED,
+    //    NoteNames.YELLOW,
+    //    NoteNames.BLUE
+    //};
+
+    public Color outerNoteColor = new Color(0, 0, 0, 1);
 
     // ----- NOTE STAT INFO -----
     public int notesSpawned = 0;
@@ -69,6 +88,8 @@ public class GameManager : MonoBehaviour
         noteSpawnerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
         fingerBoardGo.GetComponent<Transform>().position = new Vector3(0, fingerBoardHeight, 0);
         fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
+
+        deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
 
         CreatePositions();
     }

@@ -638,6 +638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineMaterial: {fileID: 2100000, guid: ea31c650f03f2c746afdbbe7ca098f42, type: 2}
   fingerBoardGo: {fileID: 1579239092}
+  gameManagerGo: {fileID: 1389240688}
 --- !u!4 &754847801
 Transform:
   m_ObjectHideFlags: 0
@@ -957,11 +958,13 @@ MonoBehaviour:
   spawnHeight: 3
   removeHeight: -6
   deadZoneYAxis: -11
+  spawnWidthPercent: 0.1
   noteNames:
   - GREEN
   - RED
   - YELLOW
   - BLUE
+  outerNoteColor: {r: 0, g: 0, b: 0, a: 1}
   notesSpawned: 0
   notesHit: 0
   notesMissed: 0

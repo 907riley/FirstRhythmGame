@@ -17,15 +17,25 @@ public class Conductor : MonoBehaviour
     // Offset to the first beat of the song in seconds
     public float offSet = 0f;
     public AudioSource musicSource;
-
-
     // SONG SPECIFIC STUFF
 
     // bpm of song
     //float bpm = 100f;
     // keep all note-positions-in-beats for the song
     // beat position starts at 0
-    float[] notes = { 5f, 6f, 7f, 8f, 9f, 10f , 11f, 12f, 12.5f, 13f};
+    public struct NoteInformation
+    {
+        public NoteInformation(float beat, int noteIndex)
+        {
+            this.beat = beat;
+            this.noteIndex = noteIndex;
+        }
+
+        public float beat;
+        public int noteIndex;
+    }
+
+    NoteInformation[] notes;
     //float[] notes;
     // the index of the next note to spawn
     int nextIndex = 0;
@@ -46,6 +56,7 @@ public class Conductor : MonoBehaviour
     float fingerBoardHeight;
     float removeHeight;
     public float noteFallLerpPercent;
+    private string[] noteNames;
 
 
     void Start()
@@ -54,6 +65,9 @@ public class Conductor : MonoBehaviour
         spawnHeight = gameManager.spawnHeight;
         fingerBoardHeight = gameManager.fingerBoardHeight;
         removeHeight = gameManager.removeHeight;
+        noteNames = gameManager.noteNames;
+
+        SetupBeatsToPlay();
 
         // important for knowing when the note needs to pass the fingerbutton
         // since we want to continue LERPing the note pass the fingerboard
@@ -91,14 +105,15 @@ public class Conductor : MonoBehaviour
         // determine beats since song started
         songPositionInBeats = songPosition / secondsPerBeat;
 
-        if (nextIndex < notes.Length && notes[nextIndex] <= songPositionInBeats + beatsShownInAdvance)
+        if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
         {
             //Instantiate(music note)
             noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
                 new Vector3(1, spawnHeight, 1),
                 new Vector3(1, removeHeight, 1),
                 beatsShownInAdvance,
-                notes[nextIndex]
+                notes[nextIndex].beat,
+                notes[nextIndex].noteIndex
                 );
 
             // Init the fields of the music note
@@ -115,5 +130,64 @@ public class Conductor : MonoBehaviour
         musicSource.Play();
         songPlaying = true;
         //timer = 0;
+    }
+
+    // don't have to clutter the rest of the file
+    void SetupBeatsToPlay()
+    {
+        notes = new NoteInformation[34];
+
+        int noteCounter = 0;
+
+        // 4 GREENS
+        notes[noteCounter++] = new NoteInformation(5f, 0);
+        notes[noteCounter++] = new NoteInformation(6f, 0);
+        notes[noteCounter++] = new NoteInformation(7f, 0);
+        notes[noteCounter++] = new NoteInformation(8f, 0);
+
+        // 4 REDS
+        notes[noteCounter++] = new NoteInformation(9f, 1);
+        notes[noteCounter++] = new NoteInformation(10f, 1);
+        notes[noteCounter++] = new NoteInformation(11f, 1);
+        notes[noteCounter++] = new NoteInformation(12f, 1);
+
+        // 4 GREENS
+        notes[noteCounter++] = new NoteInformation(13f, 0);
+        notes[noteCounter++] = new NoteInformation(14f, 0);
+        notes[noteCounter++] = new NoteInformation(15f, 0);
+        notes[noteCounter++] = new NoteInformation(16f, 0);
+
+        // 4 REDS
+        notes[noteCounter++] = new NoteInformation(17f, 1);
+        notes[noteCounter++] = new NoteInformation(18f, 1);
+        notes[noteCounter++] = new NoteInformation(19f, 1);
+        notes[noteCounter++] = new NoteInformation(20f, 1);
+
+        // alternating GREENS and YELLOWS
+        notes[noteCounter++] = new NoteInformation(21f, 0);
+        notes[noteCounter++] = new NoteInformation(21.5f, 2);
+        notes[noteCounter++] = new NoteInformation(22f, 0);
+        notes[noteCounter++] = new NoteInformation(22.5f, 2);
+
+        notes[noteCounter++] = new NoteInformation(23f, 0);
+        notes[noteCounter++] = new NoteInformation(23.5f, 2);
+        notes[noteCounter++] = new NoteInformation(24f, 0);
+        notes[noteCounter++] = new NoteInformation(24.5f, 2);
+
+        notes[noteCounter++] = new NoteInformation(25f, 0);
+
+        // alternating REDS and BLUES
+        notes[noteCounter++] = new NoteInformation(25.5f, 3);
+        notes[noteCounter++] = new NoteInformation(26f, 1);
+        notes[noteCounter++] = new NoteInformation(26.5f, 3);
+
+        notes[noteCounter++] = new NoteInformation(27f, 1);
+        notes[noteCounter++] = new NoteInformation(27.5f, 3);
+        notes[noteCounter++] = new NoteInformation(28f, 1);
+        notes[noteCounter++] = new NoteInformation(28.5f, 3);
+
+        notes[noteCounter++] = new NoteInformation(29f, 1);
+        notes[noteCounter++] = new NoteInformation(29.5f, 3);
+
     }
 }

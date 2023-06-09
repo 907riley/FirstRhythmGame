@@ -26,10 +26,10 @@ public class FingerButton : MonoBehaviour
 
     private void Start()
     {
-        outerColor = new Color(0, 0, 0, 1);
         conductor = conductorGo.GetComponent<Conductor>();
         gameManager = gameManagerGo.GetComponent<GameManager>();
 
+        outerColor = gameManager.outerNoteColor;
         noteHitRange = gameManager.noteHitRange;
 
         CreateOuterButton();

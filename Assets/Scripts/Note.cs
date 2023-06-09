@@ -23,6 +23,8 @@ public class Note : MonoBehaviour
     private GameManager gameManager;
 
     private SpriteRenderer spriteRenderer;
+
+    private GameObject outerNote;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,10 +33,12 @@ public class Note : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = color;
+        spriteRenderer.sortingOrder = 1;
 
         transform.localScale = new Vector3(0f, 0f, 0f);
 
         deadZoneYAxis = gameManager.deadZoneYAxis;
+        //CreateOuterButton();
     }
 
     // Update is called once per frame
@@ -62,6 +66,8 @@ public class Note : MonoBehaviour
             float percentOfTravel = ((beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
             transform.localScale = new Vector3(percentOfTravel, percentOfTravel * .75f, percentOfTravel);
 
+            //outerNote.GetComponent<Transform>().localScale = new Vector3(percentOfTravel + 0.5f, percentOfTravel * .75f + 0.5f, percentOfTravel);
+
             // Remove notes if within 0.1 of remove distance
             if (Vector3.Distance(removePosition, transform.position) < 0.1)
             {
@@ -75,5 +81,20 @@ public class Note : MonoBehaviour
         //{
         //    Destroy(gameObject);
         //}
+    }
+
+    void CreateOuterButton()
+    {
+        outerNote = new GameObject(transform.name + " outer");
+        outerNote.AddComponent<SpriteRenderer>();
+        SpriteRenderer outerSpriteRenderer = outerNote.GetComponent<SpriteRenderer>();
+        Transform outerTransform = outerNote.GetComponent<Transform>();
+
+        outerSpriteRenderer.color = gameManager.outerNoteColor;
+        outerSpriteRenderer.sprite = transform.GetComponent<SpriteRenderer>().sprite;
+
+        outerTransform.position = transform.position;
+        outerTransform.localScale = transform.localScale;
+        outerTransform.parent = transform;
     }
 }
