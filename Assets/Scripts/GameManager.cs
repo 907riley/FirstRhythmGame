@@ -116,6 +116,18 @@ public class GameManager : MonoBehaviour
         CreatePositions();
     }
 
+    public void SetNumberOfFingerButtons(int fingerButtons)
+    {
+        numberOfFingerButtons = fingerButtons;
+        CalculateFingerButtonXAxis();
+        CreatePositions();
+    }
+
+    public void SetBeatsShownInAdvance(float beatsShown)
+    {
+        beatsShownInAdvance = beatsShown;
+    }
+
     void CalculateFingerButtonXAxis()
     {
         fingerButtonXAxis = new float[numberOfFingerButtons];

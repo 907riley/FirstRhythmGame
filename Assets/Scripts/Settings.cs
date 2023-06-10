@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-
 public class Settings : MonoBehaviour
 {
     private int numberOfFingerButtons;
@@ -39,8 +38,8 @@ public class Settings : MonoBehaviour
     public void OnSaveClick()
     {
         // update the GameManager
-        GameManager.Instance.numberOfFingerButtons = numberOfFingerButtons;
-        GameManager.Instance.beatsShownInAdvance = beatsShownInAdvance;
+        GameManager.Instance.SetNumberOfFingerButtons(numberOfFingerButtons);
+        GameManager.Instance.SetBeatsShownInAdvance(beatsShownInAdvance);
     }
 
     IEnumerator LoadAsyncScene(string scene)
