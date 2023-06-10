@@ -29,12 +29,17 @@ public class FretBoardDrawer : MonoBehaviour
     void Start()
     {
         fingerBoard = fingerBoardGo.GetComponent<FingerBoard>();
-        gameManager = gameManagerGo.GetComponent<GameManager>();
+        //gameManager = gameManagerGo.GetComponent<GameManager>();
+
+        transform.position = new Vector3(0, GameManager.Instance.spawnHeight, 0);
 
         noteVerticalTravelDistance = Mathf.Abs(transform.position.y - fingerBoard.positions[0].y) + 2;
 
-        spawnWidthPercent = gameManager.spawnWidthPercent;
-        spawnHeight = gameManager.spawnHeight;
+        //spawnWidthPercent = gameManager.spawnWidthPercent;
+        //spawnHeight = gameManager.spawnHeight;
+
+        spawnWidthPercent = GameManager.Instance.spawnWidthPercent;
+        spawnHeight = GameManager.Instance.spawnHeight;
 
         // the points where the fretboard vertical lines should intersect the fingerboard
         FindInbetweenLocations();

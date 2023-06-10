@@ -61,11 +61,16 @@ public class Conductor : MonoBehaviour
 
     void Start()
     {
-        gameManager = gameManagerGo.GetComponent<GameManager>();
-        spawnHeight = gameManager.spawnHeight;
-        fingerBoardHeight = gameManager.fingerBoardHeight;
-        removeHeight = gameManager.removeHeight;
-        noteNames = gameManager.noteNames;
+        //gameManager = gameManagerGo.GetComponent<GameManager>();
+        //spawnHeight = gameManager.spawnHeight;
+        //fingerBoardHeight = gameManager.fingerBoardHeight;
+        //removeHeight = gameManager.removeHeight;
+        //noteNames = gameManager.noteNames;
+
+        spawnHeight = GameManager.Instance.spawnHeight;
+        fingerBoardHeight = GameManager.Instance.fingerBoardHeight;
+        removeHeight = GameManager.Instance.removeHeight;
+        noteNames = GameManager.Instance.noteNames;
 
         SetupBeatsToPlay();
 

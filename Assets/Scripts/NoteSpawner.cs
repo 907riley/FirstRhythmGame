@@ -27,15 +27,24 @@ public class NoteSpawner : MonoBehaviour
     void Start()
     {
 
-        gameManager = gameManagerGo.GetComponent<GameManager>();
+        //gameManager = gameManagerGo.GetComponent<GameManager>();
 
-        fingerButtonXAxis = gameManager.fingerButtonXAxis;
-        colors = gameManager.colors;
-        keyCodes = gameManager.keyCodes;
-        noteNames = gameManager.noteNames;
-        positions = gameManager.positions;
-        spawnWidthPercent = gameManager.spawnWidthPercent;
+        transform.position = new Vector3(0, GameManager.Instance.spawnHeight, 0);
+        //fingerButtonXAxis = gameManager.fingerButtonXAxis;
+        //colors = gameManager.colors;
+        //keyCodes = gameManager.keyCodes;
+        //noteNames = gameManager.noteNames;
+        //positions = gameManager.positions;
+        //spawnWidthPercent = gameManager.spawnWidthPercent;
+
+        fingerButtonXAxis = GameManager.Instance.fingerButtonXAxis;
+        colors = GameManager.Instance.colors;
+        keyCodes = GameManager.Instance.keyCodes;
+        noteNames = GameManager.Instance.noteNames;
+        positions = GameManager.Instance.positions;
+        spawnWidthPercent = GameManager.Instance.spawnWidthPercent;
         //InitCurrentNoteLists();
+
 
         // init to same size of number of buttons
         removeNoteXAxis = new float[positions.Length];
@@ -90,7 +99,8 @@ public class NoteSpawner : MonoBehaviour
         // add note object to the currentNotesList
         //currentNotes[noteIndex].Add(go);
 
-        gameManager.OnNoteSpawned();
+        //gameManager.OnNoteSpawned();
+        GameManager.Instance.OnNoteSpawned();
         ++noteCounter;
         Debug.Log(removeNoteXAxis[noteIndex]);
     }

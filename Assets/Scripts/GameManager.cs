@@ -85,11 +85,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject fingerBoardGo;
     [SerializeField] GameObject fretBoardDrawerGo;
 
+    public static GameManager Instance;
+
+    private void Awake()
+    {
+        // Delete GameManager copies
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
-        noteSpawnerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
-        fingerBoardGo.GetComponent<Transform>().position = new Vector3(0, fingerBoardHeight, 0);
-        fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
+        //noteSpawnerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
+        //fingerBoardGo.GetComponent<Transform>().position = new Vector3(0, fingerBoardHeight, 0);
+        //fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
 
         deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
 
