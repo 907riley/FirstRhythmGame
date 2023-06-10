@@ -14,7 +14,7 @@ public class Conductor : MonoBehaviour
     public float songPositionInBeats;
     // Seconds passed since song started
     public float dspSongTime = 0;
-    // Offset to the first beat of the song in seconds
+    // Offset to the first beat of the song in seconds (like for metadata if MP3)
     public float offSet = 0f;
     public AudioSource musicSource;
     // SONG SPECIFIC STUFF
@@ -106,7 +106,7 @@ public class Conductor : MonoBehaviour
         //} 
 
         // determine seconds since song started
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime);
+        songPosition = (float)(AudioSettings.dspTime - dspSongTime) * musicSource.pitch - offSet;
 
         // determine beats since song started
         songPositionInBeats = songPosition / secondsPerBeat;
@@ -141,7 +141,7 @@ public class Conductor : MonoBehaviour
     // don't have to clutter the rest of the file
     void SetupBeatsToPlay()
     {
-        notes = new NoteInformation[49];
+        notes = new NoteInformation[52];
 
         int noteCounter = 0;
 
@@ -218,6 +218,9 @@ public class Conductor : MonoBehaviour
 
         notes[noteCounter++] = new NoteInformation(37f, 1);
 
-        // alternating GREEN + YELLOw and RED
+        // alternating GREEN + YELLOW and RED
+        notes[noteCounter++] = new NoteInformation(39f, 0);
+        notes[noteCounter++] = new NoteInformation(39f, 4);
+        notes[noteCounter++] = new NoteInformation(39.5f, 1);
     }
 }
