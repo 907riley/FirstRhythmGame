@@ -78,7 +78,7 @@ public class FretBoardDrawer : MonoBehaviour
     {
         // get the distance between any two points
         float singleDistanceX = 0;
-        if (fingerBoard.positions.Length > 2)
+        if (fingerBoard.positions.Length > 1)
         {
             singleDistanceX = Mathf.Abs(fingerBoard.positions[0].x - fingerBoard.positions[1].x);
         }

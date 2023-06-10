@@ -6,12 +6,14 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     // ----- FINGERBOARD INFO -----
-    public int numberOfFingerButtons = 4;
+    public int numberOfFingerButtons = 5;
 
-    // positions of fingerbuttons
+    // vector positions of fingerbuttons
     public Vector3[] positions;
 
-    public float[] fingerButtonXAxis = { -4.5f, -1.5f, 1.5f, 4.5f };
+    // X axis positions of finger buttons
+    public float[] fingerButtonXAxis;
+    public float noteSpacingXAxis = 2f;
 
     // colors of fingerbuttons
     public Color[] colors = {
@@ -19,7 +21,7 @@ public class GameManager : MonoBehaviour
         new Color(0.7830189f, 0.1514329f, 0.1514329f, 1),
         new Color(0.8553239f, 0.8584906f, 0.2065237f, 1),
         new Color(0.1213955f, 0.2862892f, 0.8301887f, 1),
-        //new Color(1, 0.4744691f, 0.1745283f, 1)
+        new Color(1, 0.4744691f, 0.1745283f, 1)
     };
 
     // keycodes for fingerbuttons
@@ -28,7 +30,8 @@ public class GameManager : MonoBehaviour
         KeyCode.D,
         KeyCode.F,
         KeyCode.J,
-        KeyCode.K
+        KeyCode.K,
+        KeyCode.L
     };
     
     // error allowed on note hits (beat diff)
@@ -55,7 +58,8 @@ public class GameManager : MonoBehaviour
         "GREEN",
         "RED",
         "YELLOW",
-        "BLUE"
+        "BLUE",
+        "ORANGE"
     };
 
     //public enum NoteNames
@@ -105,7 +109,20 @@ public class GameManager : MonoBehaviour
         deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
         noteSpawnScale = new Vector3(noteSpawnScaleFloat, noteSpawnScaleFloat * noteSpawnScaleY, 1f);
 
+        CalculateFingerButtonXAxis();
         CreatePositions();
+    }
+
+    void CalculateFingerButtonXAxis()
+    {
+        fingerButtonXAxis = new float[numberOfFingerButtons];
+
+        fingerButtonXAxis[0] = -((numberOfFingerButtons - 1) * noteSpacingXAxis / 2);
+
+        for (int i = 1; i < numberOfFingerButtons; ++i)
+        {
+            fingerButtonXAxis[i] = fingerButtonXAxis[i - 1] + noteSpacingXAxis;
+        }
     }
 
     void CreatePositions()
