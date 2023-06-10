@@ -71,15 +71,6 @@ public class GameManager : MonoBehaviour
 
     public Color outerNoteColor = new Color(0, 0, 0, 1);
 
-    // ----- NOTE STAT INFO -----
-    public int notesSpawned = 0;
-    public int notesHit = 0;
-    public int notesMissed = 0;
-    public int currentStreak = 0;
-    public int missClicks = 0;
-
-    [SerializeField] TextMeshProUGUI streakText;
-
     // ----- GAME OBJECTS TO SET TRANSFORM POSITIONS -----
     [SerializeField] GameObject noteSpawnerGo;
     [SerializeField] GameObject fingerBoardGo;
@@ -118,36 +109,5 @@ public class GameManager : MonoBehaviour
         {
             positions[i] = new Vector3(fingerButtonXAxis[i], fingerBoardHeight, 0);
         }
-    }
-
-    public void OnMissClick()
-    {
-        ++missClicks;
-        currentStreak = 0;
-        SetStreak();
-    }
-
-    public void OnMissedNote()
-    {
-        ++notesMissed;
-        currentStreak = 0;
-        SetStreak();
-    }
-
-    public void OnNoteHit()
-    {
-        ++notesHit;
-        ++currentStreak;
-        SetStreak();
-    }
-
-    public void OnNoteSpawned()
-    {
-        ++notesSpawned;
-    }
-
-    private void SetStreak()
-    {
-        streakText.text = currentStreak.ToString();
     }
 }

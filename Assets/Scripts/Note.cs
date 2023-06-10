@@ -83,7 +83,8 @@ public class Note : MonoBehaviour
             {
                 Debug.Log("Missed: " + name);
                 //gameManager.OnMissedNote();
-                GameManager.Instance.OnMissedNote();
+                //GameManager.Instance.OnMissedNote();
+                ScoreManager.Instance.OnMissedNote();
                 Destroy(gameObject);
             }
         } 

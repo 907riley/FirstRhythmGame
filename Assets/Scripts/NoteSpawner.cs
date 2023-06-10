@@ -100,7 +100,8 @@ public class NoteSpawner : MonoBehaviour
         //currentNotes[noteIndex].Add(go);
 
         //gameManager.OnNoteSpawned();
-        GameManager.Instance.OnNoteSpawned();
+        //GameManager.Instance.OnNoteSpawned();
+        ScoreManager.Instance.OnNoteSpawned();
         ++noteCounter;
         Debug.Log(removeNoteXAxis[noteIndex]);
     }

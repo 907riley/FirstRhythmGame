@@ -1225,20 +1225,14 @@ MonoBehaviour:
   spawnHeight: 3
   removeHeight: -6
   deadZoneYAxis: 0
-  spawnWidthPercent: 0.25
-  noteSpawnScale: {x: 0.5, y: 0.375, z: 1}
+  spawnWidthPercent: 0.75
+  noteSpawnScale: {x: 1, y: 0.75, z: 1}
   noteNames:
   - GREEN
   - RED
   - YELLOW
   - BLUE
   outerNoteColor: {r: 0, g: 0, b: 0, a: 1}
-  notesSpawned: 0
-  notesHit: 0
-  notesMissed: 0
-  currentStreak: 0
-  missClicks: 0
-  streakText: {fileID: 0}
   noteSpawnerGo: {fileID: 0}
   fingerBoardGo: {fileID: 0}
   fretBoardDrawerGo: {fileID: 0}

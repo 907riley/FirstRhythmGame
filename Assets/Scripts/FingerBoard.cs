@@ -61,7 +61,7 @@ public class FingerBoard : MonoBehaviour
             fingerButtonSelf.key = keyCodes[i];
             fingerButtonSelf.noteSpawnerGo = noteSpawnerGo;
             fingerButtonSelf.conductorGo = conductorGo;
-            fingerButtonSelf.gameManagerGo = gameManagerGo;
+            //fingerButtonSelf.gameManagerGo = gameManagerGo;
             fingerButtonSelf.circleSprite = fingerButtonSprite;
         }
     }

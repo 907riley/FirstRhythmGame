@@ -18,8 +18,8 @@ public class FingerButton : MonoBehaviour
     public GameObject conductorGo;
     private Conductor conductor;
 
-    public GameObject gameManagerGo;
-    private GameManager gameManager;
+    //public GameObject gameManagerGo;
+    //private GameManager gameManager;
 
     public Sprite circleSprite;
 
@@ -77,12 +77,12 @@ public class FingerButton : MonoBehaviour
         if (!DetectRange())
         {
             Debug.Log("YOU MISSED");
-            gameManager.OnMissClick();
-            GameManager.Instance.OnMissClick();
+            ScoreManager.Instance.OnMissClick();
+            //GameManager.Instance.OnMissClick();
         } else
         {
             //gameManager.OnNoteHit();
-            GameManager.Instance.OnNoteHit();
+            ScoreManager.Instance.OnNoteHit();
         }
     }
 
