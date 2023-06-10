@@ -20,18 +20,28 @@ public class Menu : MonoBehaviour
     public void OnPlayClick()
     {
         // Load the GamePlay scene
-        SceneManager.LoadScene(1);
+        StartCoroutine(LoadAsyncScene("GamePlay"));
     }
 
     public void OnSettingsClick()
     {
         // Load the Settings scene
-        // TODO: make settings scene
-        //SceneManager.LoadScene(2);
+        StartCoroutine(LoadAsyncScene("Settings"));
     }
 
     public void OnQuitClick()
     {
         Application.Quit();
+    }
+
+    IEnumerator LoadAsyncScene(string scene)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        // wait till async is done
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 }

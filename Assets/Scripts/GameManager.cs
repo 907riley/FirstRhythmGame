@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
         new Color(0.7830189f, 0.1514329f, 0.1514329f, 1),
         new Color(0.8553239f, 0.8584906f, 0.2065237f, 1),
         new Color(0.1213955f, 0.2862892f, 0.8301887f, 1),
+        //new Color(1, 0.4744691f, 0.1745283f, 1)
     };
 
     // keycodes for fingerbuttons
