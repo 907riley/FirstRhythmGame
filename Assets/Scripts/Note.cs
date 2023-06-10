@@ -31,17 +31,19 @@ public class Note : MonoBehaviour
     void Start()
     {
         conductor = conductorGo.GetComponent<Conductor>();
-        gameManager = gameManagerGo.GetComponent<GameManager>();
+        //gameManager = gameManagerGo.GetComponent<GameManager>();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = color;
         spriteRenderer.sortingOrder = 1;
 
-        noteSpawnScale = gameManager.noteSpawnScale;
+        //noteSpawnScale = gameManager.noteSpawnScale;
+        noteSpawnScale = GameManager.Instance.noteSpawnScale;
 
         transform.localScale = noteSpawnScale;
 
-        deadZoneYAxis = gameManager.deadZoneYAxis;
+        //deadZoneYAxis = gameManager.deadZoneYAxis;
+        deadZoneYAxis = GameManager.Instance.deadZoneYAxis;
         //CreateOuterButton();
     }
 
@@ -80,7 +82,9 @@ public class Note : MonoBehaviour
             if (Vector3.Distance(removePosition, transform.position) < 0.1)
             {
                 Debug.Log("Missed: " + name);
-                gameManager.OnMissedNote();
+                //gameManager.OnMissedNote();
+                //GameManager.Instance.OnMissedNote();
+                ScoreManager.Instance.OnMissedNote();
                 Destroy(gameObject);
             }
         } 
@@ -98,7 +102,8 @@ public class Note : MonoBehaviour
         SpriteRenderer outerSpriteRenderer = outerNote.GetComponent<SpriteRenderer>();
         Transform outerTransform = outerNote.GetComponent<Transform>();
 
-        outerSpriteRenderer.color = gameManager.outerNoteColor;
+        //outerSpriteRenderer.color = gameManager.outerNoteColor;
+        outerSpriteRenderer.color = GameManager.Instance.outerNoteColor;
         outerSpriteRenderer.sprite = transform.GetComponent<SpriteRenderer>().sprite;
 
         outerTransform.position = transform.position;

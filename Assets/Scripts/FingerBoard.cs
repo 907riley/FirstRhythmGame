@@ -21,12 +21,18 @@ public class FingerBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = gameManagerGo.GetComponent<GameManager>();
+        //gameManager = gameManagerGo.GetComponent<GameManager>();
 
-        numberOfFingerButtons = gameManager.numberOfFingerButtons;
-        positions = gameManager.positions;
-        colors = gameManager.colors;
-        keyCodes = gameManager.keyCodes;
+        transform.position = new Vector3(0, GameManager.Instance.fingerBoardHeight, 0);
+        //numberOfFingerButtons = gameManager.numberOfFingerButtons;
+        //positions = gameManager.positions;
+        //colors = gameManager.colors;
+        //keyCodes = gameManager.keyCodes;
+
+        numberOfFingerButtons = GameManager.Instance.numberOfFingerButtons;
+        positions = GameManager.Instance.positions;
+        colors = GameManager.Instance.colors;
+        keyCodes = GameManager.Instance.keyCodes;
 
         CreateFingerButtons();
     }
@@ -55,7 +61,7 @@ public class FingerBoard : MonoBehaviour
             fingerButtonSelf.key = keyCodes[i];
             fingerButtonSelf.noteSpawnerGo = noteSpawnerGo;
             fingerButtonSelf.conductorGo = conductorGo;
-            fingerButtonSelf.gameManagerGo = gameManagerGo;
+            //fingerButtonSelf.gameManagerGo = gameManagerGo;
             fingerButtonSelf.circleSprite = fingerButtonSprite;
         }
     }

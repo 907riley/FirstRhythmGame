@@ -18,8 +18,8 @@ public class FingerButton : MonoBehaviour
     public GameObject conductorGo;
     private Conductor conductor;
 
-    public GameObject gameManagerGo;
-    private GameManager gameManager;
+    //public GameObject gameManagerGo;
+    //private GameManager gameManager;
 
     public Sprite circleSprite;
 
@@ -28,11 +28,14 @@ public class FingerButton : MonoBehaviour
     private void Start()
     {
         conductor = conductorGo.GetComponent<Conductor>();
-        gameManager = gameManagerGo.GetComponent<GameManager>();
+        //gameManager = gameManagerGo.GetComponent<GameManager>();
         noteSpawner = noteSpawnerGo.GetComponent<NoteSpawner>();
 
-        outerColor = gameManager.outerNoteColor;
-        noteHitRange = gameManager.noteHitRange;
+        //outerColor = gameManager.outerNoteColor;
+        //noteHitRange = gameManager.noteHitRange;
+
+        outerColor = GameManager.Instance.outerNoteColor;
+        noteHitRange = GameManager.Instance.noteHitRange;
 
         CreateOuterButton();
     }
@@ -74,10 +77,12 @@ public class FingerButton : MonoBehaviour
         if (!DetectRange())
         {
             Debug.Log("YOU MISSED");
-            gameManager.OnMissClick();
+            ScoreManager.Instance.OnMissClick();
+            //GameManager.Instance.OnMissClick();
         } else
         {
-            gameManager.OnNoteHit();
+            //gameManager.OnNoteHit();
+            ScoreManager.Instance.OnNoteHit();
         }
     }
 

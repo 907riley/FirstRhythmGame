@@ -71,25 +71,31 @@ public class GameManager : MonoBehaviour
 
     public Color outerNoteColor = new Color(0, 0, 0, 1);
 
-    // ----- NOTE STAT INFO -----
-    public int notesSpawned = 0;
-    public int notesHit = 0;
-    public int notesMissed = 0;
-    public int currentStreak = 0;
-    public int missClicks = 0;
-
-    [SerializeField] TextMeshProUGUI streakText;
-
     // ----- GAME OBJECTS TO SET TRANSFORM POSITIONS -----
     [SerializeField] GameObject noteSpawnerGo;
     [SerializeField] GameObject fingerBoardGo;
     [SerializeField] GameObject fretBoardDrawerGo;
 
+    public static GameManager Instance;
+
+    private void Awake()
+    {
+        // Delete GameManager copies
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
-        noteSpawnerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
-        fingerBoardGo.GetComponent<Transform>().position = new Vector3(0, fingerBoardHeight, 0);
-        fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
+        //noteSpawnerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
+        //fingerBoardGo.GetComponent<Transform>().position = new Vector3(0, fingerBoardHeight, 0);
+        //fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
 
         deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
 
@@ -103,36 +109,5 @@ public class GameManager : MonoBehaviour
         {
             positions[i] = new Vector3(fingerButtonXAxis[i], fingerBoardHeight, 0);
         }
-    }
-
-    public void OnMissClick()
-    {
-        ++missClicks;
-        currentStreak = 0;
-        SetStreak();
-    }
-
-    public void OnMissedNote()
-    {
-        ++notesMissed;
-        currentStreak = 0;
-        SetStreak();
-    }
-
-    public void OnNoteHit()
-    {
-        ++notesHit;
-        ++currentStreak;
-        SetStreak();
-    }
-
-    public void OnNoteSpawned()
-    {
-        ++notesSpawned;
-    }
-
-    private void SetStreak()
-    {
-        streakText.text = currentStreak.ToString();
     }
 }
