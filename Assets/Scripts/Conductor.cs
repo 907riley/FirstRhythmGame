@@ -39,7 +39,7 @@ public class Conductor : MonoBehaviour
     //float[] notes;
     // the index of the next note to spawn
     int nextIndex = 0;
-    public float beatsShownInAdvance = 2f;
+    public float beatsShownInAdvance;
     public float secondsShownInAdvance;
     public bool songPlaying = false;
     // delay of the start of playing the music in beats
@@ -71,6 +71,7 @@ public class Conductor : MonoBehaviour
         fingerBoardHeight = GameManager.Instance.fingerBoardHeight;
         removeHeight = GameManager.Instance.removeHeight;
         noteNames = GameManager.Instance.noteNames;
+        beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
 
         SetupBeatsToPlay();
 

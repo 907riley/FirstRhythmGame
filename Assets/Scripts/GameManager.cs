@@ -53,6 +53,9 @@ public class GameManager : MonoBehaviour
     public float noteSpawnScaleY = 0.75f;
     public Vector3 noteSpawnScale;
 
+    // basically speed of notes
+    public float beatsShownInAdvance = 2f;
+
     public string[] noteNames = 
     {
         "GREEN",
