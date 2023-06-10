@@ -1225,7 +1225,9 @@ MonoBehaviour:
   spawnHeight: 3
   removeHeight: -6
   deadZoneYAxis: 0
-  spawnWidthPercent: 0.75
+  spawnWidthPercent: 0.6
+  noteSpawnScaleFloat: 0.9
+  noteSpawnScaleY: 0.75
   noteSpawnScale: {x: 1, y: 0.75, z: 1}
   noteNames:
   - GREEN

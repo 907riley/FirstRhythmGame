@@ -17,6 +17,7 @@ public class Note : MonoBehaviour
     public float songPositionInBeats;
 
     private Vector3 noteSpawnScale;
+    private float noteSpawnScaleY;
 
     public GameObject conductorGo;
     private Conductor conductor;
@@ -45,6 +46,7 @@ public class Note : MonoBehaviour
         //deadZoneYAxis = gameManager.deadZoneYAxis;
         deadZoneYAxis = GameManager.Instance.deadZoneYAxis;
         //CreateOuterButton();
+        noteSpawnScaleY = GameManager.Instance.noteSpawnScaleY;
     }
 
     // Update is called once per frame
@@ -72,8 +74,8 @@ public class Note : MonoBehaviour
             float percentOfTravel = ((beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
             transform.localScale = new Vector3
                 (
-                noteSpawnScale.x + (percentOfTravel * noteSpawnScale.x),
-                noteSpawnScale.y + (percentOfTravel * noteSpawnScale.y),
+                noteSpawnScale.x + percentOfTravel * (1 - noteSpawnScale.x),
+                noteSpawnScale.y + percentOfTravel * (noteSpawnScaleY - noteSpawnScale.y),
                 noteSpawnScale.z);
 
             //outerNote.GetComponent<Transform>().localScale = new Vector3(percentOfTravel + 0.5f, percentOfTravel * .75f + 0.5f, percentOfTravel);

@@ -43,7 +43,11 @@ public class GameManager : MonoBehaviour
     // percent of the size of the fretboard width for the spawn
     public float spawnWidthPercent = 0.25f;
 
-    public Vector3 noteSpawnScale = new Vector3(0.5f, 0.375f, 1);
+    // amount to scale the notes down at the start
+    public float noteSpawnScaleFloat = 0.5f;
+    // amount to scale the note down in the Y axis to make it oblong
+    public float noteSpawnScaleY = 0.75f;
+    public Vector3 noteSpawnScale;
 
     public string[] noteNames = 
     {
@@ -98,6 +102,7 @@ public class GameManager : MonoBehaviour
         //fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
 
         deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
+        noteSpawnScale = new Vector3(noteSpawnScaleFloat, noteSpawnScaleFloat * noteSpawnScaleY, 1f);
 
         CreatePositions();
     }
