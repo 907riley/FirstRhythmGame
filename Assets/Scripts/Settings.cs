@@ -17,6 +17,9 @@ public class Settings : MonoBehaviour
         // init vars from GameManager to fill the settings
         numberOfFingerButtons = GameManager.Instance.numberOfFingerButtons;
         beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
+
+        fingerButtonsDropdown.value = numberOfFingerButtons;
+        beatsShownInAdvanceSlider.value = beatsShownInAdvance;
     }
 
     public void OnSpeedChange()

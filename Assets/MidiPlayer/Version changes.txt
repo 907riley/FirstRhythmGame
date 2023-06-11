@@ -1,0 +1,85 @@
+Please, read this before updating:
+   - Backup your own project
+   - If you experiment errors after updating, please delete the MidiPlayer folder from your project then reinstall Maestro.
+
+Thank for your comments and talks, that help a lot to make Maestro better.
+
+V2.9.1 2023-05-27
+	MIDI Editor: Add loop points with UI [Pro].
+	New looping attributes: MPTK_TickStart, MPTK_TickEnd, MPTK_ModeStopVoice, MPTK_TickPlayer.
+	Restore FLUID_ATTEN_POWER_FACTOR to -531.509f (some voices was not played at low velocity)
+	Apply Speed change also on duration. 
+	Better musicality, thank to MPTK_CutOffVolume default value set to 0.0001f, was 0.05
+	MidiLoop demo update
+
+V2.9.0 2023-04-10
+	Add a MIDI Editor as a Unity Editor Extension:
+		One line in release note for a lot of work! [Pro].
+		Base version with the most valuable features.
+	Full rewrite of MidiFileWriter2 class [Pro].
+		Now based on MPTKEvent.
+		Add MIDI File insert and join features with MPTK_ImportFromEventsList.
+		Rewrite of TestMidiGenerator demo.
+		Rewrite of SimplestMidiWriter MVP.
+	In MPTKEvent:
+		DurationTicks removed, use Legnth in place.
+		TickTime replaced by CreateTime (was confusing).
+		MPTK_DeltaTimeTick replaced by MPTK_LatenceTime.
+		MPTK_DeltaTimeMillis replaced by MPTK_LatenceTimeMillis.
+	In MidiFilePlayer:
+		MidiFileSetup redesign.
+		Add MPTK_StopPlayAtLastNote. If false, player is stopped only when all notes are released.
+		Add 'Stop Play At Last Note' property in Midi File Player inspector.
+		Correct MidiFilePlayer.MPTK_Load: now really load the MIDI in the MIDI Player.
+		Add optionnal parameter alreadyLoaded in MPTK_Play.
+	Full handling of bank selection, now 16383 banks are accesible (thanks Mike!)
+	In case of preset not found, try to find the same preset in the first bank.
+	Automatic MIDI migration from format 0 to format 1 when loading external MIDI.
+	MIDI seeks Optimization.
+	Quantization Correction.
+	Increase velocity factor acccording to fluidsynth change.
+	Improve Oboe Integration.
+	Replace menu MPTK by Maestro, you are ;-)
+	Add LabelPercussion, standard GM2, in HelperNoteLabel class.
+
+V2.89.x - 2022-11-27
+	Correct RealTime attribute in MPTKEvent. Thanks to Ken Scott http://www.youtube.com/vjchaotic for the tip.
+	New method for the HelperNoteLabel class.
+	Play MIDI also in editor mode.
+	New MVP demo: read a MIDI file, add some MIDI events, and write in a MIDI file with a few lines of script (see SimplestMidiWriter). Pro version.
+	Method MidiLoad.MPTK_LoadFile is now available only in PRO version.
+	MidiKeyboard (connect an external synth) is now available for CPU Silicon (M1, M2, …) on Mac. Pro version.
+	New SoundFont Import: select sample format.
+	New MVP Free: TheSimplestMidiGenerator, a "Hello world" demo.
+	Improvement of the pause on distance when spatialization is on.
+	Update to integrate the last version of Oboe (Fight Android Audio Latency)
+	Change tempo by script with MPTK_CurrentTempo = 120 (before, only MPTK_Speed was able to change the speed)
+	New MVP example to show how integrate in a few lines of script a MIDI device (Maestro Pro) 
+	Apply Sample Rate setting when loading SoundFont to be able to play Vorbis samples (Thank to Paul).
+	Corrected MidiStreamPlayer which was not able to spatilize the sound (Unity Spatialization).
+	Add exception detection on all callback (like OnEventNotesMidi) to help detecting error in your script.
+	Add delayed start to MPTK_Play (Pro version)
+	Add delayed stop to MPTK_Stop (Pro version)
+	MVP Free: MidiLoop and TheSimplestMidiLoader
+	MVP Pro: Spatializer3D for spatializing MIDI by tracks in a few lines of code
+	Added OnMidiEvent can be used like a preprocessor of the MIDI events: it's possible to change the value of the MIDI events to modify in real time the song playing. [Pro]
+	Added MPTK_TransExcludedChannel method useful to exclude a channel for transposing (in general, channel 9 for drums).
+	Added MPTK_keepPlayingNonLooped properties: when set to true, NoteOff or Duration for non-looped samples are ignored and the samples play through to the end.
+	Synth rate can be set to any value from the inspector or with MPTK_SynthRate.
+	Output rate and buffer size can be modified when playing but only for test purpose.
+	Added changing output rate and buffer size for iOS, but stay experimental.
+	MPTK_ChannelPresetChange: apply bank and preset change even if not available but return false.
+	MPTK_ChannelForcedPresetSet: apply bank and preset change even if not available but return false, able now to force bank.
+	Added MPTK_RealTime properties: real time since the start of the MIDI.
+	Added MPTK_KeepEndTrack properties: when set to true, meta MIDI event End Track are keep. Default is false.
+	Added MPTK_TickLastNote properties: tick position for the last note-on found.
+	Added MPTK_PositionLastNote properties: real time position in millisecond for the last note-on found in the MIDI.
+	Added "Real Time" (MPTK_RealTime) "Real time from the start of the playing. Tempo or speed change have no impact."
+	Added "Keep MIDI EndTrack" (MPTK_KeepEndTrack) "When set to true, meta MIDI event End Track are keep and these MIDI events are taken into account for calculate the full duration of the MIDI."
+	Added "Lean Synth Starting" (MPTK_LeanSynthStarting) "Sets the speed of the increase of the volume of the audio source when synth is starting."
+	Added "Keep Playing Non Looped" (MPTK_KeepPlayingNonLooped) "When the option is on, non looped samples (drum samples for the most part) are play through to the end."
+	Added "Release Time Modifier" (MPTK_ReleaseTimeMod) "Multiplier to increase or decrease the default release time defined in the SoundFont for each instrument."
+	Added "Unity Audio Setting" (MPTK_AudioSettingFromUnity) "If checked then synth rate and buffer size will be automatically defined by Unity in accordance of the capacity of the hardware."
+	Added "Synth Rate Free" (MPTK_EnableFreeSynthRate) "Allow free setting of the Synth Rate."
+
+*** Read the full version change directly in the Asset/MidiPlayerresource folder 

@@ -219,8 +219,8 @@ public class Conductor : MonoBehaviour
         notes[noteCounter++] = new NoteInformation(37f, 1);
 
         // alternating GREEN + YELLOW and RED
-        notes[noteCounter++] = new NoteInformation(39f, 0);
-        notes[noteCounter++] = new NoteInformation(39f, 4);
-        notes[noteCounter++] = new NoteInformation(39.5f, 1);
+        notes[noteCounter++] = new NoteInformation(37.5f, 0);
+        notes[noteCounter++] = new NoteInformation(37.5f, 4);
+        notes[noteCounter++] = new NoteInformation(38f, 1);
     }
 }

@@ -1227,7 +1227,7 @@ MonoBehaviour:
   noteSpawnScaleFloat: 0.5
   noteSpawnScaleY: 0.75
   noteSpawnScale: {x: 0, y: 0, z: 0}
-  beatsShownInAdvance: 1
+  beatsShownInAdvance: 3
   noteNames:
   - GREEN
   - RED
