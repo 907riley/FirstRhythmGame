@@ -9,10 +9,11 @@ public class Conductor : MonoBehaviour
      * SunnyDay is 100BPM
      */
 
-    public float songBpm;
-    public float secondsPerBeat;
-    public float songPosition;
+    public double songBpm;
+    public double secondsPerBeat;
+    public double songPosition;
     public float songPositionInBeats;
+    public long songPositionInTicks;
     // Seconds passed since song started
     public float dspSongTime = 0;
     // Offset to the first beat of the song in seconds (like for metadata if MP3)
@@ -82,24 +83,53 @@ public class Conductor : MonoBehaviour
         //fingerBoardHeight = gameManager.fingerBoardHeight;
         //removeHeight = gameManager.removeHeight;
         //noteNames = gameManager.noteNames;
-        Debug.Log(ml.MPTK_ReadMidiEvents());
+        List<MPTKEvent> evs = ml.MPTK_ReadMidiEvents();
+        
+        for (int i = 0; i < evs.Count; ++i)
+        {
+            Debug.Log(evs[i]);
+        }
+        songBpm = ml.MPTK_CurrentTempo;
+        songPositionInTicks = ml.MPTK_TickFirstNote;
+        mfp.OnEventNotesMidi.AddListener(NotesToPlay);
+        mfp.MPTK_Play();
 
-        SetupBeatsToPlay();
+        //SetupBeatsToPlay();
 
         // important for knowing when the note needs to pass the fingerbutton
         // since we want to continue LERPing the note pass the fingerboard
         noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
         //Debug.Log((spawnHeight - fingerBoardHeight) + " " + (spawnHeight - removeHeight));
         //Debug.Log((spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight));
-        musicSource = GetComponent<AudioSource>();
+        //musicSource = GetComponent<AudioSource>();
 
         // calculate the number of seconds in each beat
         secondsPerBeat = 60f / songBpm;
 
-        secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
+        //secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
         //Debug.Log(secondsShownInAdvance);
-        StartAudio();
+        //StartAudio();
     }
+
+
+    // This method will be called by the MIDI sequencer just before the notes
+    // are playing by the MIDI synthesizer (if 'Send To Synth' is enabled)
+    public void NotesToPlay(List<MPTKEvent> mptkEvents)
+    {
+        Debug.Log("Received " + mptkEvents.Count + " MIDI Events");
+        // Loop on each MIDI events
+        foreach (MPTKEvent mptkEvent in mptkEvents)
+        {
+            // Log if event is a note on
+            if (mptkEvent.Command == MPTKCommand.NoteOn)
+                Debug.Log($"Note on Tick:{mptkEvent.Tick}  Note:{mptkEvent.Value} Time:{mptkEvent.RealTime} millis  Velocity:{mptkEvent.Velocity}");
+
+            // Uncomment to display all MIDI events
+            // Debug.Log(mptkEvent.ToString());
+        }
+    }
+
+
 
     void Update()
     {
@@ -117,26 +147,31 @@ public class Conductor : MonoBehaviour
         //} 
 
         // determine seconds since song started
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime) * musicSource.pitch - offSet;
+        songPosition = mfp.MPTK_Position;
 
         // determine beats since song started
-        songPositionInBeats = songPosition / secondsPerBeat;
+        //songPositionInBeats = ;
 
-        if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
-        {
-            //Instantiate(music note)
-            noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
-                new Vector3(1, spawnHeight, 1),
-                new Vector3(1, removeHeight, 1),
-                beatsShownInAdvance,
-                notes[nextIndex].beat,
-                notes[nextIndex].noteIndex
-                );
+        //if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
+        //{
+        //    //Instantiate(music note)
+        //    noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
+        //        new Vector3(1, spawnHeight, 1),
+        //        new Vector3(1, removeHeight, 1),
+        //        beatsShownInAdvance,
+        //        notes[nextIndex].beat,
+        //        notes[nextIndex].noteIndex
+        //        );
 
-            // Init the fields of the music note
-            nextIndex++;
-        }
+        //    // Init the fields of the music note
+        //    nextIndex++;
+        //}
 
+    }
+
+    public void OnCurrentTick()
+    {
+        Debug.Log($"CURRENT TICK ON CLICK: {songPosition} CURRENT TIME ON CLICK: {mfp.MPTK_RealTime}");
     }
 
     void StartAudio()
