@@ -54,6 +54,7 @@
     <string>Faure - Requiem</string>
     <string>Final Fantasy - Village</string>
     <string>Fire Emblem 3 - Theme</string>
+    <string>HesaPirate</string>
     <string>Higelin Jacques - Champagne</string>
     <string>kakariko</string>
     <string>ladolcevita</string>
