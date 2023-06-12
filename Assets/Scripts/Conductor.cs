@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MidiPlayerTK;
 
 public class Conductor : MonoBehaviour
 {
@@ -58,6 +59,9 @@ public class Conductor : MonoBehaviour
     public float noteFallLerpPercent;
     private string[] noteNames;
 
+    public MidiFilePlayer mfp;
+    private MidiLoad ml;
+
     private void Awake()
     {
         spawnHeight = GameManager.Instance.spawnHeight;
@@ -65,6 +69,10 @@ public class Conductor : MonoBehaviour
         removeHeight = GameManager.Instance.removeHeight;
         noteNames = GameManager.Instance.noteNames;
         beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
+
+        mfp = FindAnyObjectByType<MidiFilePlayer>();
+        ml = mfp.MPTK_Load();
+
     }
 
     void Start()
@@ -74,7 +82,7 @@ public class Conductor : MonoBehaviour
         //fingerBoardHeight = gameManager.fingerBoardHeight;
         //removeHeight = gameManager.removeHeight;
         //noteNames = gameManager.noteNames;
-
+        Debug.Log(ml.MPTK_ReadMidiEvents());
 
         SetupBeatsToPlay();
 
