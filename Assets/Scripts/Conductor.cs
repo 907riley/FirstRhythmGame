@@ -58,6 +58,14 @@ public class Conductor : MonoBehaviour
     public float noteFallLerpPercent;
     private string[] noteNames;
 
+    private void Awake()
+    {
+        spawnHeight = GameManager.Instance.spawnHeight;
+        fingerBoardHeight = GameManager.Instance.fingerBoardHeight;
+        removeHeight = GameManager.Instance.removeHeight;
+        noteNames = GameManager.Instance.noteNames;
+        beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
+    }
 
     void Start()
     {
@@ -67,11 +75,6 @@ public class Conductor : MonoBehaviour
         //removeHeight = gameManager.removeHeight;
         //noteNames = gameManager.noteNames;
 
-        spawnHeight = GameManager.Instance.spawnHeight;
-        fingerBoardHeight = GameManager.Instance.fingerBoardHeight;
-        removeHeight = GameManager.Instance.removeHeight;
-        noteNames = GameManager.Instance.noteNames;
-        beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
 
         SetupBeatsToPlay();
 
