@@ -428,6 +428,7 @@ MonoBehaviour:
   noteSpawner: {fileID: 1410186816}
   gameManagerGo: {fileID: 0}
   noteFallLerpPercent: 0
+  mfp: {fileID: 0}
 --- !u!4 &536335657
 Transform:
   m_ObjectHideFlags: 0
@@ -1694,7 +1695,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   quantization: 0
-  playOnStart: 1
+  playOnStart: 0
   replayMidi: 1
   stopMidi: 0
   midiIsPlaying: 1
