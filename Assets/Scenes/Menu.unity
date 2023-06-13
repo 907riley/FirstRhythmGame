@@ -1223,7 +1223,7 @@ MonoBehaviour:
   spawnHeight: 3
   removeHeight: -6
   deadZoneYAxis: 0
-  spawnWidthPercent: 0.25
+  spawnWidthPercent: 0.75
   noteSpawnScaleFloat: 0.5
   noteSpawnScaleY: 0.75
   noteSpawnScale: {x: 0, y: 0, z: 0}

@@ -77,6 +77,7 @@ public class NoteSpawner : MonoBehaviour
     //    }
     //}
 
+    // TODO: RENAME EVERYTHING, REMOVE SPAWN AND REMOVE
     public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote, int noteIndex)
     {
 
@@ -103,7 +104,7 @@ public class NoteSpawner : MonoBehaviour
         //GameManager.Instance.OnNoteSpawned();
         ScoreManager.Instance.OnNoteSpawned();
         ++noteCounter;
-        Debug.Log(removeNoteXAxis[noteIndex]);
+        //Debug.Log(removeNoteXAxis[noteIndex]);
     }
 
     private void CalculateRemoveXPositions()

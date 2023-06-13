@@ -564,9 +564,10 @@ MonoBehaviour:
   timeSignatureDenominator: 0
   notesPerSecond: 0
   secondsPerMeasure: 0
-  measureCount: 0
+  beatCount: 0
   delayOfSong: 5
   noteSpawner: {fileID: 1410186816}
+  fretBoardDrawer: {fileID: 754847799}
   gameManagerGo: {fileID: 0}
   noteFallLerpPercent: 0
   mfp: {fileID: 0}
@@ -937,11 +938,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9119e6b37e5081d4ea6062e4ac8a58e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fullMeasureLineMaterial: {fileID: 2100000, guid: 6b3dea326d101aa45a5d0a92c8121406, type: 2}
   lineMaterial: {fileID: 2100000, guid: ea31c650f03f2c746afdbbe7ca098f42, type: 2}
   fretBoardMaterial: {fileID: 2100000, guid: 0e93ef7d1dee8214fbec350a19293737, type: 2}
   fingerBoardGo: {fileID: 1579239092}
   gameManagerGo: {fileID: 0}
   conductorGo: {fileID: 536335655}
+  fretboardScale: 0
 --- !u!4 &754847801
 Transform:
   m_ObjectHideFlags: 0

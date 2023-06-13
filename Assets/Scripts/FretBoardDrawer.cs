@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FretBoardDrawer : MonoBehaviour
 {
+    [SerializeField] Material fullMeasureLineMaterial;
     [SerializeField] Material lineMaterial;
     [SerializeField] Material fretBoardMaterial;
     [SerializeField] GameObject fingerBoardGo;
@@ -30,6 +31,10 @@ public class FretBoardDrawer : MonoBehaviour
     private MeshRenderer meshRenderer;
 
     private GameObject topLine;
+
+    // the scale of the bottom of the fretboard
+    // from the top of the fretboard
+    public float fretboardScale;
 
     // Start is called before the first frame update
     void Start()
@@ -71,15 +76,17 @@ public class FretBoardDrawer : MonoBehaviour
         topLine = new GameObject();
         topLine.name = $"top_line";
         DrawLine(topInbetweenLocations[0], topInbetweenLocations[^1], new Color(0, 0, 0, 1), topLine);
-        
+
+        fretboardScale =  Mathf.Abs(inbetweenFingerBoard[0].x - inbetweenFingerBoard[^1].x)/Mathf.Abs(topInbetweenLocations[0].x - topInbetweenLocations[^1].x);
     }
 
-    public void SpawnMeaureLine(int measureCount)
+    public void SpawnMeaureLine(int measureCount, bool measureLine)
     {
-        GameObject go = Instantiate(topLine);
+        GameObject go = Instantiate(topLine, transform);
         // set the parent to be the FretBoard so we can find the notes easier
         go.transform.parent = transform;
         go.name = $"measure_line{measureCount}";
+        go.GetComponent<LineRenderer>().useWorldSpace = false;
 
         // set the vars in the script
         MeasureLine measure = go.AddComponent<MeasureLine>();
@@ -87,10 +94,15 @@ public class FretBoardDrawer : MonoBehaviour
         //newNote.key = keyCodes[noteIndex];
         //newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, transform.position.y, 0);
 
-        measure.spawnPosition = measure.transform.position;
-        measure.removePosition = new Vector3(0, inbetweenFingerBoard[0].y, 0);
+        measure.spawnPosition = new Vector3(0, 0, 0);
+        measure.removePosition = new Vector3(0, GameManager.Instance.deadZoneYAxis, 0);
         measure.measureCount = measureCount;
         measure.conductor = conductor;
+        measure.fretboardScale = fretboardScale;
+        if (measureLine)
+        {
+            measure.GetComponent<LineRenderer>().material = fullMeasureLineMaterial;
+        }
 
     }
 

@@ -14,7 +14,7 @@ public class Note : MonoBehaviour
     public Vector3 removePosition;
     public float beatsShownInAdvance;
     public float beatOfThisNote;
-    public float songPositionInBeats;
+    public double songPosition;
 
     private Vector3 noteSpawnScale;
     private float noteSpawnScaleY;
@@ -52,8 +52,8 @@ public class Note : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        songPositionInBeats = conductor.songPositionInBeats;
-        
+        songPosition = conductor.dspSongTime - conductor.delayOfSong;
+        float percentOfTravel = (float)((conductor.secondsShownInAdvance - (beatOfThisNote - songPosition)) / conductor.secondsShownInAdvance * conductor.noteFallLerpPercent);
 
         // interpolate so that it is perfectly in sync
         // beatsShownInAdvance is like speed I think
@@ -61,22 +61,22 @@ public class Note : MonoBehaviour
         // when that is positive (beatOfThisNote > sonPositionInBeats)
         //      then we are still approaching the time to play it
         // when this is 0, then we have reached the note and its the remove point
-        if (beatOfThisNote <= songPositionInBeats + beatsShownInAdvance)
+        if (beatOfThisNote <= songPosition + conductor.secondsShownInAdvance)
         {
             //Debug.Log("Lerp t: " + (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent + " fallpercent: " + conductor.noteFallLerpPercent);
             transform.position = Vector3.Lerp(
                 spawnPosition,
                 removePosition,
-                (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent
+                percentOfTravel
                 );
 
             // Scaling the notes for depth
-            float percentOfTravel = ((beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance);
-            transform.localScale = new Vector3
+            transform.localScale = Vector3.Lerp
                 (
-                noteSpawnScale.x + percentOfTravel * (1 - noteSpawnScale.x),
-                noteSpawnScale.y + percentOfTravel * (noteSpawnScaleY - noteSpawnScale.y),
-                noteSpawnScale.z);
+                noteSpawnScale,
+                new Vector3(1, noteSpawnScaleY, 1),
+                percentOfTravel
+                );
 
             //outerNote.GetComponent<Transform>().localScale = new Vector3(percentOfTravel + 0.5f, percentOfTravel * .75f + 0.5f, percentOfTravel);
 

@@ -43,20 +43,20 @@ public class Conductor : MonoBehaviour
     // the index of the next note to spawn
     int nextIndex = 0;
     public float beatsShownInAdvance;
-    public float secondsShownInAdvance;
+    public double secondsShownInAdvance;
     public bool songPlaying = false;
     public double timeSignatureNumerator;
     public double timeSignatureDenominator;
     public double notesPerSecond;
     public double secondsPerMeasure;
     // count of measures played
-    public int measureCount = 0;
+    public int beatCount = 0;
     // delay of the start of playing the music in beats
     // DELAY MUST BE GREATER THAN BEATSSHOWNINADVANCE
     public int delayOfSong = 5; // seconds
 
     [SerializeField] GameObject noteSpawner;
-
+    [SerializeField] GameObject fretBoardDrawer;
     [SerializeField] GameObject gameManagerGo;
     private GameManager gameManager;
 
@@ -104,7 +104,7 @@ public class Conductor : MonoBehaviour
         mfp.OnEventNotesMidi.AddListener(NotesToPlay);
         
 
-        Debug.Log($"SongBPM: {songBpm} or {mfp.MPTK_Tempo} TimeSignature: {timeSignatureNumerator} / {timeSignatureDenominator}");
+        //Debug.Log($"SongBPM: {songBpm} or {mfp.MPTK_Tempo} TimeSignature: {timeSignatureNumerator} / {timeSignatureDenominator}");
         // PRINTING MIDI EVENTS
         //List<MPTKEvent> evs = mfp.MPTK_ReadMidiEvents();
 
@@ -129,9 +129,82 @@ public class Conductor : MonoBehaviour
         notesPerSecond = songBpm / 60f;
         secondsPerMeasure = timeSignatureNumerator * secondsPerBeat;
 
-        //secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
+        secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
         //Debug.Log(secondsShownInAdvance);
         //StartAudio();
+    }
+
+
+    void Update()
+    {
+        // get the accurate time since game started - time game loaded
+        dspSongTime = AudioSettings.dspTime - initDspSongTime;
+        // check if song is playing
+        // if not playing
+        if (!mfp.MPTK_IsPlaying && songPlaying)
+        {
+            Debug.Log($"DONE: {dspSongTime - delayOfSong}");
+        } else if (!mfp.MPTK_IsPlaying) {
+
+            // check if time to play
+            if (dspSongTime >= delayOfSong)
+            {
+                mfp.MPTK_Play();
+                songPlaying = true;
+            }
+        } else
+        {
+            // determine seconds since song started
+            songPosition = mfp.MPTK_Position;
+        }
+
+
+        // spawn lines on fretboard
+        if (secondsPerBeat * beatCount <= dspSongTime + secondsShownInAdvance)
+        {
+            Debug.Log($"Spawning Beat for : {dspSongTime}");
+            //Debug.Log($"On beat {(timeSignatureNumerator * secondsPerBeat) * beatCount}");
+            fretBoardDrawer.GetComponent<FretBoardDrawer>().SpawnMeaureLine(beatCount, beatCount % timeSignatureNumerator == 0);
+            beatCount++;
+        }
+        // determine beats since song started
+        //songPositionInBeats = ;
+        //Debug.Log($"NextNote Time : {noteList[nextIndex].RealTime / 1000}");
+        if (nextIndex < noteList.Count && noteList[nextIndex].RealTime / 1000 <= dspSongTime + secondsShownInAdvance - delayOfSong)
+        {
+            Debug.Log($"Spawning Note for : {dspSongTime}");
+            noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
+                new Vector3(0, spawnHeight, 1),
+                new Vector3(0, removeHeight, 1),
+                beatsShownInAdvance,
+                noteList[nextIndex].RealTime / 1000,
+                0
+                );
+
+            nextIndex++;
+        }
+
+        // spawn notes
+        //if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
+        //{
+        //    //Instantiate(music note)
+        //    noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
+        //        new Vector3(1, spawnHeight, 1),
+        //        new Vector3(1, removeHeight, 1),
+        //        beatsShownInAdvance,
+        //        notes[nextIndex].beat,
+        //        notes[nextIndex].noteIndex
+        //        );
+
+        //    // Init the fields of the music note
+        //    nextIndex++;
+        //}
+
+    }
+
+    private void CalculateBeats()
+    {
+
     }
 
 
@@ -145,7 +218,8 @@ public class Conductor : MonoBehaviour
         {
             // Log if event is a note on
             if (mptkEvent.Command == MPTKCommand.NoteOn)
-                Debug.Log($"Note on Tick:{mptkEvent.Tick}  Note:{mptkEvent.Value} Time:{mptkEvent.RealTime} millis  Velocity:{mptkEvent.Velocity}");
+                //Debug.Log($"Note on Tick:{mptkEvent.Tick}  Note:{mptkEvent.Value} Time:{mptkEvent.RealTime} millis  Velocity:{mptkEvent.Velocity}");
+                Debug.Log($"Note Actually Played at Time: {mptkEvent.RealTime / 1000} and songTime is {dspSongTime - delayOfSong}");
 
             // Uncomment to display all MIDI events
             // Debug.Log(mptkEvent.ToString());
@@ -176,59 +250,6 @@ public class Conductor : MonoBehaviour
                 //Debug.Log(mptkEvent.ToString());
             }
         }
-
-    }
-
-
-
-    void Update()
-    {
-        // get the accurate time since game started - time game loaded
-        dspSongTime = AudioSettings.dspTime - initDspSongTime;
-        // check if song is playing
-        // if not playing
-        if (!mfp.MPTK_IsPlaying && songPlaying)
-        {
-            Debug.Log($"DONE: {dspSongTime - delayOfSong}");
-        } else if (!mfp.MPTK_IsPlaying) {
-
-            // check if time to play
-            if (dspSongTime >= delayOfSong)
-            {
-                mfp.MPTK_Play();
-                songPlaying = true;
-            }
-        } else
-        {
-            // determine seconds since song started
-            songPosition = mfp.MPTK_Position;
-        }
-
-        Debug.Log($"Current Song Position: {dspSongTime - delayOfSong}");
-
-        if (secondsPerMeasure * measureCount <= dspSongTime)
-        {
-            Debug.Log($"On beat {(timeSignatureNumerator * secondsPerBeat) * measureCount}");
-            measureCount++;
-        }
-        // determine beats since song started
-        //songPositionInBeats = ;
-
-        // spawn notes
-        //if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
-        //{
-        //    //Instantiate(music note)
-        //    noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
-        //        new Vector3(1, spawnHeight, 1),
-        //        new Vector3(1, removeHeight, 1),
-        //        beatsShownInAdvance,
-        //        notes[nextIndex].beat,
-        //        notes[nextIndex].noteIndex
-        //        );
-
-        //    // Init the fields of the music note
-        //    nextIndex++;
-        //}
 
     }
 
