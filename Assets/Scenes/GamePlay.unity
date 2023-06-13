@@ -553,12 +553,18 @@ MonoBehaviour:
   songPosition: 0
   songPositionInBeats: 0
   songPositionInTicks: 0
+  initDspSongTime: 0
   dspSongTime: 0
   offSet: 0
   musicSource: {fileID: 536335658}
   beatsShownInAdvance: 4
   secondsShownInAdvance: 0
   songPlaying: 0
+  timeSignatureNumerator: 0
+  timeSignatureDenominator: 0
+  notesPerSecond: 0
+  secondsPerMeasure: 0
+  measureCount: 0
   delayOfSong: 5
   noteSpawner: {fileID: 1410186816}
   gameManagerGo: {fileID: 0}
@@ -935,6 +941,7 @@ MonoBehaviour:
   fretBoardMaterial: {fileID: 2100000, guid: 0e93ef7d1dee8214fbec350a19293737, type: 2}
   fingerBoardGo: {fileID: 1579239092}
   gameManagerGo: {fileID: 0}
+  conductorGo: {fileID: 536335655}
 --- !u!4 &754847801
 Transform:
   m_ObjectHideFlags: 0
@@ -1910,14 +1917,14 @@ MonoBehaviour:
   showDefault: 1
   spatialize: 0
   histoDspSize: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  midiNameToPlay: HesaPirate
+  midiNameToPlay: Ode_to_Joy_Easy_variation
   MPTK_StartPlayAtFirstNote: 1
   ModeStopPlayLabel:
   - Stop No Waiting
   - Stop When All Voices Are Released
   - Stop When All Voices Are Ended
   MPTK_ModeStopVoice: 1
-  midiIndexToPlay: 43
+  midiIndexToPlay: 69
   speed: 1
   durationEditorModeOnly: 
   playTimeEditorModeOnly: 
