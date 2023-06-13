@@ -53,7 +53,7 @@ public class Note : MonoBehaviour
     void Update()
     {
         songPosition = conductor.dspSongTime - conductor.delayOfSong;
-        float percentOfTravel = (float)((conductor.secondsShownInAdvance - (beatOfThisNote - songPosition)) / conductor.secondsShownInAdvance * conductor.noteFallLerpPercent);
+        float percentOfTravel = (float)((conductor.millisecondsInAdvance - (beatOfThisNote - songPosition)) / conductor.millisecondsInAdvance * conductor.noteFallLerpPercent);
 
         // interpolate so that it is perfectly in sync
         // beatsShownInAdvance is like speed I think
@@ -61,7 +61,7 @@ public class Note : MonoBehaviour
         // when that is positive (beatOfThisNote > sonPositionInBeats)
         //      then we are still approaching the time to play it
         // when this is 0, then we have reached the note and its the remove point
-        if (beatOfThisNote <= songPosition + conductor.secondsShownInAdvance)
+        if (beatOfThisNote <= songPosition + conductor.millisecondsInAdvance)
         {
             //Debug.Log("Lerp t: " + (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent + " fallpercent: " + conductor.noteFallLerpPercent);
             transform.position = Vector3.Lerp(

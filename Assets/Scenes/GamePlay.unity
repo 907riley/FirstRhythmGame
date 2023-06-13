@@ -548,7 +548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88128d4818e4b16449552efcbc168693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  songBpm: 100
+  songBpm: 0
   secondsPerBeat: 0
   songPosition: 0
   songPositionInBeats: 0
@@ -556,8 +556,8 @@ MonoBehaviour:
   initDspSongTime: 0
   dspSongTime: 0
   offSet: 0
-  musicSource: {fileID: 536335658}
-  beatsShownInAdvance: 4
+  musicSource: {fileID: 0}
+  beatsShownInAdvance: 0
   secondsShownInAdvance: 0
   songPlaying: 0
   timeSignatureNumerator: 0
@@ -565,12 +565,14 @@ MonoBehaviour:
   notesPerSecond: 0
   secondsPerMeasure: 0
   beatCount: 0
-  delayOfSong: 5
+  delayOfSong: 5000
+  millisecondsPerBeat: 0
+  millisecondsInAdvance: 0
   noteSpawner: {fileID: 1410186816}
   fretBoardDrawer: {fileID: 754847799}
   gameManagerGo: {fileID: 0}
   noteFallLerpPercent: 0
-  mfp: {fileID: 0}
+  mfp: {fileID: 1667388400}
 --- !u!4 &536335657
 Transform:
   m_ObjectHideFlags: 0

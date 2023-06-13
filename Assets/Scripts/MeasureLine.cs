@@ -25,9 +25,9 @@ public class MeasureLine : MonoBehaviour
     void Update()
     {
         songPosition = conductor.dspSongTime;
-        float percentOfTravel = (float)((conductor.secondsShownInAdvance - ((conductor.secondsPerBeat * measureCount) - songPosition)) / conductor.secondsShownInAdvance * conductor.noteFallLerpPercent);
+        float percentOfTravel = (float)((conductor.millisecondsInAdvance - ((conductor.millisecondsPerBeat * measureCount) - songPosition)) / conductor.millisecondsInAdvance * conductor.noteFallLerpPercent);
 
-        if (conductor.secondsPerBeat * measureCount <= songPosition + conductor.secondsShownInAdvance)
+        if (conductor.millisecondsPerBeat * measureCount <= songPosition + conductor.millisecondsInAdvance)
         {
             transform.position = Vector3.Lerp(
                 spawnPosition,
