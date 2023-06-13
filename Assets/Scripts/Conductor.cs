@@ -14,8 +14,9 @@ public class Conductor : MonoBehaviour
     public double songPosition;
     public float songPositionInBeats;
     public long songPositionInTicks;
+    public double initDspSongTime = 0;
     // Seconds passed since song started
-    public float dspSongTime = 0;
+    public double dspSongTime = 0;
     // Offset to the first beat of the song in seconds (like for metadata if MP3)
     public float offSet = 0f;
     public AudioSource musicSource;
@@ -44,9 +45,13 @@ public class Conductor : MonoBehaviour
     public float beatsShownInAdvance;
     public float secondsShownInAdvance;
     public bool songPlaying = false;
+    public double timeSignatureNumerator;
+    public double timeSignatureDenominator;
+    // count of measures played
+    public int measureCount = 0;
     // delay of the start of playing the music in beats
     // DELAY MUST BE GREATER THAN BEATSSHOWNINADVANCE
-    public int delayOfSong = 5;
+    public int delayOfSong = 5; // seconds
 
     [SerializeField] GameObject noteSpawner;
 
@@ -61,6 +66,7 @@ public class Conductor : MonoBehaviour
     private string[] noteNames;
 
     public MidiFilePlayer mfp;
+    List<MPTKEvent> noteList;
     private MidiLoad ml;
 
     private void Awake()
@@ -72,9 +78,12 @@ public class Conductor : MonoBehaviour
         beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
 
         mfp = FindAnyObjectByType<MidiFilePlayer>();
-        ml = mfp.MPTK_Load();
-
     }
+
+    //void StartAudio()
+    //{
+
+    //}
 
     void Start()
     {
@@ -83,16 +92,27 @@ public class Conductor : MonoBehaviour
         //fingerBoardHeight = gameManager.fingerBoardHeight;
         //removeHeight = gameManager.removeHeight;
         //noteNames = gameManager.noteNames;
-        List<MPTKEvent> evs = ml.MPTK_ReadMidiEvents();
-        
-        for (int i = 0; i < evs.Count; ++i)
+
+        GetMidiNoteList();
+        ml = mfp.MPTK_Load();
+        timeSignatureNumerator = ml.MPTK_TimeSigNumerator;
+        timeSignatureDenominator = ml.MPTK_NumberQuarterBeat;
+        songBpm = mfp.MPTK_Tempo;
+        mfp.MPTK_StartPlayAtFirstNote = true;
+
+        // PRINTING MIDI EVENTS
+        List<MPTKEvent> evs = mfp.MPTK_ReadMidiEvents();
+
+        for (int i = 0; i < 50; ++i)
         {
             Debug.Log(evs[i]);
         }
-        songBpm = ml.MPTK_CurrentTempo;
-        songPositionInTicks = ml.MPTK_TickFirstNote;
+
+        Debug.Log("Tempo: " + songBpm);
+        //songPositionInTicks = ml.MPTK_TickFirstNote;
         mfp.OnEventNotesMidi.AddListener(NotesToPlay);
-        mfp.MPTK_Play();
+        // get time as the game loads in before the song starts
+        initDspSongTime = AudioSettings.dspTime;
 
         //SetupBeatsToPlay();
 
@@ -105,6 +125,7 @@ public class Conductor : MonoBehaviour
 
         // calculate the number of seconds in each beat
         secondsPerBeat = 60f / songBpm;
+        Debug.Log($"Seconds Per Beat {secondsPerBeat}");
 
         //secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
         //Debug.Log(secondsShownInAdvance);
@@ -129,29 +150,63 @@ public class Conductor : MonoBehaviour
         }
     }
 
+    public void GetMidiNoteList()
+    {
+        noteList = new List<MPTKEvent>();
+
+        // Open and load the Midi
+        if (mfp.MPTK_Load() != null)
+        {
+            // Read midi event to a List<>
+            List<MPTKEvent> mptkEvents = mfp.MPTK_ReadMidiEvents();
+
+            // Loop on each Midi events
+            foreach (MPTKEvent mptkEvent in mptkEvents)
+            {
+                // Log if event is a note on
+                if (mptkEvent.Command == MPTKCommand.NoteOn)
+                {
+                    //Debug.Log($"Note on Time:{mptkEvent.RealTime} millisecond  Note:{mptkEvent.Value}  Duration:{mptkEvent.Duration} millisecond  Velocity:{mptkEvent.Velocity}");
+                    noteList.Add(mptkEvent);
+                }
+
+                // Uncomment to display all Midi events
+                //Debug.Log(mptkEvent.ToString());
+            }
+        }
+
+    }
+
 
 
     void Update()
     {
-        //if (!songPlaying)
+        // get the accurate time since game started - time game loaded
+        dspSongTime = AudioSettings.dspTime - initDspSongTime;
+        // check if song is playing
+        // if not playing
+        if (!mfp.MPTK_IsPlaying)
+        {
+            // check if time to play
+            if (dspSongTime >= delayOfSong)
+            {
+                mfp.MPTK_Play();
+            }
+        } else
+        {
+            // determine seconds since song started
+            songPosition = mfp.MPTK_Position;
+        }
+
+        Debug.Log($"Current Song Position: {dspSongTime - delayOfSong}");
+        //if (dspSongTime * measureCount)
         //{
-        //    // wait delayOfSong beats for the song to start
-        //    if (timer >= delayOfSong * secondsPerBeat)
-        //    {
-        //        StartAudio();
-        //    }
-        //    else
-        //    {
-        //        timer += Time.deltaTime;
-        //    }
-        //} 
-
-        // determine seconds since song started
-        songPosition = mfp.MPTK_Position;
-
+        //    Debug.Log("On beat");
+        //}
         // determine beats since song started
         //songPositionInBeats = ;
 
+        // spawn notes
         //if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
         //{
         //    //Instantiate(music note)
@@ -174,15 +229,7 @@ public class Conductor : MonoBehaviour
         Debug.Log($"CURRENT TICK ON CLICK: {songPosition} CURRENT TIME ON CLICK: {mfp.MPTK_RealTime}");
     }
 
-    void StartAudio()
-    {
-        // Record time when music starts
-        dspSongTime = (float)AudioSettings.dspTime;
 
-        musicSource.Play();
-        songPlaying = true;
-        //timer = 0;
-    }
 
     // don't have to clutter the rest of the file
     void SetupBeatsToPlay()
