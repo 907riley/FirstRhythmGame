@@ -99,6 +99,8 @@ public class Conductor : MonoBehaviour
         timeSignatureDenominator = ml.MPTK_NumberQuarterBeat;
         songBpm = mfp.MPTK_Tempo;
         mfp.MPTK_StartPlayAtFirstNote = true;
+        mfp.OnEventNotesMidi.AddListener(NotesToPlay);
+
 
         // PRINTING MIDI EVENTS
         List<MPTKEvent> evs = mfp.MPTK_ReadMidiEvents();
@@ -108,9 +110,7 @@ public class Conductor : MonoBehaviour
             Debug.Log(evs[i]);
         }
 
-        Debug.Log("Tempo: " + songBpm);
-        //songPositionInTicks = ml.MPTK_TickFirstNote;
-        mfp.OnEventNotesMidi.AddListener(NotesToPlay);
+
         // get time as the game loads in before the song starts
         initDspSongTime = AudioSettings.dspTime;
 
@@ -119,9 +119,6 @@ public class Conductor : MonoBehaviour
         // important for knowing when the note needs to pass the fingerbutton
         // since we want to continue LERPing the note pass the fingerboard
         noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
-        //Debug.Log((spawnHeight - fingerBoardHeight) + " " + (spawnHeight - removeHeight));
-        //Debug.Log((spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight));
-        //musicSource = GetComponent<AudioSource>();
 
         // calculate the number of seconds in each beat
         secondsPerBeat = 60f / songBpm;
