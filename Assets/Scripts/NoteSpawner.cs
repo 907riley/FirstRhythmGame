@@ -88,14 +88,21 @@ public class NoteSpawner : MonoBehaviour
 
         // set the vars in the script
         Note newNote = go.GetComponent<Note>();
-        newNote.color = colors[noteIndex];
-        newNote.key = keyCodes[noteIndex];
         newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, transform.position.y, 0);
         newNote.removePosition = new Vector3(removeNoteXAxis[noteIndex], removePosition.y, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;
         newNote.conductorGo = conductorGo;
         newNote.gameManagerGo = gameManagerGo;
+
+        if (GameManager.Instance.numberOfFingerButtons == 4) {
+            newNote.color = colors[noteIndex + 1];
+            newNote.key = keyCodes[noteIndex + 1];
+        } else
+        {
+            newNote.color = colors[noteIndex];
+            newNote.key = keyCodes[noteIndex];
+        }
 
         // add note object to the currentNotesList
         //currentNotes[noteIndex].Add(go);
