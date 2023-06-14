@@ -24,7 +24,7 @@ public class MeasureLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        songPosition = conductor.dspSongTime;
+        songPosition = conductor.dspSongTime - conductor.delayOfSong;
         float percentOfTravel = (float)((conductor.millisecondsInAdvance - ((conductor.millisecondsPerBeat * measureCount) - songPosition)) / conductor.millisecondsInAdvance * conductor.noteFallLerpPercent);
 
         if (conductor.millisecondsPerBeat * measureCount <= songPosition + conductor.millisecondsInAdvance)

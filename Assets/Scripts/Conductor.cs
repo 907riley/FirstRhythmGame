@@ -17,8 +17,8 @@ public class Conductor : MonoBehaviour
     public double initDspSongTime = 0;
     // Seconds passed since song started
     public double dspSongTime = 0;
-    // Offset to the first beat of the song in seconds (like for metadata if MP3)
-    public float offSet = 0f;
+    // Offset to correct the diff in unitys timing and midi player
+    public double offSet = 0f;
     public AudioSource musicSource;
     // SONG SPECIFIC STUFF
 
@@ -159,7 +159,8 @@ public class Conductor : MonoBehaviour
         }
 
         // get the accurate time since game started - time game loaded
-        dspSongTime = AudioSettings.dspTime * 1000 - initDspSongTime;
+        dspSongTime = AudioSettings.dspTime * 1000 - initDspSongTime - offSet;
+
         if (dspTimePrev == dspSongTime)
         {
             dspSongTime += Time.unscaledDeltaTime;
@@ -169,7 +170,7 @@ public class Conductor : MonoBehaviour
         }
 
         // spawn lines on fretboard
-        if (millisecondsPerBeat * beatCount <= dspSongTime + millisecondsInAdvance)
+        if (millisecondsPerBeat * beatCount <= dspSongTime + millisecondsInAdvance - delayOfSong)
         {
             Debug.Log($"Spawning Beat for : {dspSongTime}");
             //Debug.Log($"On beat {(timeSignatureNumerator * secondsPerBeat) * beatCount}");
@@ -181,15 +182,24 @@ public class Conductor : MonoBehaviour
         //Debug.Log($"NextNote Time : {noteList[nextIndex].RealTime / 1000}");
         if (nextIndex < noteList.Count && noteList[nextIndex].RealTime <= dspSongTime + millisecondsInAdvance - delayOfSong)
         {
-            Debug.Log($"Spawning Note for : {dspSongTime}");
-            noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
-                new Vector3(0, spawnHeight, 1),
-                new Vector3(0, removeHeight, 1),
-                beatsShownInAdvance,
-                noteList[nextIndex].RealTime,
-                0
-                );
-
+            // only want to spawn notes that are on direct beat
+            //if (noteList[nextIndex].RealTime % millisecondsPerBeat/2 == 0)
+            //{
+                Debug.Log($"Spawning Note for : {dspSongTime}");
+                noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
+                    new Vector3(0, spawnHeight, 1),
+                    new Vector3(0, removeHeight, 1),
+                    beatsShownInAdvance,
+                    noteList[nextIndex].RealTime,
+                    IdentifyNoteType(noteList[nextIndex].Value)
+                    );
+            //}
+            // resetting back to the midi player timing every 50 notes to reduce the speed up
+            if (nextIndex > 0 && nextIndex % 50 == 0)
+            {
+                offSet = (dspSongTime - delayOfSong + millisecondsInAdvance) - noteList[nextIndex].RealTime;
+                Debug.Log($" *************************************** Incrementing Offset to {offSet} by {(dspSongTime - delayOfSong + millisecondsInAdvance)} - {noteList[nextIndex].RealTime}");
+            }
             nextIndex++;
         }
 
@@ -267,6 +277,31 @@ public class Conductor : MonoBehaviour
         Debug.Log($"CURRENT TICK ON CLICK: {songPosition} CURRENT TIME ON CLICK: {mfp.MPTK_RealTime}");
     }
 
+    public int IdentifyNoteType(int noteNumber)
+    {
+        if (noteNumber > 127 || noteNumber < 0)
+        {
+            return -1;
+        } else
+        {
+            
+            int modNumber = noteNumber % 12;
+            //Debug.Log($"NoteNumber modded: {modNumber}");
+            if (modNumber > 8)
+            {
+                return 3;
+            } else if (modNumber > 5)
+            {
+                return 2;
+            } else if (modNumber > 2)
+            {
+                return 1;
+            } else
+            {
+                return 0;
+            }
+        }
+    }
 
 
     // don't have to clutter the rest of the file
