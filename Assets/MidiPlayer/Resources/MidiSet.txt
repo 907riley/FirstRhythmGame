@@ -54,6 +54,7 @@
     <string>Faure - Requiem</string>
     <string>Final Fantasy - Village</string>
     <string>Fire Emblem 3 - Theme</string>
+    <string>HesaPirate</string>
     <string>Higelin Jacques - Champagne</string>
     <string>kakariko</string>
     <string>ladolcevita</string>
@@ -79,6 +80,7 @@
     <string>MPTK_Example 0001</string>
     <string>MPTK_Example 0021</string>
     <string>Nirvana - Smells Like Teen Spirit</string>
+    <string>Ode_to_Joy_Easy_variation</string>
     <string>Palm Bricks</string>
     <string>Patti Smith - Because the Night</string>
     <string>Pergolesi - Stabat Mater</string>
@@ -91,6 +93,7 @@
     <string>Satie - Trois Gnossiennes</string>
     <string>Sibelius - Finlandia</string>
     <string>Sibelius - Romance</string>
+    <string>Swallowtail_Jig</string>
     <string>Take 5 - by Paul Desmond</string>
     <string>Tchaikovsky - Flower Waltz</string>
     <string>Tetris2</string>

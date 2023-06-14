@@ -101,14 +101,14 @@ public class FingerButton : MonoBehaviour
             Note note = child.GetComponent<Note>();
             if (note.key == key)
             {
-                //Debug.Log("Current Beat OnClick: " + conductor.GetComponent<Conductor>().songPositionInBeats);
                 //Debug.Log("Note Beat: " + note.name + " " + note.beatOfThisNote);
                 //if (Vector3.Distance(transform.position, child.position) < 0.25)
                 //{
                 //    Destroy(child.gameObject);
                 //    return true;
                 //} 
-                if (Mathf.Abs(conductor.songPositionInBeats - note.beatOfThisNote) <= noteHitRange)
+                Debug.Log($"Current songposition on click {conductor.dspSongTime - conductor.delayOfSong} compared to note on RealTime: {note.beatOfThisNote}");
+                if (Mathf.Abs((float)(conductor.dspSongTime - conductor.delayOfSong - note.beatOfThisNote)) <= noteHitRange)
                 {
                     Destroy(child.gameObject);
                     return true;

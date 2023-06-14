@@ -6,7 +6,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     // ----- FINGERBOARD INFO -----
-    public int numberOfFingerButtons = 5;
+    public int numberOfFingerButtons = 6;
 
     // vector positions of fingerbuttons
     public Vector3[] positions;
@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     // colors of fingerbuttons
     public Color[] colors = {
+        new Color(0.87988f, 0, 1f, 1f),
         new Color(0.2074137f, 0.745283f, 0.3176185f, 1),
         new Color(0.7830189f, 0.1514329f, 0.1514329f, 1),
         new Color(0.8553239f, 0.8584906f, 0.2065237f, 1),
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     // keycodes for fingerbuttons
     public KeyCode[] keyCodes =
     {
+        KeyCode.S,
         KeyCode.D,
         KeyCode.F,
         KeyCode.J,
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
     };
     
     // error allowed on note hits (beat diff)
-    public float noteHitRange = 0.5f;
+    public float noteHitRange = 150f;
 
     // height of fingerboard
     public float fingerBoardHeight = -4f;
@@ -45,19 +47,20 @@ public class GameManager : MonoBehaviour
     public float removeHeight = -6f;
     public float deadZoneYAxis;
     // percent of the size of the fretboard width for the spawn
-    public float spawnWidthPercent = 0.25f;
+    public float spawnWidthPercent = 0.75f;
 
     // amount to scale the notes down at the start
-    public float noteSpawnScaleFloat = 0.5f;
+    public float noteSpawnScaleFloat = 0.75f;
     // amount to scale the note down in the Y axis to make it oblong
     public float noteSpawnScaleY = 0.75f;
     public Vector3 noteSpawnScale;
 
     // basically speed of notes
-    public float beatsShownInAdvance = 2f;
+    public float beatsShownInAdvance = 4f;
 
     public string[] noteNames = 
     {
+        "FUSCHIA",
         "GREEN",
         "RED",
         "YELLOW",

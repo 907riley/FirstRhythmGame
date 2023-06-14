@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FretBoardDrawer : MonoBehaviour
 {
+    [SerializeField] Material fullMeasureLineMaterial;
     [SerializeField] Material lineMaterial;
     [SerializeField] Material fretBoardMaterial;
     [SerializeField] GameObject fingerBoardGo;
@@ -11,6 +12,10 @@ public class FretBoardDrawer : MonoBehaviour
 
     [SerializeField] GameObject gameManagerGo;
     private GameManager gameManager;
+
+    [SerializeField] GameObject conductorGo;
+    private Conductor conductor;
+
     // the dots inbetween the fingerButtons where the lines should go for lanes
     private Vector3[] inbetweenFingerBoard;
     // how far the lines go vertically, for triangles
@@ -25,11 +30,18 @@ public class FretBoardDrawer : MonoBehaviour
     private MeshFilter fretMeshFilter;
     private MeshRenderer meshRenderer;
 
+    private GameObject topLine;
+
+    // the scale of the bottom of the fretboard
+    // from the top of the fretboard
+    public float fretboardScale;
+
     // Start is called before the first frame update
     void Start()
     {
         fingerBoard = fingerBoardGo.GetComponent<FingerBoard>();
         //gameManager = gameManagerGo.GetComponent<GameManager>();
+        conductor = conductorGo.GetComponent<Conductor>();
 
         transform.position = new Vector3(0, GameManager.Instance.spawnHeight, 0);
 
@@ -57,11 +69,41 @@ public class FretBoardDrawer : MonoBehaviour
         DrawFretBackground();
         for (int i = 0; i < inbetweenFingerBoard.Length; ++i)
         {
-            DrawLine(topInbetweenLocations[i], inbetweenFingerBoard[i], new Color(0.6f, 0.7f, 0.2f, 1));
+            GameObject line = new GameObject();
+            line.name = $"vertical_line_{i}";
+            DrawLine(topInbetweenLocations[i], inbetweenFingerBoard[i], new Color(0.6f, 0.7f, 0.2f, 1), line);
+        }
+        topLine = new GameObject();
+        topLine.name = $"top_line";
+        DrawLine(topInbetweenLocations[0], topInbetweenLocations[^1], new Color(0, 0, 0, 1), topLine);
+
+        fretboardScale =  Mathf.Abs(inbetweenFingerBoard[0].x - inbetweenFingerBoard[^1].x)/Mathf.Abs(topInbetweenLocations[0].x - topInbetweenLocations[^1].x);
+    }
+
+    public void SpawnMeaureLine(int measureCount, bool measureLine)
+    {
+        GameObject go = Instantiate(topLine, transform);
+        // set the parent to be the FretBoard so we can find the notes easier
+        go.transform.parent = transform;
+        go.name = $"measure_line{measureCount}";
+        go.GetComponent<LineRenderer>().useWorldSpace = false;
+
+        // set the vars in the script
+        MeasureLine measure = go.AddComponent<MeasureLine>();
+        //newNote.color = colors[noteIndex];
+        //newNote.key = keyCodes[noteIndex];
+        //newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, transform.position.y, 0);
+
+        measure.spawnPosition = new Vector3(0, 0, 0);
+        measure.removePosition = new Vector3(0, GameManager.Instance.deadZoneYAxis, 0);
+        measure.measureCount = measureCount;
+        measure.conductor = conductor;
+        measure.fretboardScale = fretboardScale;
+        if (measureLine)
+        {
+            measure.GetComponent<LineRenderer>().material = fullMeasureLineMaterial;
         }
 
-        DrawLine(topInbetweenLocations[0], topInbetweenLocations[^1], new Color(0, 0, 0, 1));
-        
     }
 
     void FindTopInbetweenLocation()
@@ -121,9 +163,8 @@ public class FretBoardDrawer : MonoBehaviour
         }
     }
 
-    void DrawLine(Vector3 startPosition, Vector3 endPosition, Color color)
+    void DrawLine(Vector3 startPosition, Vector3 endPosition, Color color, GameObject line)
     {
-        GameObject line = new GameObject();
         line.transform.parent = transform;
         line.transform.position = startPosition;
         line.AddComponent<LineRenderer>();
