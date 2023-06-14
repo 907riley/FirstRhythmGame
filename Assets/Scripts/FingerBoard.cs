@@ -52,17 +52,28 @@ public class FingerBoard : MonoBehaviour
             FingerButton fingerButtonSelf = fingerButtons[i].GetComponent<FingerButton>();
 
             fingerButtonSpriteRenderer.sortingOrder = 1;
-            fingerButtonSpriteRenderer.color = colors[i];
+
             fingerButtonSpriteRenderer.sprite = fingerButtonSprite;
             fingerButtonTransform.position = positions[i];
             fingerButtonTransform.localScale = new Vector3(1, 0.75f, 1);
             fingerButtonTransform.transform.parent = transform;
-            fingerButtonSelf.color = colors[i];
-            fingerButtonSelf.key = keyCodes[i];
+
             fingerButtonSelf.noteSpawnerGo = noteSpawnerGo;
             fingerButtonSelf.conductorGo = conductorGo;
             //fingerButtonSelf.gameManagerGo = gameManagerGo;
             fingerButtonSelf.circleSprite = fingerButtonSprite;
+
+            if (numberOfFingerButtons == 4)
+            {
+                fingerButtonSpriteRenderer.color = colors[i + 1];
+                fingerButtonSelf.color = colors[i + 1];
+                fingerButtonSelf.key = keyCodes[i + 1];
+            } else
+            {
+                fingerButtonSpriteRenderer.color = colors[i];
+                fingerButtonSelf.color = colors[i];
+                fingerButtonSelf.key = keyCodes[i];
+            }
         }
     }
 
