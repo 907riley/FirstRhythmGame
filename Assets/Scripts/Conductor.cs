@@ -73,6 +73,8 @@ public class Conductor : MonoBehaviour
     List<MPTKEvent> noteList;
     private MidiLoad ml;
     private double dspTimePrev = 0;
+    private delegate int IdentifyNoteDel(int noteValue);
+    private IdentifyNoteDel identifyNote;
 
     private void Awake()
     {
@@ -107,6 +109,14 @@ public class Conductor : MonoBehaviour
         songBpm = ml.MPTK_InitialTempo;
         mfp.MPTK_StartPlayAtFirstNote = true;
         mfp.OnEventNotesMidi.AddListener(NotesToPlay);
+
+        if (GameManager.Instance.numberOfFingerButtons == 6)
+        {
+            identifyNote = new IdentifyNoteDel(IdentifyNoteTypeSixFingers);
+        } else if (GameManager.Instance.numberOfFingerButtons == 4)
+        {
+            identifyNote = new IdentifyNoteDel(IdentifyNoteTypeFourFingers);
+        }
         
 
         //Debug.Log($"SongBPM: {songBpm} or {mfp.MPTK_Tempo} TimeSignature: {timeSignatureNumerator} / {timeSignatureDenominator}");
@@ -191,7 +201,7 @@ public class Conductor : MonoBehaviour
                     new Vector3(0, removeHeight, 1),
                     beatsShownInAdvance,
                     noteList[nextIndex].RealTime,
-                    IdentifyNoteType(noteList[nextIndex].Value)
+                    identifyNote(noteList[nextIndex].Value)
                     );
             //}
             // resetting back to the midi player timing every 50 notes to reduce the speed up
@@ -277,7 +287,7 @@ public class Conductor : MonoBehaviour
         Debug.Log($"CURRENT TICK ON CLICK: {songPosition} CURRENT TIME ON CLICK: {mfp.MPTK_RealTime}");
     }
 
-    public int IdentifyNoteType(int noteNumber)
+    public int IdentifyNoteTypeFourFingers(int noteNumber)
     {
         if (noteNumber > 127 || noteNumber < 0)
         {
@@ -297,6 +307,44 @@ public class Conductor : MonoBehaviour
             {
                 return 1;
             } else
+            {
+                return 0;
+            }
+        }
+    }
+
+    public int IdentifyNoteTypeSixFingers(int noteNumber)
+    {
+        if (noteNumber > 127 || noteNumber < 0)
+        {
+            return -1;
+        }
+        else
+        {
+
+            int modNumber = noteNumber % 12;
+            //Debug.Log($"NoteNumber modded: {modNumber}");
+            if (modNumber > 9)
+            {
+                return 5;
+            }
+            else if (modNumber > 7)
+            {
+                return 4;
+            }
+            else if (modNumber > 5)
+            {
+                return 3;
+            }
+            else if (modNumber > 3)
+            {
+                return 2;
+            }
+            else if (modNumber > 1)
+            {
+                return 1;
+            }
+            else
             {
                 return 0;
             }

@@ -1207,28 +1207,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29e2519e9ad6f04d9b6f4e1c485035a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfFingerButtons: 4
+  numberOfFingerButtons: 6
   positions: []
   fingerButtonXAxis: []
   noteSpacingXAxis: 2
   colors:
+  - {r: 0.87988, g: 0, b: 1, a: 1}
   - {r: 0.2074137, g: 0.745283, b: 0.3176185, a: 1}
   - {r: 0.7830189, g: 0.1514329, b: 0.1514329, a: 1}
   - {r: 0.8553239, g: 0.8584906, b: 0.2065237, a: 1}
   - {r: 0.1213955, g: 0.2862892, b: 0.8301887, a: 1}
   - {r: 1, g: 0.4744691, b: 0.1745283, a: 1}
-  keyCodes: 64000000660000006a0000006b0000006c000000
-  noteHitRange: 100
+  keyCodes: 7300000064000000660000006a0000006b0000006c000000
+  noteHitRange: 150
   fingerBoardHeight: -4
   spawnHeight: 3
   removeHeight: -6
   deadZoneYAxis: 0
-  spawnWidthPercent: 0.75
-  noteSpawnScaleFloat: 0.75
+  spawnWidthPercent: 1
+  noteSpawnScaleFloat: 1
   noteSpawnScaleY: 0.75
   noteSpawnScale: {x: 0, y: 0, z: 0}
-  beatsShownInAdvance: 3
+  beatsShownInAdvance: 4
   noteNames:
+  - FUSCHIA
   - GREEN
   - RED
   - YELLOW
