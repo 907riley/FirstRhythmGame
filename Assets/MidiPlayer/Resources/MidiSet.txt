@@ -54,6 +54,7 @@
     <string>Faure - Requiem</string>
     <string>Final Fantasy - Village</string>
     <string>Fire Emblem 3 - Theme</string>
+    <string>Happy_Birthday_To_You_C_Major</string>
     <string>HesaPirate</string>
     <string>Higelin Jacques - Champagne</string>
     <string>kakariko</string>

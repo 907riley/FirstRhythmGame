@@ -87,8 +87,7 @@ public class Conductor : MonoBehaviour
         beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
 
         mfp = FindAnyObjectByType<MidiFilePlayer>();
-
-
+        mfp.MPTK_MidiName = GameManager.Instance.selectedSongName;
     }
 
     //void StartAudio()

@@ -128,5 +128,6 @@ public class ScoreManager : MonoBehaviour
         missClicks = 0;
         multiplier = 1;
         currentScore = 0;
+        GameManager.Instance.selectedSongName = "";
     }
 }

@@ -86,6 +86,8 @@ public class GameManager : MonoBehaviour
 
     public Color outerNoteColor = new Color(0, 0, 0, 1);
 
+    public string selectedSongName;
+
     // ----- GAME OBJECTS TO SET TRANSFORM POSITIONS -----
     [SerializeField] GameObject noteSpawnerGo;
     [SerializeField] GameObject fingerBoardGo;

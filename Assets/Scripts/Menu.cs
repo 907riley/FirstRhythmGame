@@ -8,7 +8,7 @@ public class Menu : MonoBehaviour
     public void OnPlayClick()
     {
         // Load the GamePlay scene
-        StartCoroutine(LoadAsyncScene("GamePlay"));
+        StartCoroutine(LoadAsyncScene("SongSelection"));
     }
 
     public void OnSettingsClick()
