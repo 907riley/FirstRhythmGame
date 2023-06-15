@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour
     public int notesHit = 0;
     public int notesMissed = 0;
     public int currentStreak = 0;
+    public int highestStreak = 0;
     public int missClicks = 0;
 
     public int multiplier = 1;
@@ -59,6 +60,7 @@ public class ScoreManager : MonoBehaviour
         ++notesHit;
         ++currentStreak;
 
+        CheckHighestStreak();
         CalculateMuliplier();
         CalculateScore();
 
@@ -87,6 +89,14 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    private void CheckHighestStreak()
+    {
+        if (currentStreak > highestStreak)
+        {
+            highestStreak = currentStreak;
+        }
+    }
+
     private void CalculateScore()
     {
         currentScore += deafaultPoints * multiplier;
@@ -106,5 +116,17 @@ public class ScoreManager : MonoBehaviour
     private void SetStreak()
     {
         streakText.text = $"x{multiplier}";
+    }
+
+    public void ResetStats()
+    {
+        notesSpawned = 0;
+        notesHit = 0;
+        notesMissed = 0;
+        currentStreak = 0;
+        highestStreak = 0;
+        missClicks = 0;
+        multiplier = 1;
+        currentScore = 0;
     }
 }

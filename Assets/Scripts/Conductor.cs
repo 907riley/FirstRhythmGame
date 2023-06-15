@@ -61,6 +61,7 @@ public class Conductor : MonoBehaviour
     [SerializeField] GameObject fretBoardDrawer;
     [SerializeField] GameObject gameManagerGo;
     private GameManager gameManager;
+    [SerializeField] GameObject endGamePanel;
 
     // NOTE SPECIFIC STUFF
     float spawnHeight;
@@ -73,6 +74,7 @@ public class Conductor : MonoBehaviour
     List<MPTKEvent> noteList;
     private MidiLoad ml;
     private double dspTimePrev = 0;
+
     private delegate int IdentifyNoteDel(int noteValue);
     private IdentifyNoteDel identifyNote;
 
@@ -157,7 +159,7 @@ public class Conductor : MonoBehaviour
         // if not playing
         if (!mfp.MPTK_IsPlaying && songPlaying)
         {
-            Debug.Log($"DONE: {dspSongTime - delayOfSong}");
+            EndOfGame();
         } else if (!mfp.MPTK_IsPlaying) {
 
             // check if time to play
@@ -231,9 +233,9 @@ public class Conductor : MonoBehaviour
 
     }
 
-    private void CalculateBeats()
+    private void EndOfGame()
     {
-
+        endGamePanel.SetActive(true);
     }
 
 
