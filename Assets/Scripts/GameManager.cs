@@ -84,6 +84,8 @@ public class GameManager : MonoBehaviour
     //    NoteNames.BLUE
     //};
 
+    public float noteFallLerpPercent;
+
     public Color outerNoteColor = new Color(0, 0, 0, 1);
 
     public string selectedSongName;
@@ -116,6 +118,10 @@ public class GameManager : MonoBehaviour
 
         deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
         noteSpawnScale = new Vector3(noteSpawnScaleFloat, noteSpawnScaleFloat * noteSpawnScaleY, 1f);
+
+        // important for knowing when the note needs to pass the fingerbutton
+        // since we want to continue LERPing the note pass the fingerboard
+        noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
 
         CalculateFingerButtonXAxis();
         CreatePositions();

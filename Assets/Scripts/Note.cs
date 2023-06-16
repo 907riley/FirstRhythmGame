@@ -53,7 +53,7 @@ public class Note : MonoBehaviour
     void Update()
     {
         songPosition = conductor.dspSongTime - conductor.delayOfSong;
-        float percentOfTravel = (float)((conductor.millisecondsInAdvance - (beatOfThisNote - songPosition)) / conductor.millisecondsInAdvance * conductor.noteFallLerpPercent);
+        float percentOfTravel = (float)((conductor.millisecondsInAdvance - (beatOfThisNote - songPosition)) / conductor.millisecondsInAdvance * GameManager.Instance.noteFallLerpPercent);
 
         // interpolate so that it is perfectly in sync
         // beatsShownInAdvance is like speed I think

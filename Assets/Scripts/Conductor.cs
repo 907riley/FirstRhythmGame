@@ -5,112 +5,85 @@ using MidiPlayerTK;
 
 public class Conductor : MonoBehaviour
 {
-    /*
-     * SunnyDay is 100BPM
-     */
-
+    // beats per minute of song
     public double songBpm;
+
+    // seconds per beat of song
     public double secondsPerBeat;
-    public double songPosition;
-    public float songPositionInBeats;
-    public long songPositionInTicks;
-    public double initDspSongTime = 0;
-    // Seconds passed since song started
+
+    // miliseconds per beat
+    public double millisecondsPerBeat;
+
+    // song position in beats
+    public int songPositionInBeats = 0;
+
+    // the initial AudioSettings.dspTime time in milliseconds
+    public double initDspSongTime;
+
+    // Seconds passed since song started in milliseconds
     public double dspSongTime = 0;
-    // Offset to correct the diff in unitys timing and midi player
+
+    // Offset to correct the diff in unitys timing and midi player in milliseconds
     public double offSet = 0f;
-    public AudioSource musicSource;
-    // SONG SPECIFIC STUFF
 
-    // bpm of song
-    //float bpm = 100f;
-    // keep all note-positions-in-beats for the song
-    // beat position starts at 0
-    public struct NoteInformation
-    {
-        public NoteInformation(float beat, int noteIndex)
-        {
-            this.beat = beat;
-            this.noteIndex = noteIndex;
-        }
-
-        public float beat;
-        public int noteIndex;
-    }
-
-    NoteInformation[] notes;
-    //float[] notes;
     // the index of the next note to spawn
     int nextIndex = 0;
+
+    // the number of beats to show in advance
     public float beatsShownInAdvance;
+
+    // seconds shown in advance
     public double secondsShownInAdvance;
-    public bool songPlaying = false;
-    public double timeSignatureNumerator;
-    public double timeSignatureDenominator;
-    public double notesPerSecond;
-    public double secondsPerMeasure;
-    // count of measures played
-    public int beatCount = 0;
-    // delay of the start of playing the music in beats
-    // DELAY MUST BE GREATER THAN BEATSSHOWNINADVANCE
-    public int delayOfSong = 5000; // millis
-    public double millisecondsPerBeat;
+
+    // milliseconds shown in advance
     public double millisecondsInAdvance;
 
+    // bool to determine if song is playing (helpful for knowing when song is done)
+    public bool songPlaying = false;
+
+    // the time signature numerator
+    public double timeSignatureNumerator;
+
+    // the time signature denominator
+    public double timeSignatureDenominator;
+
+    // delay of the start of playing the music in beats in milliseconds, idealy greater than millisecondsInAdvance
+    public int delayOfSong = 5000; 
+
+    // GameObjects defined in the interpreter
     [SerializeField] GameObject noteSpawner;
     [SerializeField] GameObject fretBoardDrawer;
-    [SerializeField] GameObject gameManagerGo;
-    private GameManager gameManager;
     [SerializeField] GameObject endGamePanel;
 
-    // NOTE SPECIFIC STUFF
-    float spawnHeight;
-    float fingerBoardHeight;
-    float removeHeight;
-    public float noteFallLerpPercent;
-    private string[] noteNames;
-
-    public MidiFilePlayer mfp;
+    // object to play the midi song
+    [SerializeField] MidiFilePlayer mfp;
+    // list of notes that need to be played
     List<MPTKEvent> noteList;
+    // the midi load from the song that gives us time sig and tempo info
     private MidiLoad ml;
-    private double dspTimePrev = 0;
 
+    // function variable to let us define the 6 or 4 finger button function for dividing up notes
     private delegate int IdentifyNoteDel(int noteValue);
     private IdentifyNoteDel identifyNote;
 
-    private void Awake()
-    {
-        spawnHeight = GameManager.Instance.spawnHeight;
-        fingerBoardHeight = GameManager.Instance.fingerBoardHeight;
-        removeHeight = GameManager.Instance.removeHeight;
-        noteNames = GameManager.Instance.noteNames;
-        beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
-
-        mfp = FindAnyObjectByType<MidiFilePlayer>();
-        mfp.MPTK_MidiName = GameManager.Instance.selectedSongName;
-    }
-
-    //void StartAudio()
-    //{
-
-    //}
 
     void Start()
     {
-        
-        //gameManager = gameManagerGo.GetComponent<GameManager>();
-        //spawnHeight = gameManager.spawnHeight;
-        //fingerBoardHeight = gameManager.fingerBoardHeight;
-        //removeHeight = gameManager.removeHeight;
-        //noteNames = gameManager.noteNames;
+        beatsShownInAdvance = GameManager.Instance.beatsShownInAdvance;
+        mfp.MPTK_MidiName = GameManager.Instance.selectedSongName;
+
+        // get all the midi info
         GetMidiNoteList();
         ml = mfp.MPTK_Load();
         timeSignatureNumerator = ml.MPTK_TimeSigNumerator;
         timeSignatureDenominator = ml.MPTK_NumberQuarterBeat;
         songBpm = ml.MPTK_InitialTempo;
         mfp.MPTK_StartPlayAtFirstNote = true;
+        // mainly for debugging, notes to play only debug.logs
         mfp.OnEventNotesMidi.AddListener(NotesToPlay);
 
+        // determine the function to use for dividing up notes
+        // TODO: add error if identifyNote returns -1
         if (GameManager.Instance.numberOfFingerButtons == 6)
         {
             identifyNote = new IdentifyNoteDel(IdentifyNoteTypeSixFingers);
@@ -118,34 +91,14 @@ public class Conductor : MonoBehaviour
         {
             identifyNote = new IdentifyNoteDel(IdentifyNoteTypeFourFingers);
         }
-        
 
-        //Debug.Log($"SongBPM: {songBpm} or {mfp.MPTK_Tempo} TimeSignature: {timeSignatureNumerator} / {timeSignatureDenominator}");
-        // PRINTING MIDI EVENTS
-        //List<MPTKEvent> evs = mfp.MPTK_ReadMidiEvents();
 
-        //for (int i = 0; i < 50; ++i)
-        //{
-        //    Debug.Log(evs[i]);
-        //}
-
-        //SetupBeatsToPlay();
-
-        // important for knowing when the note needs to pass the fingerbutton
-        // since we want to continue LERPing the note pass the fingerboard
-        noteFallLerpPercent = (spawnHeight - fingerBoardHeight) / (spawnHeight - removeHeight);
-
-        // calculate the number of seconds in each beat
+        // some calculations need later on
         secondsPerBeat = 60 / songBpm;
-        Debug.Log($"Seconds Per Beat {secondsPerBeat}");
-        notesPerSecond = songBpm / 60f;
-        secondsPerMeasure = timeSignatureNumerator * secondsPerBeat;
         millisecondsPerBeat = secondsPerBeat * 1000;
 
         secondsShownInAdvance = beatsShownInAdvance * secondsPerBeat;
         millisecondsInAdvance = secondsShownInAdvance * 1000;
-        //Debug.Log(secondsShownInAdvance);
-        //StartAudio();
 
         // get time as the game loads in before the song starts
         initDspSongTime = AudioSettings.dspTime * 1000;
@@ -168,70 +121,41 @@ public class Conductor : MonoBehaviour
             }
         }
 
-        // get the accurate time since game started - time game loaded
+        // get the accurate time since game started - time game loaded - unity time inaccuracy
         dspSongTime = AudioSettings.dspTime * 1000 - initDspSongTime - offSet;
         Debug.Log($"Current Time: {dspSongTime}");
 
-        //if (dspTimePrev == dspSongTime)
-        //{
-        //    dspSongTime += Time.unscaledDeltaTime;
-        //} else
-        //{
-        //    dspTimePrev = dspSongTime;
-        //}
 
         // spawn lines on fretboard
-        if (millisecondsPerBeat * beatCount <= dspSongTime + millisecondsInAdvance - delayOfSong)
+        if (millisecondsPerBeat * songPositionInBeats <= dspSongTime + millisecondsInAdvance - delayOfSong)
         {
             Debug.Log($"Spawning Beat for : {dspSongTime}");
-            //Debug.Log($"On beat {(timeSignatureNumerator * secondsPerBeat) * beatCount}");
-            fretBoardDrawer.GetComponent<FretBoardDrawer>().SpawnMeaureLine(beatCount, beatCount % timeSignatureNumerator == 0);
-            beatCount++;
+            fretBoardDrawer.GetComponent<FretBoardDrawer>().SpawnMeaureLine(songPositionInBeats, songPositionInBeats % timeSignatureNumerator == 0);
+            songPositionInBeats++;
         }
-        // determine beats since song started
-        //songPositionInBeats = ;
-        //Debug.Log($"NextNote Time : {noteList[nextIndex].RealTime / 1000}");
+        
+        // spawn notes
         if (nextIndex < noteList.Count && noteList[nextIndex].RealTime <= dspSongTime + millisecondsInAdvance - delayOfSong)
         {
-            // only want to spawn notes that are on direct beat
-            //if (noteList[nextIndex].RealTime % millisecondsPerBeat/2 == 0)
-            //{
-                Debug.Log($"Spawning Note for : {dspSongTime}");
-                noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
-                    new Vector3(0, spawnHeight, 1),
-                    new Vector3(0, removeHeight, 1),
-                    beatsShownInAdvance,
-                    noteList[nextIndex].RealTime,
-                    identifyNote(noteList[nextIndex].Value)
-                    );
-            //}
+            Debug.Log($"Spawning Note for : {dspSongTime}");
+            noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
+                beatsShownInAdvance,
+                noteList[nextIndex].RealTime,
+                identifyNote(noteList[nextIndex].Value)
+                );
             // resetting back to the midi player timing every note to reduce the speed up
             if (nextIndex >= 0)
             {
                 offSet = (dspSongTime - delayOfSong + millisecondsInAdvance) - noteList[nextIndex].RealTime;
-                Debug.Log($" *************************************** Incrementing Offset to {offSet} by {(dspSongTime - delayOfSong + millisecondsInAdvance)} - {noteList[nextIndex].RealTime}");
+                Debug.Log($" *** Incrementing Offset to {offSet} by {(dspSongTime - delayOfSong + millisecondsInAdvance)} - {noteList[nextIndex].RealTime}");
             }
             nextIndex++;
         }
-
-        // spawn notes
-        //if (nextIndex < notes.Length && notes[nextIndex].beat <= songPositionInBeats + beatsShownInAdvance)
-        //{
-        //    //Instantiate(music note)
-        //    noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
-        //        new Vector3(1, spawnHeight, 1),
-        //        new Vector3(1, removeHeight, 1),
-        //        beatsShownInAdvance,
-        //        notes[nextIndex].beat,
-        //        notes[nextIndex].noteIndex
-        //        );
-
-        //    // Init the fields of the music note
-        //    nextIndex++;
-        //}
-
     }
 
+    /// <summary>
+    /// End of game method, incase we need to add more to this made it a method.
+    /// </summary>
     private void EndOfGame()
     {
         endGamePanel.SetActive(true);
@@ -256,6 +180,12 @@ public class Conductor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the list of NoteOn events from the MPTKEvent list from load
+    /// TODO: Get notes such that:
+    ///         1. they don't land on top of each other
+    ///         2. they are only on beats (or half beats, quarter beats, etc)
+    /// </summary>
     public void GetMidiNoteList()
     {
         noteList = new List<MPTKEvent>();
@@ -269,7 +199,7 @@ public class Conductor : MonoBehaviour
             // Loop on each Midi events
             foreach (MPTKEvent mptkEvent in mptkEvents)
             {
-                // Log if event is a note on
+                // Add if event is a note on
                 if (mptkEvent.Command == MPTKCommand.NoteOn)
                 {
                     //Debug.Log($"Note on Time:{mptkEvent.RealTime} millisecond  Note:{mptkEvent.Value}  Duration:{mptkEvent.Duration} millisecond  Velocity:{mptkEvent.Velocity}");
@@ -283,11 +213,12 @@ public class Conductor : MonoBehaviour
 
     }
 
-    public void OnCurrentTick()
-    {
-        Debug.Log($"CURRENT TICK ON CLICK: {songPosition} CURRENT TIME ON CLICK: {mfp.MPTK_RealTime}");
-    }
-
+    /// <summary>
+    /// Dividing notes into fingerbuttons based on the note value
+    /// For four fingerbuttons
+    /// </summary>
+    /// <param name="noteNumber"></param>
+    /// <returns> the fingerboard index to use for the note </returns>
     public int IdentifyNoteTypeFourFingers(int noteNumber)
     {
         if (noteNumber > 127 || noteNumber < 0)
@@ -314,6 +245,12 @@ public class Conductor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Dividing notes into fingerbuttons based on the note value
+    /// For six fingerbuttons
+    /// </summary>
+    /// <param name="noteNumber"></param>
+    /// <returns> the fingerboard index to use for the note </returns>
     public int IdentifyNoteTypeSixFingers(int noteNumber)
     {
         if (noteNumber > 127 || noteNumber < 0)
@@ -322,9 +259,7 @@ public class Conductor : MonoBehaviour
         }
         else
         {
-
             int modNumber = noteNumber % 12;
-            //Debug.Log($"NoteNumber modded: {modNumber}");
             if (modNumber > 9)
             {
                 return 5;
@@ -350,92 +285,5 @@ public class Conductor : MonoBehaviour
                 return 0;
             }
         }
-    }
-
-
-    // don't have to clutter the rest of the file
-    void SetupBeatsToPlay()
-    {
-        notes = new NoteInformation[52];
-
-        int noteCounter = 0;
-
-        // 4 GREENS
-        notes[noteCounter++] = new NoteInformation(5f, 0);
-        notes[noteCounter++] = new NoteInformation(6f, 0);
-        notes[noteCounter++] = new NoteInformation(7f, 0);
-        notes[noteCounter++] = new NoteInformation(8f, 0);
-
-        // 4 REDS
-        notes[noteCounter++] = new NoteInformation(9f, 1);
-        notes[noteCounter++] = new NoteInformation(10f, 1);
-        notes[noteCounter++] = new NoteInformation(11f, 1);
-        notes[noteCounter++] = new NoteInformation(12f, 1);
-
-        // 4 GREENS
-        notes[noteCounter++] = new NoteInformation(13f, 0);
-        notes[noteCounter++] = new NoteInformation(14f, 0);
-        notes[noteCounter++] = new NoteInformation(15f, 0);
-        notes[noteCounter++] = new NoteInformation(16f, 0);
-
-        // 4 REDS
-        notes[noteCounter++] = new NoteInformation(17f, 1);
-        notes[noteCounter++] = new NoteInformation(18f, 1);
-        notes[noteCounter++] = new NoteInformation(19f, 1);
-        notes[noteCounter++] = new NoteInformation(20f, 1); // 16
-
-        // alternating GREENS and YELLOWS
-        notes[noteCounter++] = new NoteInformation(21f, 0);
-        notes[noteCounter++] = new NoteInformation(21.5f, 2);
-        notes[noteCounter++] = new NoteInformation(22f, 0);
-        notes[noteCounter++] = new NoteInformation(22.5f, 2);
-
-        notes[noteCounter++] = new NoteInformation(23f, 0);
-        notes[noteCounter++] = new NoteInformation(23.5f, 2);
-        notes[noteCounter++] = new NoteInformation(24f, 0);
-        notes[noteCounter++] = new NoteInformation(24.5f, 2);
-
-        notes[noteCounter++] = new NoteInformation(25f, 0);
-
-        // alternating REDS and BLUES
-        notes[noteCounter++] = new NoteInformation(25.5f, 3);
-        notes[noteCounter++] = new NoteInformation(26f, 1);
-        notes[noteCounter++] = new NoteInformation(26.5f, 3);
-
-        notes[noteCounter++] = new NoteInformation(27f, 1);
-        notes[noteCounter++] = new NoteInformation(27.5f, 3);
-        notes[noteCounter++] = new NoteInformation(28f, 1);
-        notes[noteCounter++] = new NoteInformation(28.5f, 3); // 32
-
-        notes[noteCounter++] = new NoteInformation(29f, 1);
-        notes[noteCounter++] = new NoteInformation(29.5f, 3);
-
-        // alternating GREENS and YELLOWS
-        notes[noteCounter++] = new NoteInformation(30f, 0);
-        notes[noteCounter++] = new NoteInformation(30.5f, 2);
-
-        notes[noteCounter++] = new NoteInformation(31f, 0);
-        notes[noteCounter++] = new NoteInformation(31.5f, 2);
-        notes[noteCounter++] = new NoteInformation(32f, 0);
-        notes[noteCounter++] = new NoteInformation(32.5f, 2);
-
-        notes[noteCounter++] = new NoteInformation(33f, 0);
-
-        // alternating REDS and BLUES
-        notes[noteCounter++] = new NoteInformation(33.5f, 3);
-        notes[noteCounter++] = new NoteInformation(34f, 1);
-        notes[noteCounter++] = new NoteInformation(34.5f, 3);
-
-        notes[noteCounter++] = new NoteInformation(35f, 1);
-        notes[noteCounter++] = new NoteInformation(35.5f, 3);
-        notes[noteCounter++] = new NoteInformation(36f, 1);
-        notes[noteCounter++] = new NoteInformation(36.5f, 3); // 48
-
-        notes[noteCounter++] = new NoteInformation(37f, 1);
-
-        // alternating GREEN + YELLOW and RED
-        notes[noteCounter++] = new NoteInformation(37.5f, 0);
-        notes[noteCounter++] = new NoteInformation(37.5f, 4);
-        notes[noteCounter++] = new NoteInformation(38f, 1);
     }
 }

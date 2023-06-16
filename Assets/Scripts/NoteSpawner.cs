@@ -78,10 +78,10 @@ public class NoteSpawner : MonoBehaviour
     //}
 
     // TODO: RENAME EVERYTHING, REMOVE SPAWN AND REMOVE
-    public void SpawnNote(Vector3 spawnPosition, Vector3 removePosition, float beatsShownInAdvance, float beatsOfThisNote, int noteIndex)
+    public void SpawnNote(float beatsShownInAdvance, float beatsOfThisNote, int noteIndex)
     {
 
-        GameObject go = Instantiate(Note, new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, spawnPosition.y, 0), transform.rotation);
+        GameObject go = Instantiate(Note, new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, GameManager.Instance.spawnHeight, 0), transform.rotation);
         // set the parent to be the NoteSpawner so we can find the notes easier
         go.transform.parent = transform;
         go.name = noteNames[noteIndex] + "_" + noteCounter;
@@ -89,7 +89,7 @@ public class NoteSpawner : MonoBehaviour
         // set the vars in the script
         Note newNote = go.GetComponent<Note>();
         newNote.spawnPosition = new Vector3(fingerButtonXAxis[noteIndex] * spawnWidthPercent, transform.position.y, 0);
-        newNote.removePosition = new Vector3(removeNoteXAxis[noteIndex], removePosition.y, 0);
+        newNote.removePosition = new Vector3(removeNoteXAxis[noteIndex], GameManager.Instance.removeHeight, 0);
         newNote.beatsShownInAdvance = beatsShownInAdvance;
         newNote.beatOfThisNote = beatsOfThisNote;
         newNote.conductorGo = conductorGo;
