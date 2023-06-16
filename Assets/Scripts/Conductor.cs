@@ -97,7 +97,7 @@ public class Conductor : MonoBehaviour
 
     void Start()
     {
-
+        
         //gameManager = gameManagerGo.GetComponent<GameManager>();
         //spawnHeight = gameManager.spawnHeight;
         //fingerBoardHeight = gameManager.fingerBoardHeight;
@@ -172,13 +172,13 @@ public class Conductor : MonoBehaviour
         // get the accurate time since game started - time game loaded
         dspSongTime = AudioSettings.dspTime * 1000 - initDspSongTime - offSet;
 
-        if (dspTimePrev == dspSongTime)
-        {
-            dspSongTime += Time.unscaledDeltaTime;
-        } else
-        {
-            dspTimePrev = dspSongTime;
-        }
+        //if (dspTimePrev == dspSongTime)
+        //{
+        //    dspSongTime += Time.unscaledDeltaTime;
+        //} else
+        //{
+        //    dspTimePrev = dspSongTime;
+        //}
 
         // spawn lines on fretboard
         if (millisecondsPerBeat * beatCount <= dspSongTime + millisecondsInAdvance - delayOfSong)
@@ -205,10 +205,10 @@ public class Conductor : MonoBehaviour
                     identifyNote(noteList[nextIndex].Value)
                     );
             //}
-            // resetting back to the midi player timing every 50 notes to reduce the speed up
-            if (nextIndex > 0 && nextIndex % 50 == 0)
+            // resetting back to the midi player timing every note to reduce the speed up
+            if (nextIndex >= 0)
             {
-                offSet = (dspSongTime - delayOfSong + millisecondsInAdvance) - noteList[nextIndex].RealTime;
+                offSet += (dspSongTime - delayOfSong + millisecondsInAdvance) - noteList[nextIndex].RealTime;
                 Debug.Log($" *************************************** Incrementing Offset to {offSet} by {(dspSongTime - delayOfSong + millisecondsInAdvance)} - {noteList[nextIndex].RealTime}");
             }
             nextIndex++;
