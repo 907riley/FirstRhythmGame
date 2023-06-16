@@ -14,10 +14,8 @@ public class MeasureLine : MonoBehaviour
 
     public Conductor conductor;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        //Debug.Log($"Start: {spawnPosition.y} Remove: {removePosition.y} MeasureCount: {measureCount}");
         startScale = transform.localScale;
     }
 
@@ -32,14 +30,12 @@ public class MeasureLine : MonoBehaviour
             transform.position = Vector3.Lerp(
                 spawnPosition,
                 removePosition,
-                //(float)((songPosition - (conductor.secondsPerBeat * measureCount)) / conductor.secondsPerBeat * conductor.noteFallLerpPercent) / GameManager.Instance.beatsShownInAdvance
                 percentOfTravel
                 );
             //Debug.Log($"MEASURE LINE {transform.name}: {(float)((songPosition - (conductor.secondsPerBeat * measureCount)) / conductor.secondsPerBeat)}")
         }
 
         // Scaling the notes for depth
-        //float percentOfTravel = (float)((songPosition - (conductor.secondsPerBeat * measureCount)) / conductor.secondsPerBeat * conductor.noteFallLerpPercent) / GameManager.Instance.beatsShownInAdvance;
         transform.localScale = Vector3.Lerp
             (
             startScale,
@@ -47,16 +43,10 @@ public class MeasureLine : MonoBehaviour
             percentOfTravel
             );
 
-        // Remove notes if within 0.1 of remove distance
+        // Remove measureline if within 0.1 of remove distance
         if (Vector3.Distance(removePosition, transform.position) < 0.1)
         {
-            //Debug.Log("Missed: " + name);
-            //gameManager.OnMissedNote();
-            //GameManager.Instance.OnMissedNote();
-            //ScoreManager.Instance.OnMissedNote();
             Destroy(gameObject);
         }
     }
-
-
 }
