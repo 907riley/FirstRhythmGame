@@ -153,7 +153,6 @@ public class Conductor : MonoBehaviour
 
     void Update()
     {
-        Debug.Log($"Current Time: {dspSongTime}");
         // check if song is playing
         // if not playing
         if (!mfp.MPTK_IsPlaying && songPlaying)
@@ -171,6 +170,7 @@ public class Conductor : MonoBehaviour
 
         // get the accurate time since game started - time game loaded
         dspSongTime = AudioSettings.dspTime * 1000 - initDspSongTime - offSet;
+        Debug.Log($"Current Time: {dspSongTime}");
 
         //if (dspTimePrev == dspSongTime)
         //{
@@ -208,7 +208,7 @@ public class Conductor : MonoBehaviour
             // resetting back to the midi player timing every note to reduce the speed up
             if (nextIndex >= 0)
             {
-                offSet += (dspSongTime - delayOfSong + millisecondsInAdvance) - noteList[nextIndex].RealTime;
+                offSet = (dspSongTime - delayOfSong + millisecondsInAdvance) - noteList[nextIndex].RealTime;
                 Debug.Log($" *************************************** Incrementing Offset to {offSet} by {(dspSongTime - delayOfSong + millisecondsInAdvance)} - {noteList[nextIndex].RealTime}");
             }
             nextIndex++;
@@ -249,7 +249,7 @@ public class Conductor : MonoBehaviour
             // Log if event is a note on
             if (mptkEvent.Command == MPTKCommand.NoteOn)
                 //Debug.Log($"Note on Tick:{mptkEvent.Tick}  Note:{mptkEvent.Value} Time:{mptkEvent.RealTime} millis  Velocity:{mptkEvent.Velocity}");
-                Debug.Log($"Note Actually Played at Time: {mptkEvent.RealTime} and songTime is {dspSongTime - delayOfSong}");
+                Debug.Log($"*** Note Actually Played at Time: {mptkEvent.RealTime} and songTime is {dspSongTime - delayOfSong} or difference is {mptkEvent.RealTime - (dspSongTime - delayOfSong)} (negative means dsp is faster)");
 
             // Uncomment to display all MIDI events
             // Debug.Log(mptkEvent.ToString());
