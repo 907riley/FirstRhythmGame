@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class MeasureLine : MonoBehaviour
 {
+    // the current songPosition obtained from the conductor class
     public double songPosition;
 
+    // all information passed by the FretBoardDrawer
     public Vector3 spawnPosition;
     public Vector3 removePosition;
     public int measureCount;
     public float fretboardScale;
-    private Vector3 startScale;
-
     public Conductor conductor;
+
+    // the scale the measureline starts at
+    private Vector3 startScale;
 
     private void Awake()
     {

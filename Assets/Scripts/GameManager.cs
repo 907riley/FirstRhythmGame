@@ -86,6 +86,8 @@ public class GameManager : MonoBehaviour
 
     public float noteFallLerpPercent;
 
+    public float noteVerticalTravelDistance;
+
     public Color outerNoteColor = new Color(0, 0, 0, 1);
 
     public string selectedSongName;
@@ -108,13 +110,8 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    void Start()
-    {
-        //noteSpawnerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
-        //fingerBoardGo.GetComponent<Transform>().position = new Vector3(0, fingerBoardHeight, 0);
-        //fretBoardDrawerGo.GetComponent<Transform>().position = new Vector3(0, spawnHeight, 0);
+        noteVerticalTravelDistance = Mathf.Abs(spawnHeight - fingerBoardHeight) + 2;
 
         deadZoneYAxis = -Mathf.Abs(spawnHeight - removeHeight);
         noteSpawnScale = new Vector3(noteSpawnScaleFloat, noteSpawnScaleFloat * noteSpawnScaleY, 1f);

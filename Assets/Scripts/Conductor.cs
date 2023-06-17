@@ -139,7 +139,6 @@ public class Conductor : MonoBehaviour
         {
             Debug.Log($"Spawning Note for : {dspSongTime}");
             noteSpawner.GetComponent<NoteSpawner>().SpawnNote(
-                beatsShownInAdvance,
                 noteList[nextIndex].RealTime,
                 identifyNote(noteList[nextIndex].Value)
                 );

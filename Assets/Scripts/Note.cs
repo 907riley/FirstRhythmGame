@@ -4,49 +4,40 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    public KeyCode key { set; get; }
-    public Color color { set; get; }
-    public float speed { set; get; }
-
-    public float deadZoneYAxis;
-
+    // fields set by noteSpawner on creation of Note
+    public KeyCode key;
+    public Color color;
     public Vector3 spawnPosition;
     public Vector3 removePosition;
-    public float beatsShownInAdvance;
     public float beatOfThisNote;
-    public double songPosition;
+    public Conductor conductor;
 
+    // fields set by the GameManager
+    public float deadZoneYAxis;
     private Vector3 noteSpawnScale;
     private float noteSpawnScaleY;
 
-    public GameObject conductorGo;
-    private Conductor conductor;
-
-    public GameObject gameManagerGo;
-    private GameManager gameManager;
+    // songPosition in milliseconds
+    public double songPosition;
 
     private SpriteRenderer spriteRenderer;
 
-    private GameObject outerNote;
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sortingOrder = 1;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        conductor = conductorGo.GetComponent<Conductor>();
-        //gameManager = gameManagerGo.GetComponent<GameManager>();
-
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = color;
-        spriteRenderer.sortingOrder = 1;
-
-        //noteSpawnScale = gameManager.noteSpawnScale;
+        // information from the GameManager
+        deadZoneYAxis = GameManager.Instance.deadZoneYAxis;
+        noteSpawnScaleY = GameManager.Instance.noteSpawnScaleY;
         noteSpawnScale = GameManager.Instance.noteSpawnScale;
-
         transform.localScale = noteSpawnScale;
 
-        //deadZoneYAxis = gameManager.deadZoneYAxis;
-        deadZoneYAxis = GameManager.Instance.deadZoneYAxis;
-        //CreateOuterButton();
-        noteSpawnScaleY = GameManager.Instance.noteSpawnScaleY;
+        spriteRenderer.color = color;
     }
 
     // Update is called once per frame
@@ -56,14 +47,12 @@ public class Note : MonoBehaviour
         float percentOfTravel = (float)((conductor.millisecondsInAdvance - (beatOfThisNote - songPosition)) / conductor.millisecondsInAdvance * GameManager.Instance.noteFallLerpPercent);
 
         // interpolate so that it is perfectly in sync
-        // beatsShownInAdvance is like speed I think
         // so the big part is (beatOfThisNote - songPositionInBeats)
         // when that is positive (beatOfThisNote > sonPositionInBeats)
         //      then we are still approaching the time to play it
         // when this is 0, then we have reached the note and its the remove point
         if (beatOfThisNote <= songPosition + conductor.millisecondsInAdvance)
         {
-            //Debug.Log("Lerp t: " + (beatsShownInAdvance - (beatOfThisNote - songPositionInBeats)) / beatsShownInAdvance * conductor.noteFallLerpPercent + " fallpercent: " + conductor.noteFallLerpPercent);
             transform.position = Vector3.Lerp(
                 spawnPosition,
                 removePosition,
@@ -78,38 +67,13 @@ public class Note : MonoBehaviour
                 percentOfTravel
                 );
 
-            //outerNote.GetComponent<Transform>().localScale = new Vector3(percentOfTravel + 0.5f, percentOfTravel * .75f + 0.5f, percentOfTravel);
 
             // Remove notes if within 0.1 of remove distance
             if (Vector3.Distance(removePosition, transform.position) < 0.1)
             {
-                Debug.Log("Missed: " + name);
-                //gameManager.OnMissedNote();
-                //GameManager.Instance.OnMissedNote();
                 ScoreManager.Instance.OnMissedNote();
                 Destroy(gameObject);
             }
         } 
-
-        //if (transform.position == removePosition)
-        //{
-        //    Destroy(gameObject);
-        //}
-    }
-
-    void CreateOuterButton()
-    {
-        outerNote = new GameObject(transform.name + " outer");
-        outerNote.AddComponent<SpriteRenderer>();
-        SpriteRenderer outerSpriteRenderer = outerNote.GetComponent<SpriteRenderer>();
-        Transform outerTransform = outerNote.GetComponent<Transform>();
-
-        //outerSpriteRenderer.color = gameManager.outerNoteColor;
-        outerSpriteRenderer.color = GameManager.Instance.outerNoteColor;
-        outerSpriteRenderer.sprite = transform.GetComponent<SpriteRenderer>().sprite;
-
-        outerTransform.position = transform.position;
-        outerTransform.localScale = transform.localScale;
-        outerTransform.parent = transform;
     }
 }

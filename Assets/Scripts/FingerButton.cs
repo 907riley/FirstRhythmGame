@@ -5,34 +5,27 @@ using UnityEngine;
 public class FingerButton : MonoBehaviour
 {
     public float colorChangeAmount = .2f;
-    public Color color { set; get; }
-    public KeyCode key { set; get; }
+    public Color color;
+    public KeyCode key;
 
     public float noteHitRange;
 
     public GameObject outerFingerButton;
 
     public GameObject noteSpawnerGo;
-    private NoteSpawner noteSpawner;
 
     public GameObject conductorGo;
     private Conductor conductor;
-
-    //public GameObject gameManagerGo;
-    //private GameManager gameManager;
 
     public Sprite circleSprite;
 
     private Color outerColor;
 
+
     private void Start()
     {
+        // has to be in start because gotten from FingerBoard
         conductor = conductorGo.GetComponent<Conductor>();
-        //gameManager = gameManagerGo.GetComponent<GameManager>();
-        noteSpawner = noteSpawnerGo.GetComponent<NoteSpawner>();
-
-        //outerColor = gameManager.outerNoteColor;
-        //noteHitRange = gameManager.noteHitRange;
 
         outerColor = GameManager.Instance.outerNoteColor;
         noteHitRange = GameManager.Instance.noteHitRange;
@@ -40,7 +33,6 @@ public class FingerButton : MonoBehaviour
         CreateOuterButton();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(key))
@@ -78,10 +70,8 @@ public class FingerButton : MonoBehaviour
         {
             Debug.Log("YOU MISSED");
             ScoreManager.Instance.OnMissClick();
-            //GameManager.Instance.OnMissClick();
         } else
         {
-            //gameManager.OnNoteHit();
             ScoreManager.Instance.OnNoteHit();
         }
     }
@@ -92,21 +82,19 @@ public class FingerButton : MonoBehaviour
         GetComponent<SpriteRenderer>().color = color;
     }
 
+    /// <summary>
+    /// Helper function for detecting if a note was played on time
+    /// TODO: make better, super slow rn
+    /// </summary>
+    /// <returns></returns>
     public bool DetectRange()
     {
-        //Note[] notes = noteSpawner.GetComponentInChildren<Note>();
         // check to see if collided with a note of the right color
         foreach (Transform child in noteSpawnerGo.transform)
         {
             Note note = child.GetComponent<Note>();
             if (note.key == key)
             {
-                //Debug.Log("Note Beat: " + note.name + " " + note.beatOfThisNote);
-                //if (Vector3.Distance(transform.position, child.position) < 0.25)
-                //{
-                //    Destroy(child.gameObject);
-                //    return true;
-                //} 
                 Debug.Log($"Current songposition on click {conductor.dspSongTime - conductor.delayOfSong} compared to note on RealTime: {note.beatOfThisNote}");
                 if (Mathf.Abs((float)(conductor.dspSongTime - conductor.delayOfSong - note.beatOfThisNote)) <= noteHitRange)
                 {
@@ -117,5 +105,4 @@ public class FingerButton : MonoBehaviour
         }
         return false;
     }
-
 }
