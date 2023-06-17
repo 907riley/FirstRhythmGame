@@ -5,14 +5,13 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // ----- FINGERBOARD INFO -----
+    // ----- SETTING FIELDS -----
+    // the fields that need to be set manually for the game to run
+
+    // number of fingerbuttons
     public int numberOfFingerButtons = 6;
 
-    // vector positions of fingerbuttons
-    public Vector3[] positions;
-
-    // X axis positions of finger buttons
-    public float[] fingerButtonXAxis;
+    // the spacing of the notes/fingerbuttons when they're played
     public float noteSpacingXAxis = 2f;
 
     // colors of fingerbuttons
@@ -36,28 +35,31 @@ public class GameManager : MonoBehaviour
         KeyCode.L
     };
     
-    // error allowed on note hits (beat diff)
+    // error allowed on note hits (beat diff) in milliseconds
     public float noteHitRange = 150f;
 
     // height of fingerboard
     public float fingerBoardHeight = -4f;
 
-    // ----- NOTE SPAWN/REMOVE INFO -----
+    // the spawn height for notes and measures
     public float spawnHeight = 3f;
+
+    // the remove height for notes and measures
     public float removeHeight = -6f;
-    public float deadZoneYAxis;
+
     // percent of the size of the fretboard width for the spawn
     public float spawnWidthPercent = 0.75f;
 
     // amount to scale the notes down at the start
     public float noteSpawnScaleFloat = 0.75f;
+
     // amount to scale the note down in the Y axis to make it oblong
     public float noteSpawnScaleY = 0.75f;
-    public Vector3 noteSpawnScale;
 
-    // basically speed of notes
-    public float beatsShownInAdvance = 4f;
+    // how many measures to play in advance
+    public float beatsShownInAdvance = 2f;
 
+    // the actual names of the notes
     public string[] noteNames = 
     {
         "FUSCHIA",
@@ -68,35 +70,40 @@ public class GameManager : MonoBehaviour
         "ORANGE"
     };
 
-    //public enum NoteNames
-    //{
-    //    GREEN = 0,
-    //    RED = 1,
-    //    YELLOW = 2,
-    //    BLUE = 3
-    //};
-
-    //public NoteNames[] notes =
-    //{
-    //    NoteNames.GREEN,
-    //    NoteNames.RED,
-    //    NoteNames.YELLOW,
-    //    NoteNames.BLUE
-    //};
-
-    public float noteFallLerpPercent;
-
-    public float noteVerticalTravelDistance;
-
+    // the outer note color, default black
     public Color outerNoteColor = new Color(0, 0, 0, 1);
 
+    // ----- FIELDS THAT ARE DETERMINED AT RUNTIME BY THE SET FIELDS ABOVE -----
+    // basically just helper fields so they don't have to be comnputed everytime
+
+    // when to remove notes/measures on the Y scale
+    public float deadZoneYAxis;
+
+    // full vector for each note scale at spawn
+    public Vector3 noteSpawnScale;
+
+    // the percent of the way down the fretboard where the note should be played
+    // or the measure line should intersect the fingerboard
+    public float noteFallLerpPercent;
+
+    // the total vertical travel distance for the notes/measures
+    public float noteVerticalTravelDistance;
+
+    // the selected song name chosen by the SongSelection scene
     public string selectedSongName;
+
+    // vector positions of fingerbuttons
+    public Vector3[] positions;
+
+    // X axis positions of finger buttons
+    public float[] fingerButtonXAxis;
 
     // ----- GAME OBJECTS TO SET TRANSFORM POSITIONS -----
     [SerializeField] GameObject noteSpawnerGo;
     [SerializeField] GameObject fingerBoardGo;
     [SerializeField] GameObject fretBoardDrawerGo;
 
+    // the singleton instance
     public static GameManager Instance;
 
     private void Awake()
@@ -124,6 +131,10 @@ public class GameManager : MonoBehaviour
         CreatePositions();
     }
 
+    /// <summary>
+    /// Called when the settings scene changes the settings. Tells GameManager to reset the settings
+    /// </summary>
+    /// <param name="fingerButtons"> the number of fingerbuttons </param>
     public void SetNumberOfFingerButtons(int fingerButtons)
     {
         numberOfFingerButtons = fingerButtons;
@@ -131,11 +142,18 @@ public class GameManager : MonoBehaviour
         CreatePositions();
     }
 
+    /// <summary>
+    /// Called when the settings scene changes the settings. Tells GameManager to reset the settings
+    /// </summary>
+    /// <param name="beatsShown"> Beats shown in advance </param>
     public void SetBeatsShownInAdvance(float beatsShown)
     {
         beatsShownInAdvance = beatsShown;
     }
 
+    /// <summary>
+    /// Calculates the X axis positions of the fingerbuttons based on the settings
+    /// </summary>
     void CalculateFingerButtonXAxis()
     {
         fingerButtonXAxis = new float[numberOfFingerButtons];
@@ -148,6 +166,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  Calculates the vector positions of the fingerbuttons based on the settings
+    /// </summary>
     void CreatePositions()
     {
         positions = new Vector3[numberOfFingerButtons];

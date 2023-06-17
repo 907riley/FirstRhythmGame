@@ -47,7 +47,7 @@ public class Settings : MonoBehaviour
     /// </summary>
     public void OnBackClick()
     {
-        StartCoroutine(LoadAsyncScene("Menu"));
+        StartCoroutine(Utils.LoadAsyncScene("Menu"));
     }
 
     public void OnSaveClick()
@@ -55,16 +55,5 @@ public class Settings : MonoBehaviour
         // update the GameManager
         GameManager.Instance.SetNumberOfFingerButtons(numberOfFingerButtons);
         GameManager.Instance.SetBeatsShownInAdvance(beatsShownInAdvance);
-    }
-
-    IEnumerator LoadAsyncScene(string scene)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
-
-        // wait till async is done
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
     }
 }

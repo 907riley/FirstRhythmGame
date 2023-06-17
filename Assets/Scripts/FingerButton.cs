@@ -4,29 +4,23 @@ using UnityEngine;
 
 public class FingerButton : MonoBehaviour
 {
-    public float colorChangeAmount = .2f;
+    // information from GameManager
+    public float noteHitRange;
+    private Color outerColor;
+
+    // all fields passed on creation from FingerBoard
     public Color color;
     public KeyCode key;
-
-    public float noteHitRange;
-
-    public GameObject outerFingerButton;
-
     public GameObject noteSpawnerGo;
-
-    public GameObject conductorGo;
-    private Conductor conductor;
-
+    public Conductor conductor;
     public Sprite circleSprite;
 
-    private Color outerColor;
+    // the outline of the fingerbutton
+    public GameObject outerFingerButton;
 
 
     private void Start()
     {
-        // has to be in start because gotten from FingerBoard
-        conductor = conductorGo.GetComponent<Conductor>();
-
         outerColor = GameManager.Instance.outerNoteColor;
         noteHitRange = GameManager.Instance.noteHitRange;
 
@@ -46,6 +40,9 @@ public class FingerButton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates the outer button gameobject
+    /// </summary>
     void CreateOuterButton()
     {
         outerFingerButton = new GameObject(transform.name + " outer");
@@ -61,6 +58,9 @@ public class FingerButton : MonoBehaviour
         outerTransform.parent = transform;
     }
 
+    /// <summary>
+    /// Called when the key associated with the fingerbutton is pressed down
+    /// </summary>
     public void OnKeyDown()
     {
         outerFingerButton.GetComponent<SpriteRenderer>().color = color;
@@ -76,6 +76,9 @@ public class FingerButton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when the key associated with the fingerbutton is released
+    /// </summary>
     public void OnKeyUp()
     {
         outerFingerButton.GetComponent<SpriteRenderer>().color = outerColor;
@@ -86,7 +89,7 @@ public class FingerButton : MonoBehaviour
     /// Helper function for detecting if a note was played on time
     /// TODO: make better, super slow rn
     /// </summary>
-    /// <returns></returns>
+    /// <returns> true if note is in range, false otherwise </returns>
     public bool DetectRange()
     {
         // check to see if collided with a note of the right color

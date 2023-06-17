@@ -5,31 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+    /// <summary>
+    /// Called when the play button is clicked
+    /// </summary>
     public void OnPlayClick()
     {
         // Load the GamePlay scene
-        StartCoroutine(LoadAsyncScene("SongSelection"));
+        StartCoroutine(Utils.LoadAsyncScene("SongSelection"));
     }
 
+    /// <summary>
+    /// Called when the settings button is clicked
+    /// </summary>
     public void OnSettingsClick()
     {
         // Load the Settings scene
-        StartCoroutine(LoadAsyncScene("Settings"));
+        StartCoroutine(Utils.LoadAsyncScene("Settings"));
     }
 
+    /// <summary>
+    /// Called when the Quit button is clicked
+    /// </summary>
     public void OnQuitClick()
     {
         Application.Quit();
-    }
-
-    IEnumerator LoadAsyncScene(string scene)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
-
-        // wait till async is done
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
     }
 }

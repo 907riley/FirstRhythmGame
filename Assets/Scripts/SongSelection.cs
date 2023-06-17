@@ -8,13 +8,15 @@ using UnityEngine.SceneManagement;
 
 public class SongSelection : MonoBehaviour
 {
-    MidiFilePlayer mfp;
-    List<string> songNames;
+    // prefab
     [SerializeField] GameObject songButton;
     [SerializeField] GameObject songScrollPanel;
     [SerializeField] TextMeshProUGUI errorMessage;
 
+    // the selected song
     public string selectedSong = "";
+
+    // error message to dispaly if start is clicked with no song selected
     private string errorMessageText = "select a song!";
 
     // Start is called before the first frame update
@@ -25,10 +27,13 @@ public class SongSelection : MonoBehaviour
         PopulateSongSelection();
     }
 
+    /// <summary>
+    /// Get all the song names from the assets folder
+    /// </summary>
     void PopulateSongSelection()
     {
         string pathToMidi = $"{Application.dataPath}/MidiPlayer/Resources/MidiDB";
-        songNames = new List<string>();
+        List<string> songNames = new List<string>();
 
         var info = new System.IO.DirectoryInfo(pathToMidi);
         var fileInfo = info.GetFiles();
@@ -52,12 +57,19 @@ public class SongSelection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by the song selection menu to set the song name
+    /// </summary>
+    /// <param name="songName"> the name of the song to play </param>
     public void SetSelectedSong(string songName)
     {
         selectedSong = songName;
         errorMessage.text = "";
     }
 
+    /// <summary>
+    /// Called when the start button is clicked
+    /// </summary>
     public void OnStartClick()
     {
         if (selectedSong == "")
@@ -67,19 +79,7 @@ public class SongSelection : MonoBehaviour
         {
             GameManager.Instance.selectedSongName = selectedSong;
             // change scenes
-            StartCoroutine(LoadAsyncScene("GamePlay"));
+            StartCoroutine(Utils.LoadAsyncScene("GamePlay"));
         }
     }
-
-    IEnumerator LoadAsyncScene(string scene)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
-
-        // wait till async is done
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-    }
-
 }

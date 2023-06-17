@@ -6,12 +6,16 @@ using TMPro;
 
 public class EndGameDisplay : MonoBehaviour
 {
+    // prefabs that get set on display
     [SerializeField] TextMeshProUGUI score;
     [SerializeField] TextMeshProUGUI hitPercentage;
     [SerializeField] TextMeshProUGUI notesHit;
     [SerializeField] TextMeshProUGUI highestStreak;
     [SerializeField] TextMeshProUGUI notesMissed;
 
+    /// <summary>
+    /// When about to be displayed get all the information
+    /// </summary>
     void Start()
     {
         float hitPercent = ((float)ScoreManager.Instance.notesHit / (float)ScoreManager.Instance.notesSpawned) * 100;
@@ -25,22 +29,14 @@ public class EndGameDisplay : MonoBehaviour
         notesMissed.text = $"{ScoreManager.Instance.notesMissed}";
     }
 
+    /// <summary>
+    /// Called when the exit button is clicked
+    /// </summary>
     public void OnExitClick()
     {
         // Load the Menu scene
-        StartCoroutine(LoadAsyncScene("Menu"));
+        StartCoroutine(Utils.LoadAsyncScene("Menu"));
         gameObject.SetActive(false);
         ScoreManager.Instance.ResetStats();
-    }
-
-    IEnumerator LoadAsyncScene(string scene)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
-
-        // wait till async is done
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
     }
 }

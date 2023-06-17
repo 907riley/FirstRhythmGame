@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FingerBoard : MonoBehaviour
 {
-    private GameObject[] fingerButtons;
+    // information grabbed from GameManager
     private int numberOfFingerButtons;
     public Vector3[] positions;
     private Color[] colors;
@@ -13,21 +13,24 @@ public class FingerBoard : MonoBehaviour
     // circle asset
     [SerializeField] Sprite fingerButtonSprite;
 
+    // interpreter set gameobjects
     [SerializeField] GameObject noteSpawnerGo;
     [SerializeField] GameObject conductorGo;
-    [SerializeField] GameObject gameManagerGo;
-    private GameManager gameManager;
+    private Conductor conductor;
+
+    // the fingerbuttons array
+    private GameObject[] fingerButtons;
+
+    private void Awake()
+    {
+        conductor = conductorGo.GetComponent<Conductor>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //gameManager = gameManagerGo.GetComponent<GameManager>();
-
+        // set the fingerboard to the spot it's assigned
         transform.position = new Vector3(0, GameManager.Instance.fingerBoardHeight, 0);
-        //numberOfFingerButtons = gameManager.numberOfFingerButtons;
-        //positions = gameManager.positions;
-        //colors = gameManager.colors;
-        //keyCodes = gameManager.keyCodes;
 
         numberOfFingerButtons = GameManager.Instance.numberOfFingerButtons;
         positions = GameManager.Instance.positions;
@@ -37,6 +40,9 @@ public class FingerBoard : MonoBehaviour
         CreateFingerButtons();
     }
 
+    /// <summary>
+    /// Creates all the fingerbuttons and assigns them their variables
+    /// </summary>
     void CreateFingerButtons()
     {
         fingerButtons = new GameObject[numberOfFingerButtons];
@@ -59,10 +65,13 @@ public class FingerBoard : MonoBehaviour
             fingerButtonTransform.transform.parent = transform;
 
             fingerButtonSelf.noteSpawnerGo = noteSpawnerGo;
-            fingerButtonSelf.conductorGo = conductorGo;
-            //fingerButtonSelf.gameManagerGo = gameManagerGo;
+            fingerButtonSelf.conductor = conductor;
             fingerButtonSelf.circleSprite = fingerButtonSprite;
 
+            // logic so that four finger buttons are on
+            // D F J K and not
+            // S D F J
+            // basically to keep the fingers centered
             if (numberOfFingerButtons == 4)
             {
                 fingerButtonSpriteRenderer.color = colors[i + 1];
