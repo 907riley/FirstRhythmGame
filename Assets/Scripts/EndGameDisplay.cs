@@ -39,4 +39,15 @@ public class EndGameDisplay : MonoBehaviour
         gameObject.SetActive(false);
         ScoreManager.Instance.ResetStats();
     }
+
+    /// <summary>
+    /// Called when the play again button is clicked
+    /// </summary>
+    public void OnPlayAgainClick()
+    {
+        // Load the GamePlay scene
+        StartCoroutine(Utils.LoadAsyncScene("GamePlay"));
+        gameObject.SetActive(false);
+        ScoreManager.Instance.ResetStats();
+    }
 }

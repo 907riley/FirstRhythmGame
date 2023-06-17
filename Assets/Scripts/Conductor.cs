@@ -102,6 +102,9 @@ public class Conductor : MonoBehaviour
 
         // get time as the game loads in before the song starts
         initDspSongTime = AudioSettings.dspTime * 1000;
+
+        // ensure that the endGame panel is not active
+        endGamePanel.SetActive(false);
     }
 
     void Update()
