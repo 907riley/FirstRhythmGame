@@ -124,6 +124,7 @@ public class Conductor : MonoBehaviour
         // get the accurate time since game started - time game loaded - unity time inaccuracy
         dspSongTime = AudioSettings.dspTime * 1000 - initDspSongTime - offSet;
         Debug.Log($"Current Time: {dspSongTime}");
+        Debug.Log($"Current Time according to mfp: {mfp.MPTK_RealTime}");
 
 
         // spawn lines on fretboard
@@ -172,7 +173,7 @@ public class Conductor : MonoBehaviour
             // Log if event is a note on
             if (mptkEvent.Command == MPTKCommand.NoteOn)
                 //Debug.Log($"Note on Tick:{mptkEvent.Tick}  Note:{mptkEvent.Value} Time:{mptkEvent.RealTime} millis  Velocity:{mptkEvent.Velocity}");
-                Debug.Log($"*** Note Actually Played at Time: {mptkEvent.RealTime} and songTime is {dspSongTime - delayOfSong} or difference is {mptkEvent.RealTime - (dspSongTime - delayOfSong)} (negative means dsp is faster)");
+                Debug.Log($"*** Note Actually Played at Time: {mptkEvent.RealTime} and songTime is {dspSongTime - delayOfSong} or mfp realtime {mfp.MPTK_RealTime}");
 
             // Uncomment to display all MIDI events
             // Debug.Log(mptkEvent.ToString());

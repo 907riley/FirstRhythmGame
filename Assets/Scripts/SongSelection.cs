@@ -20,6 +20,8 @@ public class SongSelection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // ensure that the selected song is not set already
+        GameManager.Instance.selectedSongName = "";
         PopulateSongSelection();
     }
 
